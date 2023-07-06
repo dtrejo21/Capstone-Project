@@ -23,6 +23,12 @@ College Student #2, loves data: Someone who wants to be able to keep track of ho
 * As a student, I want to be able to just display the timer on a the screen
 * As a student, I want to be able to be able to change the screen to display a different location/image.
 
-
+### Endpoints
+|HHTP | Name| Description |
+| --- | --- | --- |
+|POST | users | Set a new user|
+|PUT  | classes | Update the tasks in a class |
+|GET  | tasks | |
+|POST | tasks | Create a new tasks|
 
 
