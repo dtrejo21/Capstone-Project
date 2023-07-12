@@ -5,18 +5,28 @@ export default function Navbar(){
 
     return(
         <div className="navbar">
-            <li>
-                <i className="material-icons">search</i>
-            </li>
-            <li>
+            <div className="searchbar">
+                <input type="text" placeholder="Search"></input>
+                <button>
+                    <i className="material-icons">search</i>
+                </button>
+            </div>
+
+            <button>
                 <i className="material-icons">calendar_today</i>
-            </li>
-            <li>
+            </button>
+
+            <button>
                 <i className="material-icons">add</i>
-            </li>
-            <li>
+            </button>
+
+            <button>
                 <i className="material-icons">help</i>
-            </li>
+            </button>
+
+            <button>
+                <i className="material-icons">account_circle</i>
+            </button>
             
         </div>
     )

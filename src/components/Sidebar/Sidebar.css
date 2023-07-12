@@ -1,20 +1,33 @@
 .open{
-    width: 500px;
-    height: 500px;
+    width: 200px;
 }
-.hidden{
-    display: none;
+
+.close{
+    width: 60px;
 }
+
 .sidebar {
     background-color: white;
     display: flex;
     flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    align-items: flex-start;
+    top: 0;
+    left: 0;
 }
+
 .sidebar .toggle-button{
     background-color: transparent;
     border: none;
 }
-.sidebar .options{
+
+.sidebar .options{/*list of options*/
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+}
+
+.sidebar .options button{/*Words*/
+    background-color: transparent;
+    border: none;
 }

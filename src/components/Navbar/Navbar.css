@@ -1,7 +1,18 @@
-material-icons{
-    color: black;
-}
 .navbar{
     list-style: none;
     display: flex;
+    background-color: rgb(94, 34, 150);
+    color: whitesmoke;
+    height: 70px;
+    width: 100%;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    margin-left: 50px;
+    
+}
+.navbar button{
+    background-color: transparent;
+    border: none;
+    color: whitesmoke;
 }
