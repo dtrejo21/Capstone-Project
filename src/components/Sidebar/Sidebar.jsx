@@ -2,7 +2,6 @@ import * as React from "react"
 import "./Sidebar.css"
 import Calendar from "../Calendar/Calendar"
 import StudySpace from "../StudySpace/StudySpace"
-import { BrowserRouter, Routes, Route} from "react-router-dom"
 
 
 export default function Sidebar({isOpen, handleToggle}){
@@ -13,7 +12,7 @@ export default function Sidebar({isOpen, handleToggle}){
                 <i className="material-icons">menu</i>
             </button>
 
-            <BrowserRouter>
+
                 <div className="options">
                      {/*}
                     <Classes isOpen={isOpen} 
@@ -25,7 +24,7 @@ export default function Sidebar({isOpen, handleToggle}){
                     <StudySpace isOpen={isOpen}
                                 handleToggle={handleToggle}/>
                 </div>
-            </BrowserRouter>
+
         </section>
     )
 }
