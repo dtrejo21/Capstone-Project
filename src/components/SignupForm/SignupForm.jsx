@@ -8,13 +8,14 @@ export default function SignupForm(){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         axios.post("http://localhost:8000/signup", {username, email, password})
-        .then(result => console.log(result))
+        .then(result => {console.log(result)
+            navigate("/login");
+        })
         .catch(err => console.log(err))
     };
 

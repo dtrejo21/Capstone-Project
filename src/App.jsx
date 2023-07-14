@@ -12,9 +12,9 @@ export default function App() {
     <div className="app">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={ <Home /> } />
-            <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignupForm />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/" element={ <Home /> } />
           </Routes>
         </BrowserRouter>
     </div>

@@ -10,18 +10,22 @@ export default function Login(){
     const navigate = useNavigate();
 
     //axios.defaults.withCredentials = true;
-    /*
     const handleLogin = async (e) => {
         e.preventDefault();
-        axios.post("http://localhost:5173/login", {email, password})
-        .then(res => {
+        axios.post("http://localhost:8000/login", {username, password})
+        .then(result => {
+            console.log(result)
+            if(result.data === "Success")
+            {
+                navigate("/")
             }
-        }).catch(err => console.log(er))
-    }*/
+        })
+        .catch(err => console.log(err))
+    }
 
     return(
         <div className="login">
-            <form className="login-form">
+            <form className="login-form" onSubmit={handleLogin}>
                 <h2>Login</h2>
 
                 <div className="form-content">

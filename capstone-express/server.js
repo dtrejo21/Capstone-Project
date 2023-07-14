@@ -26,10 +26,26 @@ app.post('/signup', (req, res) => {
     .then(users => res.json(users))
     .catch(err => res.json(err))
 })
-/*
-app.post('/login', (req, res) => {
 
-})*/
+app.post('/login', (req, res) => {
+    const {username, password} = req.body;
+    UserModel.findOne({username: username})
+    .then(user => {
+        if(user){//does the user exist??
+            if(user.password === password){
+                res.json("Success")
+            }
+            else
+            {
+                res.json("The password is incorrect")
+            }
+        }
+        else
+        {
+            res.json("User doesn't exist")
+        }
+    })
+})
 
 app.listen(8000, () => {
     console.log("Server started on port 8000");
