@@ -1,39 +1,45 @@
 .class-card{
     background-color: rgb(93, 73, 114);
     border-radius: 10px;
-    height: 300px;
+    height: 100%;
     width: 250px;
     color: white;
     margin-left: 20px;
     font-size: 20px;
 }
-.class-card h4{
-    padding: 10px;
+.class-card .content{
+    margin-left: 6px;
 }
-.class-card .tasks{
+.class-card .content h4{
+    padding: 10px;
+    margin-top: 8px;
+    height: 10px
+}
+.class-card .content .tasks{
     display: flex;
     flex-direction: column-reverse;
     padding-left: 5px;
-
 }
-.class-card .tasks .tasksList{
+.class-card .content .tasks .tasksList{
     background-color: rgb(114, 90, 139);
     height: 30px;
     border-radius: 4px;
     width: 95%;
 }
-.class-card .tasks .tasksList2{
+.class-card .content .tasks .tasksList2{
     background-color: rgb(114, 90, 139);
     border-radius: 4px;
     height: 30px;
     width: 95%;
     margin-bottom: 10px;
 }
-.class-card .addTask{
+.class-card .content .addTask{
     display: flex;
-    padding-top: 90px;
+    margin-top: 110px;
+    margin-bottom: 10px;
+
 }
-.class-card .addTask input{
+.class-card .content .addTask input{
     background-color: rgb(114, 90, 139);
     border: none;
     width: 95%;
@@ -41,8 +47,10 @@
     border-radius: 4px;
     height: 40px;
     color: white;
+    font-size: 18px;
+
 }
-.class-card .addTask button{
+.class-card .content .addTask button{
     border: none;
     background-color: transparent;
     color: white;
