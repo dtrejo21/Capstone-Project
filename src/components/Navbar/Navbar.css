@@ -19,3 +19,10 @@
     border: none;
     color: whitesmoke;
 }
+.menu button{
+    background-color: white;
+    color: black;
+    display: flex;
+}
+
+

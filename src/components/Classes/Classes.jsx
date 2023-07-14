@@ -16,6 +16,7 @@ export default function Classes({isOpen, handleClick}){
         <div className="classes">
             <ClassCard/>
             <CardForm/>
+            
         </div>
     )
 }

@@ -2,6 +2,7 @@ import * as React from "react"
 import "./Sidebar.css"
 import Calendar from "../Calendar/Calendar"
 import StudySpace from "../StudySpace/StudySpace"
+import { Link } from "react-router-dom"
 
 
 export default function Sidebar({isOpen, handleToggle}){
@@ -12,18 +13,26 @@ export default function Sidebar({isOpen, handleToggle}){
                 <i className="material-icons">menu</i>
             </button>
 
+            {isOpen && (
+                <ul>
+                    <li>
+                        <Link to="/profile">Profile</Link>
+                    </li>
+                    <li>
+                        <Link to="/calendar">Calendar</Link>
+                    </li>
+                    <li>
+                        <Link to="/study-space">Study Space</Link>
+                    </li>
+                </ul>
+            )}
 
-                <div className="options">
-                     {/*}
-                    <Classes isOpen={isOpen} 
-    handleToggle={handleToggle}/>*/}
-
-                    <Calendar isOpen={isOpen}
-                            handleToggle={handleToggle}/>
+                    {/*
+                    <Calendar isOpen={isOpen}/>
                     
                     <StudySpace isOpen={isOpen}
                                 handleToggle={handleToggle}/>
-                </div>
+    */}
 
         </section>
     )

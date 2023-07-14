@@ -47,6 +47,8 @@ app.post('/login', (req, res) => {
     })
 })
 
+app.post("")
+
 app.listen(8000, () => {
     console.log("Server started on port 8000");
 });

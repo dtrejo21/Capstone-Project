@@ -15,20 +15,21 @@ export default function ClassCard(){
     return(
         <div className="class-card">
             <div className="content">
-            <h4>Class #1</h4>
-                <div className="tasks">
-                    <div className="tasksList">
-                        <input type="checkbox" id="box1"/>
-                        <label htmlFor="box1">Task #1</label>
+                <h4>Class #1</h4>
+                    <div className="tasks">
+                        <div className="tasksList">
+                            <input type="checkbox" id="box1"/>
+                            <label htmlFor="box1">Task #1</label>
+                        </div>
+
+                        <div className="tasksList2">
+                            <input type="checkbox" id="box2"/>
+                            <label htmlFor="box2">Task #2</label>
+                        </div>   
                     </div>
+            </div>
 
-                    <div className="tasksList2">
-                        <input type="checkbox" id="box2"/>
-                        <label htmlFor="box2">Task #2</label>
-                    </div>   
-                </div>
-
-                <div className="addTask">
+            <div className="addTask">
                     {showInput ? (
                         <form className="inputTask">
                             <input type="text"
@@ -38,18 +39,17 @@ export default function ClassCard(){
                             />
                             <button type="submit">Add Task</button>
 
-                            <button className="close" onClick={() => setShowInput(false)}>
+                            <button className="close">
                                 <i className="material-icons">close</i>
                             </button>
                         </form>
                     ) : (
-                        <button className="taskBtn" onClick={() => setShowInput(true)}>
+                        <button className="taskBtn" >
                             <i className="material-icons">add</i>
                             Add New Task
                         </button>
                     )}
                 </div>
-            </div>
         </div>
     )
 }
