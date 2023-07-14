@@ -1,59 +1,95 @@
 .class-card{
     background-color: rgb(93, 73, 114);
-    border-radius: 10px;
+    border-radius: 12px;
     height: 100%;
     width: 250px;
     color: white;
     margin-left: 20px;
-    font-size: 20px;
+    font-size: 16px;
 }
+
 .class-card .content{
     margin-left: 6px;
 }
+
 .class-card .content h4{
-    padding: 10px;
+    padding: 12px;
     margin-top: 8px;
     height: 10px
 }
+
 .class-card .content .tasks{
     display: flex;
     flex-direction: column-reverse;
     padding-left: 5px;
 }
+
 .class-card .content .tasks .tasksList{
     background-color: rgb(114, 90, 139);
     height: 30px;
-    border-radius: 4px;
+    border-radius: 8px;
     width: 95%;
+    padding: 4px;
 }
+
 .class-card .content .tasks .tasksList2{
     background-color: rgb(114, 90, 139);
-    border-radius: 4px;
+    border-radius: 8px;
     height: 30px;
     width: 95%;
     margin-bottom: 10px;
+    padding: 4px;
 }
-.class-card .content .addTask{
-    display: flex;
-    margin-top: 110px;
-    margin-bottom: 10px;
 
+.addTask{
+    display: flex;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
+
 .class-card .content .addTask input{
     background-color: rgb(114, 90, 139);
     border: none;
-    width: 95%;
-    margin-left: 5px;
-    border-radius: 4px;
-    height: 40px;
+    width: 100%; /*idk why it's uneven again*/
+    border-radius: 6px;
+    height: 54px;
+    font-size: 16px;
     color: white;
-    font-size: 18px;
-
 }
-.class-card .content .addTask button{
+
+.addTask input::placeholder{
+    color: white;
+    padding: 4px;
+}
+
+.addTask .taskBtn{
     border: none;
     background-color: transparent;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    width: 100%;
     color: white;
-    font-size: 18px;
+}
+
+.inputTask button{
+    background-color: rgb(76, 47, 205);
+    border: none;
+    color: white;
+    border-radius: 3px;
+    font-size: 16px;
+    padding: 8px;
+    margin-top: 8px;
     cursor: pointer;
 }
+
+.close button{
+    display: flex;
+    flex-direction: column;
+}
+
+/*
+ .addTask button:hover{
+    background-color: rgb(168, 114, 219);
+    transition: 0.7s;
+}*/

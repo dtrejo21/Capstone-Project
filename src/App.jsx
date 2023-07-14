@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import './App.css'
 import * as React from "react"
 import Home from "./components/Home/Home"

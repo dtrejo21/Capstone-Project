@@ -1,21 +1,33 @@
 import * as React from "react"
 import "./CardForm.css"
+import { useState } from "react"
 
-export default function CardForm({handleInputChange, inputValue, showInput, handleButton}){
+export default function CardForm(){
+    const [showInput, setShowInput] = useState(false);
+    const [inputValue, setInputValue] = useState("");
+
     return(
         <div className="card-form">
             {showInput ? (
-                <form>
+                <form className="card-input">
                     <input type="text"
+                        placeholder="Enter class title.."
                         value={inputValue}
-                        onChange={handleInputChange}
+                        onChange={(e) => setInputValue(e.target.value)}
                     />
-                    <button type="submit">Add Class</button>
+
+                    <div className="buttons">
+                        <button id="add-class" type="submit">Add Class</button>
+
+                        <button className="exitBtn" onClick={() => setShowInput(false)}>
+                            <i className="material-icons">close</i>
+                        </button>
+                    </div>
                 </form>
             ) : (
-                <button onClick={handleButton}>
+                <button className="add" onClick={() => setShowInput(true)}>
                     <i className="material-icons">add</i>
-                    Enter Class Name...
+                    Add anoter class
                 </button>
             )}
         </div>

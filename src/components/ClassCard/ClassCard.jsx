@@ -1,11 +1,17 @@
 import * as React from "react"
 import "./ClassCard.css"
+import { useState } from "react"
 //HTML Drag and Drop API
 
 //this is the component that will show the indvidual card
 //which will show name, some tasks, and the option to add
 //a new task
-export default function ClassCard({isOpen, handleClick, handleInputChange, inputValue, showInput, handleButton}){
+export default function ClassCard(){
+    const [showInput, setShowInput] = useState(false);
+    const [inputValue, setInputValue] = useState("");
+
+    const [classes, setClasses] = useState("");
+
     return(
         <div className="class-card">
             <div className="content">
@@ -24,15 +30,20 @@ export default function ClassCard({isOpen, handleClick, handleInputChange, input
 
                 <div className="addTask">
                     {showInput ? (
-                        <form>
+                        <form className="inputTask">
                             <input type="text"
+                                placeholder="Enter a title for this task.."
                                 value={inputValue}
-                                onChange={handleInputChange}
+                                onChange={(e) => setInputValue(e.target.value)}
                             />
                             <button type="submit">Add Task</button>
+
+                            <button className="close" onClick={() => setShowInput(false)}>
+                                <i className="material-icons">close</i>
+                            </button>
                         </form>
                     ) : (
-                        <button onClick={handleButton}>
+                        <button className="taskBtn" onClick={() => setShowInput(true)}>
                             <i className="material-icons">add</i>
                             Add New Task
                         </button>

@@ -1,0 +1,44 @@
+.card-form{
+    margin-left: 12px;
+    background-color: rgba(93, 73, 114, 0.391);
+    border-radius: 12px;
+    height: 100%;
+    padding: 12px;
+    width: 250px;
+}
+
+.card-form button{
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 3px;
+    border: none;
+    background-color: transparent;
+    color: white;
+    padding: 8px;
+    height: 100%;
+}
+
+.card-input button{
+    background-color: rgb(76, 47, 205);
+}
+
+.card-input input{
+    border: none;
+    width: 100%;
+    border-radius: 6px;
+    height: 32px;
+    margin-bottom: 8px;
+    padding: 6px;
+    background-color: rgb(114, 90, 139);
+    font-size: 16px;
+    color: white;
+}
+
+.card-input input::placeholder{
+    color: white;
+}
+
+.card-form button:hover{
+    background-color: rgb(168, 114, 219);
+    transition: 0.7s;
+}
