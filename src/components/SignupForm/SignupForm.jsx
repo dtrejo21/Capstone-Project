@@ -14,7 +14,7 @@ export default function SignupForm(){
         e.preventDefault();
         axios.post("http://localhost:8000/signup", {username, email, password})
         .then(result => {console.log(result)
-            navigate("/login");
+            navigate("/")
         })
         .catch(err => console.log(err))
     };
@@ -50,10 +50,13 @@ export default function SignupForm(){
                     required
                 />
                 </div>
+                
                 <button type="submit">Sign Up</button>
+                {/*
                 <p>
                     Already have an account? <Link to="/login">Login</Link>
                 </p>
+    */}
             </form>
         </div>
     )

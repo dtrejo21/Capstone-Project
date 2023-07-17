@@ -1,7 +1,12 @@
 import * as React from "react"
 import "./Navbar.css"
+import { useState } from "react"
 
 export default function Navbar(){
+    const [menuVisble, setMenuVisble] = useState(false);
+    const handleLogout = () => {
+
+    }
 
     return(
         <div className="navbar">
@@ -15,19 +20,13 @@ export default function Navbar(){
                 </div>
 
                 <button>
-                    <i className="material-icons">calendar_today</i>
-                </button>
-
-                <button>
-                    <i className="material-icons">add</i>
-                </button>
-
-                <button>
                     <i className="material-icons">help</i>
                 </button>
 
-                <button>
-                    <i className="material-icons">account_circle</i>
+
+                <button className="profile" onClick={() => setMenuVisble(true)}>
+                    
+                    
                 </button>
 
             </div>

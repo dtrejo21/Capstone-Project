@@ -1,0 +1,36 @@
+.logoutBtn{
+    border: none;
+    font-size: 16px;
+    background-color: rgb(76, 47, 205);
+    color: white;
+    padding: 8px;
+    border-radius: 3px;
+}
+
+.profile{
+    background-color: #EBE8FC;
+    border-radius: 4px;
+    height: 800px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-self: auto;
+}
+
+.profile .profile-info{
+    display: flex;
+    flex-direction: column;
+    margin-right: auto;
+    padding-left: 16px;
+}
+
+.profile .menu .options{
+    border-right: 2px solid lightsteelblue;
+    margin-left: 4px;
+    height: 100%;
+}
+
+.profile .delete-account{
+    color: red;
+}
