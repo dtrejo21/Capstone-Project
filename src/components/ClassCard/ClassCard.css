@@ -4,65 +4,63 @@
     height: 100%;
     width: 250px;
     color: white;
-    margin-left: 20px;
+    margin-left: 12px;
     font-size: 16px;
 }
 
-.class-card .content{
-    margin-left: 6px;
-}
-
-.class-card .content h4{
+.class-card h4{
     padding: 12px;
-    margin-top: 8px;
+    margin-top: 6px;
     height: 10px
 }
 
-.class-card .content .tasks{
+.class-card .tasks{
     display: flex;
     flex-direction: column-reverse;
-    padding-left: 5px;
+    padding: 8px
 }
 
-.class-card .content .tasks .tasksList{
+.class-card .tasks .tasksList{
     background-color: rgb(114, 90, 139);
     height: 30px;
     border-radius: 8px;
-    width: 95%;
+    width: 100%;
     padding: 4px;
-}
-
-.class-card .content .tasks .tasksList2{
-    background-color: rgb(114, 90, 139);
-    border-radius: 8px;
-    height: 30px;
-    width: 95%;
-    margin-bottom: 10px;
-    padding: 4px;
-}
-
-.addTask{
     display: flex;
-    margin-bottom: 10px;
-    margin-top: 10px;
+    align-items: center;
 }
 
-.class-card .content .addTask input{
+.class-card .tasks .tasksList2{
+    background-color: rgb(114, 90, 139);
+    height: 30px;
+    border-radius: 8px;
+    width: 100%;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.task-input{
+    margin-bottom: 8px;
+}
+
+.task-input input{
     background-color: rgb(114, 90, 139);
     border: none;
-    width: 100%; /*idk why it's uneven again*/
+    width: 100%;
     border-radius: 6px;
     height: 54px;
+    padding: px;
     font-size: 16px;
-    color: white;
 }
 
-.addTask input::placeholder{
+.task-input input::placeholder{
     color: white;
     padding: 4px;
 }
 
-.addTask .taskBtn{
+.taskBtn{
     border: none;
     background-color: transparent;
     font-size: 16px;
@@ -70,26 +68,43 @@
     border-radius: 6px;
     width: 100%;
     color: white;
+    padding-bottom: 6px;
+    display: flex;
+    align-items: center;
 }
 
-.inputTask button{
+.taskBtn .material-icons{
+    margin-right: 6px;
+}
+
+.task-input .add-task{
     background-color: rgb(76, 47, 205);
+    border-radius: 3px;
+    margin-top: 8px;
+}
+
+.task-form{
+    border-radius: 12px;
+    height: 100%;
+    width: 100%;
+    padding: 7px;
+}
+
+.btn button{
     border: none;
     color: white;
-    border-radius: 3px;
-    font-size: 16px;
     padding: 8px;
-    margin-top: 8px;
     cursor: pointer;
+    height: 100%;
+    font-size: 16px;
 }
 
-.close button{
+.task-input .btn{
     display: flex;
-    flex-direction: column;
+    align-items: center;
 }
 
-/*
- .addTask button:hover{
-    background-color: rgb(168, 114, 219);
-    transition: 0.7s;
-}*/
+.btn .exitBtn{
+    font-size: 24px;
+    display: flex;
+}

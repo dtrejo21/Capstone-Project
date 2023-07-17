@@ -4,7 +4,12 @@ import { useState } from "react"
 
 export default function CardForm(){
     const [showInput, setShowInput] = useState(false);
-    const [inputValue, setInputValue] = useState("");
+    const [inputValue, setInputValue] = useState("")
+    /*
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+
+    }*/
 
     return(
         <div className="card-form">
@@ -17,7 +22,9 @@ export default function CardForm(){
                     />
 
                     <div className="buttons">
-                        <button id="add-class" type="submit">Add Class</button>
+                        <button className ="submitBtn" type="submit">
+                            Add Class
+                        </button>
 
                         <button className="exitBtn" onClick={() => setShowInput(false)}>
                             <i className="material-icons">close</i>
@@ -25,9 +32,9 @@ export default function CardForm(){
                     </div>
                 </form>
             ) : (
-                <button className="add" onClick={() => setShowInput(true)}>
+                <button className="addBtn" onClick={() => setShowInput(true)}>
                     <i className="material-icons">add</i>
-                    Add anoter class
+                    Add another class
                 </button>
             )}
         </div>

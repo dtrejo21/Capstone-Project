@@ -9,47 +9,45 @@ import { useState } from "react"
 export default function ClassCard(){
     const [showInput, setShowInput] = useState(false);
     const [inputValue, setInputValue] = useState("");
-
-    const [classes, setClasses] = useState("");
-
+    
     return(
         <div className="class-card">
-            <div className="content">
-                <h4>Class #1</h4>
-                    <div className="tasks">
-                        <div className="tasksList">
-                            <input type="checkbox" id="box1"/>
-                            <label htmlFor="box1">Task #1</label>
-                        </div>
+            <h4>Class #1</h4>
+            <div className="tasks">
+                <div className="tasksList">
+                    <input type="checkbox" id="box1"/>                            <label htmlFor="box1">Task #1</label>
+                </div>
 
-                        <div className="tasksList2">
-                            <input type="checkbox" id="box2"/>
-                            <label htmlFor="box2">Task #2</label>
-                        </div>   
-                    </div>
+               <div className="tasksList2">
+                   <input type="checkbox" id="box2"/>
+                    <label htmlFor="box2">Task #2</label>
+                </div>   
             </div>
+                
+            <div className="task-form">
+                {showInput ? (
+                    <form className="task-input">
+                        <input type="text"
+                            placeholder="Enter a title for this task.."
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                        />
 
-            <div className="addTask">
-                    {showInput ? (
-                        <form className="inputTask">
-                            <input type="text"
-                                placeholder="Enter a title for this task.."
-                                value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)}
-                            />
-                            <button type="submit">Add Task</button>
+                        <div className="btn">
+                            <button className="add-task" type="submit">Add Task</button>
 
-                            <button className="close">
+                            <button className="exitBtn" onClick={() => setShowInput(false)}>
                                 <i className="material-icons">close</i>
                             </button>
-                        </form>
-                    ) : (
-                        <button className="taskBtn" >
-                            <i className="material-icons">add</i>
-                            Add New Task
-                        </button>
-                    )}
-                </div>
-        </div>
+                        </div>
+                    </form>
+                ) : (
+                    <button className="taskBtn" onClick={() => setShowInput(true)}>
+                        <i className="material-icons">add</i>
+                        Add New Task
+                    </button>
+                )}
+            </div>
+     </div>
     )
 }

@@ -1,9 +1,6 @@
 import * as React from "react"
 import "./Sidebar.css"
-import Calendar from "../Calendar/Calendar"
-import StudySpace from "../StudySpace/StudySpace"
 import { Link } from "react-router-dom"
-
 
 export default function Sidebar({isOpen, handleToggle}){
 
@@ -14,26 +11,27 @@ export default function Sidebar({isOpen, handleToggle}){
             </button>
 
             {isOpen && (
-                <ul>
+                <ul className="options">
                     <li>
-                        <Link to="/profile">Profile</Link>
+                        <Link to="/profile">
+                            Profile
+                            <i className="material-icons">account_circle</i>
+                        </Link>
                     </li>
                     <li>
-                        <Link to="/calendar">Calendar</Link>
+                        <Link to="/calendar">
+                            Calendar
+                            <i className="material-icons">calendar_today</i>
+                        </Link>
                     </li>
                     <li>
-                        <Link to="/study-space">Study Space</Link>
+                        <Link to="/study-space">
+                            Study Space
+                            <i className="material-icons">auto_stories</i>
+                        </Link>
                     </li>
                 </ul>
             )}
-
-                    {/*
-                    <Calendar isOpen={isOpen}/>
-                    
-                    <StudySpace isOpen={isOpen}
-                                handleToggle={handleToggle}/>
-    */}
-
         </section>
     )
 }

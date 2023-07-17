@@ -47,7 +47,11 @@ app.post('/login', (req, res) => {
     })
 })
 
-app.post("")
+app.get("/getUser", (req, res) => {
+    UserModel.find()
+    .then(user => res.json(user))
+    .catch(err => res.json(err))
+})
 
 app.listen(8000, () => {
     console.log("Server started on port 8000");

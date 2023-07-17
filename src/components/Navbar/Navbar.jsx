@@ -20,27 +20,12 @@ export default function Navbar(){
                 </div>
 
                 <button>
-                    <i className="material-icons">calendar_today</i>
-                </button>
-
-                <button>
-                    <i className="material-icons">add</i>
-                </button>
-
-                <button>
                     <i className="material-icons">help</i>
                 </button>
 
 
                 <button className="profile" onClick={() => setMenuVisble(true)}>
-                    <i className="material-icons">account_circle</i>
                     
-                    {/*{menuVisble && 
-                        <div className="menu">
-                            <button>
-                                Logout
-                            </button>
-                    </div>}*/}
                     
                 </button>
 

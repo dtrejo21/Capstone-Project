@@ -7,19 +7,50 @@
     width: 250px;
 }
 
-.card-form button{
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 3px;
-    border: none;
-    background-color: transparent;
-    color: white;
-    padding: 8px;
-    height: 100%;
+.card-form:hover{
+    background-color: rgb(168, 114, 219);
 }
 
-.card-input button{
+.card-input .buttons{
+    display: flex;
+    align-items: center;
+}
+
+.buttons button{
+    border: none;
+    color: white;
+    padding: 8px;
+    cursor: pointer;
+    height: 100%;
+    font-size: 16px;
+}
+
+.submitBtn{
     background-color: rgb(76, 47, 205);
+    border-radius: 3px;
+}
+
+.exitBtn{
+    background-color: transparent;
+}
+
+.exitBtn .material-icons{
+    font-size: 24px;
+}
+
+.addBtn{
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.addBtn .material-icons{
+    margin-right: 6px;
 }
 
 .card-input input{
@@ -36,9 +67,4 @@
 
 .card-input input::placeholder{
     color: white;
-}
-
-.card-form button:hover{
-    background-color: rgb(168, 114, 219);
-    transition: 0.7s;
 }
