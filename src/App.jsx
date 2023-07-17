@@ -7,6 +7,7 @@ import Calendar from './components/Calendar/Calendar'
 import StudySpace from './components/StudySpace/StudySpace'
 import Profile from './components/Profile/Profile'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Welcome from './components/Welcome/Welcome'
 
 
 export default function App() {
@@ -14,8 +15,11 @@ export default function App() {
     <div className="app">
         <BrowserRouter>
           <Routes>
+            <Route path="/welcome" element={<Welcome/>}/>
+            {/*
             <Route path="/signup" element={<SignupForm />} />
             <Route path="/login" element={<LoginForm />} />
+  */}
             <Route path="/" element={ <Home /> } />
             <Route path="/calendar" element={<Calendar/>}/>
             <Route path="/study-space" element={<StudySpace/>}/>

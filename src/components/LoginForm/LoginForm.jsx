@@ -45,10 +45,13 @@ export default function Login(){
                            required
                     />
                 </div>
+                
                 <button type="submit">Login</button>
+                {/*
                 <p>
                     New to the app? <Link to="/signup">Sign Up</Link>
                 </p>
+    */}
             </form>
             
         </div>
