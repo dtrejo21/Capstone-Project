@@ -3,6 +3,7 @@ import "./SignupForm.css"
 import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import axios from "axios"
+import { UserContext } from "../../UserContext"
 
 export default function SignupForm(){
     const [username, setUsername] = useState("");
@@ -14,6 +15,7 @@ export default function SignupForm(){
         e.preventDefault();
         axios.post("http://localhost:8000/signup", {username, email, password})
         .then(result => {console.log(result)
+            //updateUser(result.data)
             navigate("/")
         })
         .catch(err => console.log(err))

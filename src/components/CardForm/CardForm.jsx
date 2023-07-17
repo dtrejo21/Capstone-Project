@@ -1,15 +1,21 @@
 import * as React from "react"
 import "./CardForm.css"
 import { useState } from "react"
+import axios from "axios";
 
-export default function CardForm(){
+export default function CardForm({subjectAdded}){
     const [showInput, setShowInput] = useState(false);
-    const [inputValue, setInputValue] = useState("")
-    /*
-    const handleSubmit = async(e) => {
-        e.preventDefault();
+    const [title, setTitle] = useState("")
 
-    }*/
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.post("http://localhost:8000/createSubject", {title})
+        .then(result => {
+            console.log(result)
+            subjectAdded(result.data)
+        })
+        .catch(err => console.log(err))
+    }
 
     return(
         <div className="card-form">
@@ -17,12 +23,12 @@ export default function CardForm(){
                 <form className="card-input">
                     <input type="text"
                         placeholder="Enter class title.."
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
                     />
 
                     <div className="buttons">
-                        <button className ="submitBtn" type="submit">
+                        <button className ="submitBtn" type="submit" onClick={handleSubmit}>
                             Add Class
                         </button>
 

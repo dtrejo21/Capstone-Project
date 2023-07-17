@@ -1,19 +1,39 @@
 .class-card{
+    color: white;
+    margin-left: 12px;
+    font-size: 16px;
+    display: flex;
+    flex-direction: row;
+    height: 150px;
+}
+
+.class-card h3{
+    padding: 12px;
+    margin-top: 6px;
+    height: 10px;
+}
+
+.class-card .subject{
     background-color: rgb(93, 73, 114);
     border-radius: 12px;
     height: 100%;
     width: 250px;
+    margin: 10px;
+}
+
+.class-card .header{
+    display: flex;
+    flex-direction: row;
+    align-items:baseline;
+}
+
+.class-card .material-icons{
+    background-color: transparent;
+    border: none;
     color: white;
-    margin-left: 12px;
-    font-size: 16px;
+    cursor: pointer;
 }
-
-.class-card h4{
-    padding: 12px;
-    margin-top: 6px;
-    height: 10px
-}
-
+/*
 .class-card .tasks{
     display: flex;
     flex-direction: column-reverse;
@@ -107,4 +127,4 @@
 .btn .exitBtn{
     font-size: 24px;
     display: flex;
-}
+}*/

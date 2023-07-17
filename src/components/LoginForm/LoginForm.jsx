@@ -17,10 +17,11 @@ export default function Login(){
             console.log(result)
             if(result.data === "Success")
             {
-                navigate("/")
+                //updateUser(result.data);
+                navigate("/");
             }
         })
-        .catch(err => console.log(err))
+        .catch(err => console.log(err));
     }
 
     return(

@@ -1,6 +1,8 @@
 import * as React from "react"
 import "./ClassCard.css"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import axios from "axios";
+import CardForm from "../CardForm/CardForm";
 //HTML Drag and Drop API
 
 //this is the component that will show the indvidual card
@@ -9,13 +11,39 @@ import { useState } from "react"
 export default function ClassCard(){
     const [showInput, setShowInput] = useState(false);
     const [inputValue, setInputValue] = useState("");
-    
+
+    const [subject, setSubject] = useState([])
+
+    useEffect(() => {
+        axios.get("http://localhost:8000/getSubject")
+        .then(subject => 
+            setSubject(subject.data))
+        .catch(err => console.log(err))
+    }, [])
+
+    const addNewSubject = (newSubject) => {
+        setSubject([...subject, newSubject])
+    }
+
     return(
         <div className="class-card">
-            <h4>Class #1</h4>
+            
+            {
+                subject.map((subjects,index) => (
+                    <div className="subject" key={`subject_${index}`}>
+                        <div className="header">
+                            <h3>{subjects.title}</h3>
+                            <button className="material-icons">more_horiz</button>
+                        </div>
+                    </div>
+                ))
+            }
+            <CardForm subjectAdded={(newSubject) => addNewSubject(newSubject)}/>
+            {/*
             <div className="tasks">
                 <div className="tasksList">
-                    <input type="checkbox" id="box1"/>                            <label htmlFor="box1">Task #1</label>
+                    <input type="checkbox" id="box1"/>                            
+                    <label htmlFor="box1">Task #1</label>
                 </div>
 
                <div className="tasksList2">
@@ -48,6 +76,7 @@ export default function ClassCard(){
                     </button>
                 )}
             </div>
+                */}
      </div>
     )
 }

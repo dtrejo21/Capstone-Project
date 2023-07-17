@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const UserModel = require('./routes/User')
+const SubjectModel = require("./routes/Subject");
 
 const app = express();
 
@@ -47,9 +48,19 @@ app.post('/login', (req, res) => {
     })
 })
 
-app.get("/getUser", (req, res) => {
-    UserModel.find()
-    .then(user => res.json(user))
+app.get('/getUser', (req, res) => {
+    return res.json({username: req.username, email: req.email})
+})
+
+app.post('/createSubject', (req, res) => {
+    SubjectModel.create({title: req.body.title})
+    .then(result => res.json(result))
+    .catch(err => res.json(err))
+})
+
+app.get('/getSubject', (req, res) => {
+    SubjectModel.find()
+    .then(result => res.json(result))
     .catch(err => res.json(err))
 })
 
