@@ -22,16 +22,7 @@ export default function Navbar(){
                 <button>
                     <i className="material-icons">help</i>
                 </button>
-
-
-                <button className="profile" onClick={() => setMenuVisble(true)}>
-                    
-                    
-                </button>
-
-            </div>
-                
-            
+            </div>   
         </div>
     )
 }

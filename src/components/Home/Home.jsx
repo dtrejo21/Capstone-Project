@@ -5,6 +5,7 @@ import Classes from "../Classes/Classes"
 import Navbar from "../Navbar/Navbar"
 import Sidebar from "../Sidebar/Sidebar"
 import Welcome from "../Welcome/Welcome"
+import { UserContext } from "../../UserContext"
 
 //this is the home page, where you see all of the classes
 //displayed, and where you have to call classes
