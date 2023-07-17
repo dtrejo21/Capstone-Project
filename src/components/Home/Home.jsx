@@ -24,7 +24,7 @@ export default function Home(){
       <div className="home">
         <Navbar/>
         <Sidebar isOpen={isOpen} handleToggle={handleToggle}/>
-        <h2>Workspace</h2>
+        <h1>Workspace</h1>
         <Classes isOpen={isOpen}
                  handleClick={handleClick}/>
       </div>
