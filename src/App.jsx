@@ -9,6 +9,7 @@ import Welcome from './components/Welcome/Welcome'
 import { UserContext } from './UserContext'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import ClassCard from './components/ClassCard/ClassCard'
 
 export default function App() {
   const [user, setUser] = useState({})
@@ -27,11 +28,8 @@ export default function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/welcome" element={<Welcome/>}/>
-              {/*
-              <Route path="/signup" element={<SignupForm />} />
-              <Route path="/login" element={<LoginForm />} />
-    */}
               <Route path="/" element={ <Home /> } />
+              <Route path="/subjects/:name" element={<ClassCard/>}/>
               <Route path="/calendar" element={<Calendar/>}/>
               <Route path="/study-space" element={<StudySpace/>}/>
               <Route path="/profile" element={<Profile/>}/>

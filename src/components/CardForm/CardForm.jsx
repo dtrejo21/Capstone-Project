@@ -3,7 +3,7 @@ import "./CardForm.css"
 import { useState } from "react"
 import axios from "axios";
 
-export default function CardForm(){
+export default function CardForm({subjectAdded}){
     const [showInput, setShowInput] = useState(false);
     const [title, setTitle] = useState("")
 
@@ -12,6 +12,7 @@ export default function CardForm(){
         axios.post("http://localhost:8000/createSubject", {title})
         .then(result => {
             console.log(result)
+            subjectAdded(result.data)
         })
         .catch(err => console.log(err))
     }

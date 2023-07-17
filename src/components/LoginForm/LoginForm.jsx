@@ -3,7 +3,6 @@ import "./LoginForm.css"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
-import { UserContext } from "../../UserContext"
 
 export default function Login(){
     const [username, setUsername] = useState("");
@@ -18,7 +17,7 @@ export default function Login(){
             console.log(result)
             if(result.data === "Success")
             {
-                updateUser(result.data);
+                //updateUser(result.data);
                 navigate("/");
             }
         })

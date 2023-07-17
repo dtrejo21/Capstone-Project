@@ -2,6 +2,7 @@ import * as React from "react"
 import "./ClassCard.css"
 import { useState, useEffect } from "react"
 import axios from "axios";
+import CardForm from "../CardForm/CardForm";
 //HTML Drag and Drop API
 
 //this is the component that will show the indvidual card
@@ -20,16 +21,24 @@ export default function ClassCard(){
         .catch(err => console.log(err))
     }, [])
 
+    const addNewSubject = (newSubject) => {
+        setSubject([...subject, newSubject])
+    }
 
     return(
         <div className="class-card">
+            
             {
                 subject.map((subjects,index) => (
                     <div className="subject" key={`subject_${index}`}>
-                        <h3>{subjects.title}</h3>
+                        <div className="header">
+                            <h3>{subjects.title}</h3>
+                            <button className="material-icons">more_horiz</button>
+                        </div>
                     </div>
                 ))
             }
+            <CardForm subjectAdded={(newSubject) => addNewSubject(newSubject)}/>
             {/*
             <div className="tasks">
                 <div className="tasksList">
