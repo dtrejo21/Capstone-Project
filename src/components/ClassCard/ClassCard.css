@@ -4,6 +4,7 @@
     font-size: 16px;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     height: 150px;
 }
 
@@ -15,11 +16,11 @@
 
 .class-card a{
     text-decoration: none;
-    color: white;
+    color: #172B4D;
 }
 
 .class-card .subject{
-    background-color: rgb(93, 73, 114);
+    background-color: #F3F1F4;
     border-radius: 12px;
     height: 100%;
     width: 250px;
@@ -30,14 +31,40 @@
     display: flex;
     flex-direction: row;
     align-items:baseline;
+    position: relative;
 }
 
-.class-card .material-icons{
+.class-card .subject .header .material-icons{
     background-color: transparent;
     border: none;
-    color: white;
+    color: #172B4D;
+    cursor: poiner;
+    margin-left: auto;
+    margin-right: 4px;
+}
+
+.class-card .mini-menu{
+    color: #172B4D;
+    position: absolute;
+    background-color: #F3F1F4;
+    border: 2px solid #DEDCE0;
+    padding: 8px;
+    border-radius: 8px;
+    width: 200px;
+    z-index: 999;
+    align-items: center;
+    position: absolute;
+    top: 100%;
+    right: -60%;
+}
+
+.mini-menu button{
+    background-color: transparent;
+    border: none;
+    color: #172B4D;
     cursor: pointer;
 }
+
 /*
 .class-card .tasks{
     display: flex;
