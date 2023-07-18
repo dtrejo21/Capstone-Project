@@ -11,3 +11,12 @@
 .home h1{
     color: white;
 }
+
+.home .home-content{
+    flex: 1;
+    transition: margin-left 0.35s;
+}
+
+.home .sidebar-open{
+    margin-left: 240px;
+}

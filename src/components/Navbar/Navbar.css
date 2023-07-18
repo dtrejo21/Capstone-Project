@@ -1,6 +1,6 @@
 .navbar{
     display: flex;
-    background-color: rgb(94, 34, 150);
+    background-color: rgb(58, 20, 93);
     color: whitesmoke;
     height: 70px;
     width: 100%;
@@ -9,20 +9,22 @@
     top: 0;
     left: 0;
 }
+
 .navbar .content{
     display: flex;
     margin-left: auto;
     margin-right: 20px;
 }
+
 .navbar button{
     background-color: transparent;
     border: none;
     color: whitesmoke;
 }
+
 .menu button{
     background-color: white;
     color: black;
     display: flex;
 }
-
 

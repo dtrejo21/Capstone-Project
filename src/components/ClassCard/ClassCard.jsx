@@ -26,8 +26,8 @@ export default function ClassCard(){
         setSubject([...subject, newSubject])
     }
 
+    const [showMenu, setShowMenu] = useState(Array(subject.length).fill(false));
     const handleDelete = () => {
-
     }
 
     return(
@@ -40,13 +40,28 @@ export default function ClassCard(){
                                 <h3>{subjects.title}</h3>
                             </Link>
                             
-                            <button className="material-icons">
+                            <button className="material-icons" 
+                                    onClick={() => {
+                                        const newShowMenu = [...showMenu];
+                                        newShowMenu[index] = !newShowMenu[index];
+                                        setShowMenu(newShowMenu);
+                                    }}>
                                 more_horiz
                             </button>
+
+                            {showMenu[index] && 
+                                <div className="mini-menu">
+                                    <h5>List actions</h5>
+                                    <button>
+                                        Delete list
+                                    </button>
+                                </div>
+                            }
                         </div>
                     </div>
                 ))
             }
+            
             <CardForm subjectAdded={(newSubject) => addNewSubject(newSubject)}/>
             {/*
             <div className="tasks">

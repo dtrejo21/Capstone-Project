@@ -24,9 +24,12 @@ export default function Home(){
       <div className="home">
         <Navbar/>
         <Sidebar isOpen={isOpen} handleToggle={handleToggle}/>
-        <h1>Workspace</h1>
-        <Classes isOpen={isOpen}
+        <div className={`home-content ${isOpen ? "sidebar-open": ""}`}>
+          <h1>Workspace</h1>
+          <Classes isOpen={isOpen}
                  handleClick={handleClick}/>
+        </div>
+
       </div>
     )
 }

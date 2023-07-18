@@ -12,6 +12,7 @@
     width: 100;
     color: white;
     padding-top: 20px;
+    position: relative;
 }
 
 .welcome-page .info{
