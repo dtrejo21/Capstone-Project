@@ -9,7 +9,7 @@ export default function Profile(){
     const navigate = useNavigate();
     const handleLogout = () => {
         localStorage.clear();
-        navigate("/login");
+        navigate("/welcome");
     }
 
     const [user, setUser] = useState({});

@@ -13,6 +13,11 @@
     height: 10px;
 }
 
+.class-card a{
+    text-decoration: none;
+    color: white;
+}
+
 .class-card .subject{
     background-color: rgb(93, 73, 114);
     border-radius: 12px;
