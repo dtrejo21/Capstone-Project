@@ -3,7 +3,10 @@ const mongoose = require('mongoose')
 const listSchema = new mongoose.Schema({
     title: String,
     task: [taskSchema],
-    subjectId: String
+    subjectId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "subjects"
+    }
 })
 
 const ListModel = mongoose.model("list", listSchema)

@@ -2,7 +2,10 @@ const mongoose = require('mongoose')
 
 const subtaskSchema = new mongoose.Schema({
     name: String,
-    taskId: String
+    taskId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "tasks"
+    }
 })
 
 const SubtaskModel = mongoose.model("subtasks", subtaskSchema)

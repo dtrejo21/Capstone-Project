@@ -6,7 +6,10 @@ const taskSchema = new mongoose.Schema({
     label: String,
     dueDate: Date,
     subtask: [subtaskSchema],
-    listId: String
+    listId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "subjects"
+    }
 })
 
 const TaskModel = mongoose.model("tasks", taskSchema)
