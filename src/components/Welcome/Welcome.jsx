@@ -1,12 +1,21 @@
 import * as React from "react"
 import "./Welcome.css"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import LoginForm from "../LoginForm/LoginForm";
 import SignupForm from "../SignupForm/SignupForm";
 
 export default function Welcome(){
     const [toggleLogin, setToggleLogin] = useState(false);
     const [toggleSignup, setToggleSignup] = useState(false);
+    const [signedUp, setSignedUp] = useState(false);
+
+    useEffect(() => {
+        if(signedUp)
+        {
+            setToggleSignup(false);
+            setToggleLogin(true);
+        }
+    }, [signedUp])
 
     return(
         <div className="welcome-page">
@@ -19,7 +28,7 @@ export default function Welcome(){
                     <button className="signupBtn" onClick={() => setToggleSignup(true)}>
                         Sign up
                     </button>
-                    {toggleSignup && <SignupForm />}
+                    {toggleSignup && <SignupForm setSignedUp={setSignedUp} />}
 
                     <button className="loginBtn" onClick={() => setToggleLogin(true)}>
                         Login

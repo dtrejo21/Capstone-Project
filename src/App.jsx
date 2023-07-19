@@ -12,19 +12,20 @@ import axios from 'axios'
 import SubjectPage from './components/SubjectPage/SubjectPage'
 
 export default function App() {
-  const [user, setUser] = useState({})
+  //const [user, setUser] = useState({});
 
+  axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get("http://localhost:8000/getUser")
-    .then(user => { 
-      setUser(user.data)
-    })
-    .catch(err => console.log(err))
-  })
+      .then(response => { 
+        console.log(response.data);
+      })
+      .catch(err => console.log(err))
+  }, [])
 
   return (
     <div className="app">
-      <UserContext.Provider value="user">
+      <UserContext.Provider value="">
           <BrowserRouter>
             <Routes>
               <Route path="/welcome" element={<Welcome/>}/>

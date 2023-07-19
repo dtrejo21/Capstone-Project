@@ -9,15 +9,13 @@ export default function Login(){
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    //axios.defaults.withCredentials = true;
+    axios.defaults.withCredentials = true;
     const handleLogin = async (e) => {
         e.preventDefault();
         axios.post("http://localhost:8000/login", {username, password})
         .then(result => {
-            console.log(result)
             if(result.data === "Success")
             {
-                //updateUser(result.data);
                 navigate("/");
             }
         })
@@ -48,13 +46,7 @@ export default function Login(){
                 </div>
                 
                 <button type="submit">Login</button>
-                {/*
-                <p>
-                    New to the app? <Link to="/signup">Sign Up</Link>
-                </p>
-    */}
             </form>
-            
         </div>
     )
 }

@@ -38,9 +38,10 @@
     background-color: transparent;
     border: none;
     color: #172B4D;
-    cursor: poiner;
+    cursor: pointer;
     margin-left: auto;
     margin-right: 4px;
+    font-size: 24px;
 }
 
 .class-card .mini-menu{
@@ -56,6 +57,10 @@
     position: absolute;
     top: 100%;
     right: -60%;
+}
+
+.mini-menu .header{
+    align-items: center;
 }
 
 .mini-menu button{
