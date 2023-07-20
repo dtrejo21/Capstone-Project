@@ -1,9 +1,10 @@
 import * as React from "react"
 import "./Profile.css"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { useEffect, useState } from "react";
+import { useContext } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { UserContext } from "../../UserContext";
 
 export default function Profile(){
     const navigate = useNavigate();
@@ -11,27 +12,24 @@ export default function Profile(){
         localStorage.clear();
         navigate("/welcome");
     }
-
-    const [user, setUser] = useState({});
-
-    useEffect(() => {
+    //const user = useContext(UserContext);
+   
+    /*useEffect(() => {
         axios.get("http://localhost:8000/getUser")
             .then(response => setUser(response.data))
             .catch(err => console.log(err))
     }, [])
-    /*
+    
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
     useEffect(() => {}, [userInfo]);
 */
-    
-    const chosen = user[0];
-    console.log({user});
+
     return(
         <div className="profile">
             <div className="menu">
                 <div className="options">
-                    <p>Profile</p>
+                    <p>Profile: </p>
                     <p>Account Settings</p>
                     <p>Notifications</p>
                     <div className="delete-account">
@@ -42,7 +40,7 @@ export default function Profile(){
 
             <div className="profile-info">
                 <h2>Profile</h2>
-                <p>Name: </p>
+                <p>Username: </p>
                 <p>Email: </p>
 
                 <button className="logoutBtn" onClick={handleLogout}>

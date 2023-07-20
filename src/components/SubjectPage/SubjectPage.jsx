@@ -8,7 +8,7 @@ export default function SubjectPage(props){
     return(
         <div className="subject-page">
             <div className="lists">
-
+                <p>hi</p>
             </div>
         </div>
     );

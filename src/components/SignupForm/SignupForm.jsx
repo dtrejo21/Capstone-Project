@@ -5,7 +5,7 @@ import { useState } from "react"
 import axios from "axios"
 import { UserContext } from "../../UserContext"
 
-export default function SignupForm(){
+export default function SignupForm({setSignedUp}){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -14,9 +14,9 @@ export default function SignupForm(){
     const handleSubmit = async (e) => {
         e.preventDefault();
         axios.post("http://localhost:8000/signup", {username, email, password})
-        .then(result => {console.log(result)
-            //updateUser(result.data)
-            navigate("/")
+        .then(result => {
+            //navigate("/")
+            setSignedUp(true);
         })
         .catch(err => console.log(err))
     };

@@ -51,7 +51,17 @@ export default function ClassCard(){
 
                             {showMenu[index] && 
                                 <div className="mini-menu">
-                                    <h5>List actions</h5>
+                                    <div className="header">
+                                        <h5>List actions</h5>
+                                        <button className="material-icons" 
+                                                onClick={() => setShowMenu(prevShowMenu => 
+                                                    [...prevShowMenu.slice(0, index), 
+                                                    false, 
+                                                    ...prevShowMenu.slice(index + 1)])}>
+                                            close
+                                        </button>
+                                    </div>
+                                    
                                     <button>
                                         Delete list
                                     </button>
