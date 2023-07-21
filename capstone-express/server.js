@@ -142,7 +142,7 @@ app.post('/createSubject', verifyUser, (req, res) => {
     .catch(err => console.log(err))
 })
 //Get subjects, which is just getting the array in the board
-app.get('/getSubject',verifyUser, (req, res) => {
+app.get('/getSubject', verifyUser, (req, res) => {
     BoardModel.findOne({userId: req.userId})
     .then(board => {
         const subjects = board.subjects;

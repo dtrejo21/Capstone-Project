@@ -1,4 +1,4 @@
-[
+const list = [
     {
         title: "To Do", 
         tasks: [],
