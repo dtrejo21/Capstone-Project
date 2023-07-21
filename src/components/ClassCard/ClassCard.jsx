@@ -18,7 +18,8 @@ export default function ClassCard(){
     useEffect(() => {
         axios.get("http://localhost:8000/getSubject")
         .then(subject => 
-            setSubject(subject.data))
+            setSubject(subject.data)
+        )
         .catch(err => console.log(err))
     }, [])
 
@@ -27,16 +28,14 @@ export default function ClassCard(){
     }
 
     const [showMenu, setShowMenu] = useState(Array(subject.length).fill(false));
-    const handleDelete = () => {
-    }
 
     return(
         <div className="class-card">
             {
-                subject.map((subjects,index) => (
-                    <div className="subject" key={`subject_${index}`}>
+                subject.map((subjects, index) => (
+                    <div className="subject" key={`subject_${index}`}> 
                         <div className="header">
-                            <Link to={`/subjects/${subjects.title}`}>
+                            <Link to={`/subjects/${subjects.title}`}>{/* This is defaults to Workspace*/}
                                 <h3>{subjects.title}</h3>
                             </Link>
                             

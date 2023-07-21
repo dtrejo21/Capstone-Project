@@ -6,6 +6,7 @@ const SubjectModel = require("./models/Subject");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
+const BoardModel = require("./models/Board")
 
 const app = express();
 
@@ -30,14 +31,30 @@ async function connect(){
 }
 connect(); 
 
+const createBoard = (title, subjects, userId) => {
+    return BoardModel.create({title, subjects, userId});
+}
+
 app.post('/signup', (req, res) => {
     const {username, email, password} = req.body;
-    bcrypt.hash(password, 4)
+    
+    bcrypt.hash(password, 2)
     .then(hash => {
-        UserModel.create({username, email, password: hash})
-        .then(response => res.json(response))
+        const userId = new mongoose.Types.ObjectId();
+        UserModel.create({username, email, password: hash, userId})
+        .then(user => {//create a board when a user signs up
+            const subjects = [];
+            const title = "Workspace";
+
+            createBoard(title, subjects, userId)
+            .then(board => {
+                res.json({user, board})
+            })
+            .catch(err => console.log(err))
+        })
         .catch(err => console.log(err))
-    }).then(err => console.log(err))
+    })
+    .catch(err => console.log(err));
 })
 
 app.post('/login', (req, res) => {
@@ -49,7 +66,7 @@ app.post('/login', (req, res) => {
             bcrypt.compare(password, user.password, (err, response) => { 
                 if(response)
                 {
-                    const token = jwt.sign({email: user.email, username: user.username}, "jwt-secret-key", {expiresIn: '365d'})
+                    const token = jwt.sign({email: user.email, username: user.username, userId: user.userId}, "jwt-secret-key", {expiresIn: '1d'})
                     res.cookie('token', token)
                     res.json("Success")
                 }
@@ -71,18 +88,19 @@ const verifyUser = (req, res, next) => {
     const token = req.cookies.token;
     if(!token)
     {
-        return res.json("The token is missing")
+        return res.json("Token is missing")
     }
     else
     {
         jwt.verify(token, "jwt-secret-key", (err, decoded) => {
             if(err)
             {
-                return res.json("The token is wrong")
+                return res.json("Token is wrong")
             }
             else
             {   req.username = decoded.username;
                 req.email = decoded.email;
+                req.userId = decoded.userId;
                 next()
             }
         })
@@ -90,20 +108,50 @@ const verifyUser = (req, res, next) => {
 }
 
 app.get('/getUser', verifyUser, (req, res) => {
-    return res.json({username: req.username, email: req.email})
+    return res.json({username: req.username, email: req.email, userId: req.userId})
 })
 
-app.post('/createSubject', (req, res) => {
-    SubjectModel.create({title: req.body.title})
+app.get('/getBoard', verifyUser, (req, res) => {
+    BoardModel.findOne({userId: req.userId})
     .then(result => res.json(result))
     .catch(err => res.json(err))
 })
 
-app.get('/getSubject', (req, res) => {
-    SubjectModel.find()
-    .then(result => res.json(result))
+app.post('/createSubject', verifyUser, (req, res) => {
+    const {title} = req.body;
+    const {userId} = req;
+
+    BoardModel.findOne({userId: userId})
+    .then(defaultBoard => {
+        const boardId = defaultBoard._id
+        const list = [];
+
+        SubjectModel.create({title, list, boardId: boardId})
+        .then(newSubject => {
+            BoardModel.findOneAndUpdate(
+                {userId: userId},
+                {$push: {subjects: newSubject}},
+                {new: true})
+                .then(updatedBoard => {
+                    res.json(updatedBoard)
+                })
+                .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
+    })
+    .catch(err => console.log(err))
+})
+//Get subjects, which is just getting the array in the board
+app.get('/getSubject',verifyUser, (req, res) => {
+    BoardModel.findOne({userId: req.userId})
+    .then(board => {
+        const subjects = board.subjects;
+        res.json(subjects);
+    })
     .catch(err => res.json(err))
 })
+
+
 
 app.listen(8000, () => {
     console.log("Server started on port 8000");

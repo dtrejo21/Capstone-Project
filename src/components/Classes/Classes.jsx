@@ -8,7 +8,7 @@ import CardForm from "../CardForm/CardForm"
 export default function Classes(){
     return(
         <div className="classes">
-            <ClassCard/>
+            /<ClassCard/>
         </div>
     )
 }

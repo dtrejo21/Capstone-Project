@@ -1,6 +1,6 @@
 import './App.css'
 import * as React from "react"
-import Home from "./components/Home/Home"
+import Home from "./components/Board/Board"
 import Calendar from './components/Calendar/Calendar'
 import StudySpace from './components/StudySpace/StudySpace'
 import Profile from './components/Profile/Profile'
@@ -12,13 +12,14 @@ import axios from 'axios'
 import SubjectPage from './components/SubjectPage/SubjectPage'
 
 export default function App() {
-  //const [user, setUser] = useState({});
-
+  const [user, setUser] = useState({});
+  
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get("http://localhost:8000/getUser")
       .then(response => { 
-        console.log(response.data);
+        //console.log(response.data);
+        setUser(response.data);
       })
       .catch(err => console.log(err))
   }, [])

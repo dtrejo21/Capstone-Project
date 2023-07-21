@@ -1,8 +1,11 @@
 const mongoose = require('mongoose')
+const SubjectModel = require('./Subject')
 
 const boardSchema = new mongoose.Schema({
-    title: String,
-    subject: [subjectSchema],
+    title: {
+        type: String,
+    },
+    subjects: [SubjectModel.schema],
     userId: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: "user"

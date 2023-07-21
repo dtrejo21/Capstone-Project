@@ -11,7 +11,7 @@ export default function CardForm({subjectAdded}){
         e.preventDefault();
         axios.post("http://localhost:8000/createSubject", {title})
         .then(result => {
-            console.log(result)
+            console.log(result.data)
             subjectAdded(result.data)
         })
         .catch(err => console.log(err))

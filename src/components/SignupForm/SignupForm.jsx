@@ -1,6 +1,5 @@
 import * as React from "react"
 import "./SignupForm.css"
-import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import axios from "axios"
 import { UserContext } from "../../UserContext"
@@ -9,13 +8,12 @@ export default function SignupForm({setSignedUp}){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         axios.post("http://localhost:8000/signup", {username, email, password})
         .then(result => {
-            //navigate("/")
+            //console.log(result.data)
             setSignedUp(true);
         })
         .catch(err => console.log(err))
@@ -54,11 +52,6 @@ export default function SignupForm({setSignedUp}){
                 </div>
                 
                 <button type="submit">Sign Up</button>
-                {/*
-                <p>
-                    Already have an account? <Link to="/login">Login</Link>
-                </p>
-    */}
             </form>
         </div>
     )
