@@ -2,7 +2,9 @@ const mongoose = require('mongoose')
 const TaskModel = require('./Task')
 
 const listSchema = new mongoose.Schema({
-    title: String,
+    title: {
+        type: String, 
+    },
     task: [TaskModel.schema],
     subjectId: {
         type: mongoose.Schema.Types.ObjectId,

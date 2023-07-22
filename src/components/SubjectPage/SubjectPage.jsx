@@ -1,18 +1,106 @@
-import React, {useState} from "react"
-import "./SubjectPage.css"
-import { useParams } from "react-router-dom"
-import Sidebar from "../Sidebar/Sidebar";
+import React, { useState, useEffect } from "react";
+import "./SubjectPage.css";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import ListForm from "../ListForm/ListForm";
 
 //will fetch based on title
-export default function SubjectPage(props){
-    const { title } = useParams();
+export default function SubjectPage() {
+  const { title, subjectId } = useParams();
+  const [list, setList] = useState([]);
 
-    return(
-        <div className="subject-page">
-            <h1>{title}</h1>
-            <div className="lists">
-                
+  const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/getLists/${subjectId}`, {
+        withCredentials: true,
+      })
+      .then((list) => setList(list.data))
+      .catch((err) => console.log(err));
+  }, []);
+
+  const [showInput, setShowInput] = useState(Array(list.length).fill(false));
+
+  const addNewList = (newList) => {
+    setList([...list, newList]);
+  };
+
+  return (
+    <div className="subject-page">
+      <h1>{title}</h1>
+
+      <div className="subject-board">
+        {/*All of below is just the UI for task form*/}
+        {list.map((lists, index) => (
+          <div className="list-margin list-content" key={`list_${index}`}>
+            <div className="header">
+              <h3>{lists.title}</h3>
             </div>
-        </div>
-    );
-};
+            <div className="button-container">
+              <div className="task-form">
+                <div
+                  className={showInput[index] ? "task-input" : "add-new-task"}
+                  onClick={() => {
+                    const newShowInput = [...showInput];
+                    newShowInput[index] = !newShowInput[index];
+                    setShowInput(newShowInput);
+                  }}
+                >
+                  {showInput[index] ? (
+                    <form className="task-input">
+                      <input
+                        type="text"
+                        placeholder="Enter a title for this task.."
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+
+                      <div className="btn">
+                        <button className="add-task" type="submit">
+                          Add Task
+                        </button>
+
+                        <button
+                          className="close-btn"
+                          onClick={() => {
+                            setShowInput((prevShowInput) => [
+                              ...prevShowInput.slice(0, index),
+                              false,
+                              ...prevShowInput.slice(index + 1),
+                            ]);
+                          }}
+                        >
+                          <i className="material-icons">close</i>
+                        </button>
+                      </div>
+                    </form>
+                  ) : (
+                    <>
+                      <i
+                        className="material-icons"
+                        onClick={() => {
+                          const newShowInput = [...showInput];
+                          newShowInput[index] = !newShowInput[index];
+                          setShowInput(newShowInput);
+                        }}
+                      >
+                        add
+                      </i>
+                      Add New Task
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+        <ListForm
+          subjectId={subjectId}
+          listAdded={(newList) => addNewList(newList)}
+        />
+      </div>
+    </div>
+  );
+}

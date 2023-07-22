@@ -7,6 +7,7 @@ import Sidebar from "../Sidebar/Sidebar"
 import Welcome from "../Welcome/Welcome"
 import { UserContext } from "../../UserContext"
 import axios from "axios"
+import ClassCard from "../ClassCard/ClassCard"
 
 //this is the home page, where you see all of the classes
 //displayed, and where you have to call classes
@@ -32,7 +33,7 @@ export default function Home(){
         <Sidebar isOpen={isOpen} handleToggle={handleToggle}/>
         <div className={`home-content ${isOpen ? "sidebar-open": ""}`}>
           <h1>{board.title}</h1>
-          <Classes/>
+          <ClassCard/>
         </div>
       </div>
     )

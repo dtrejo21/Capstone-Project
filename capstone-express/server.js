@@ -1,158 +1,205 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const UserModel = require('./models/User')
+const UserModel = require("./models/User");
 const SubjectModel = require("./models/Subject");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
-const BoardModel = require("./models/Board")
+const BoardModel = require("./models/Board");
+const ListModel = require("./models/List");
+const predefinedList = require("./seeders/list");
+const { verify } = require("crypto");
 
 const app = express();
 
-app.use(express.json())
-app.use(cors({
-    origin: 'http://localhost:5173',
+app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "DELETE", "PUT"],
-    credentials: true
-}));
+    credentials: true,
+  })
+);
 
-app.use(cookieParser())
+app.use(cookieParser());
 
-const uri = 
-"mongodb+srv://dtrejoher:JndqVhqyVTo6VFlz@projectcluster.74xo1an.mongodb.net/?retryWrites=true&w=majority"
-async function connect(){
-    try{
-        await mongoose.connect(uri);
-        console.log("Connected to MongoDB");
-    }catch(err){
-        console.error(err);
-    }
+const uri =
+  "mongodb+srv://dtrejoher:JndqVhqyVTo6VFlz@projectcluster.74xo1an.mongodb.net/?retryWrites=true&w=majority";
+async function connect() {
+  try {
+    await mongoose.connect(uri);
+    console.log("Connected to MongoDB");
+  } catch (err) {
+    console.error(err);
+  }
 }
-connect(); 
+connect();
 
 const createBoard = (title, subjects, userId) => {
-    return BoardModel.create({title, subjects, userId});
-}
+  return BoardModel.create({ title, subjects, userId });
+};
 
-app.post('/signup', (req, res) => {
-    const {username, email, password} = req.body;
-    
-    bcrypt.hash(password, 2)
-    .then(hash => {
-        const userId = new mongoose.Types.ObjectId();
-        UserModel.create({username, email, password: hash, userId})
-        .then(user => {//create a board when a user signs up
-            const subjects = [];
-            const title = "Workspace";
+app.post("/signup", (req, res) => {
+  const { username, email, password } = req.body;
 
-            createBoard(title, subjects, userId)
-            .then(board => {
-                res.json({user, board})
+  bcrypt
+    .hash(password, 2)
+    .then((hash) => {
+      const userId = new mongoose.Types.ObjectId();
+      UserModel.create({ username, email, password: hash, userId })
+        .then((user) => {
+          //create a board when a user signs up
+          const subjects = [];
+          const title = "Workspace";
+
+          createBoard(title, subjects, userId)
+            .then((board) => {
+              res.json({ user, board });
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
+});
+
+app.post("/login", (req, res) => {
+  const { username, password } = req.body;
+  UserModel.findOne({ username: username }).then((user) => {
+    if (user) {
+      //does the user exist??
+      bcrypt.compare(password, user.password, (err, response) => {
+        if (response) {
+          const token = jwt.sign(
+            { email: user.email, username: user.username, userId: user.userId },
+            "noms",
+            { expiresIn: "1d" }
+          );
+          res.cookie("token", token);
+          res.json("Success");
+        } else {
+          res.json("The password is incorrect");
+        }
+      });
+    } else {
+      res.json("User doesn't exist");
+    }
+  });
+});
+
+//used to ensure user's request has a valid token
+const verifyUser = (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.json("Token is missing");
+  } else {
+    jwt.verify(token, "noms", (err, decoded) => {
+      if (err) {
+        return res.json("Token is wrong");
+      } else {
+        req.username = decoded.username;
+        req.email = decoded.email;
+        req.userId = decoded.userId;
+        next();
+      }
+    });
+  }
+};
+
+//Get the user infomration
+app.get("/getUser", verifyUser, (req, res) => {
+  return res.json({
+    username: req.username,
+    email: req.email,
+    userId: req.userId,
+  });
+});
+
+app.get("/getBoard", verifyUser, (req, res) => {
+  BoardModel.findOne({ userId: req.userId })
+    .then((result) => res.json(result))
+    .catch((err) => res.json(err));
+});
+
+app.post("/createSubject", verifyUser, (req, res) => {
+  const { title } = req.body;
+  const { userId } = req;
+
+  BoardModel.findOne({ userId: userId })
+    .then((defaultBoard) => {
+      const boardId = defaultBoard._id;
+      const list = []
+
+      //Add in the predefined list when we create a subject
+      SubjectModel.create({ title, list, boardId: boardId })
+        .then((newSubject) => {
+          const createList = predefinedList.map((predefinedItem) => {
+            return ListModel.create({
+              title: predefinedItem.title,
+              task: predefinedItem,
+              subjectId: newSubject._id,
+            });
+          });
+          Promise.all(createList)
+            .then((newList) => {
+              newSubject.list = newList;
+              return newSubject.save();
+            })
+            .then((updatedSubject) => {
+              defaultBoard.subjects.push(updatedSubject);
+              return defaultBoard.save();
+            })
+            .then((updatedBoard) => {
+              res.json(updatedBoard);
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
+});
+//Get subjects, which is just getting the array in the board
+app.get("/getSubject", verifyUser, (req, res) => {
+  BoardModel.findOne({ userId: req.userId })
+    .then(board => {
+      const subjects = board.subjects;
+      res.json(subjects);
+    })
+    .catch((err) => res.json(err));
+});
+
+app.get("/getLists/:subjectTitle", verifyUser, (req, res) => {
+    const subjectId= req.params.subjectId;
+    SubjectModel.findOne({subjectId: subjectId})
+    .then(subject => {
+        const lists = subject.list;
+        res.json(lists)
+    })
+    .catch(err => console.log(err))
+});
+
+app.post("/updateList/:subjectId", verifyUser, (req, res) => {
+    const subjectId = req.params.subjectId;
+    const { title } = req.body;
+    const task = []
+
+    ListModel.create({title, task, subjectId})
+    .then(newList => {
+        SubjectModel.findOne({_id: subjectId})
+        .then(subject => {
+            subject.list.push(newList);
+            subject.save()
+            .then(updatedSubject => {
+                res.json(updatedSubject)
             })
             .catch(err => console.log(err))
         })
         .catch(err => console.log(err))
     })
-    .catch(err => console.log(err));
-})
-
-app.post('/login', (req, res) => {
-    const {username, password} = req.body;
-    UserModel.findOne({username: username})
-    .then(user => {
-        if(user)
-        {//does the user exist??
-            bcrypt.compare(password, user.password, (err, response) => { 
-                if(response)
-                {
-                    const token = jwt.sign({email: user.email, username: user.username, userId: user.userId}, "jwt-secret-key", {expiresIn: '1d'})
-                    res.cookie('token', token)
-                    res.json("Success")
-                }
-                else
-                {
-                    res.json("The password is incorrect");
-                }
-            })
-        }
-        else
-        {
-            res.json("User doesn't exist")
-        }
-    })
-})
-
-//used to ensure user's request has a valid token
-const verifyUser = (req, res, next) => {
-    const token = req.cookies.token;
-    if(!token)
-    {
-        return res.json("Token is missing")
-    }
-    else
-    {
-        jwt.verify(token, "jwt-secret-key", (err, decoded) => {
-            if(err)
-            {
-                return res.json("Token is wrong")
-            }
-            else
-            {   req.username = decoded.username;
-                req.email = decoded.email;
-                req.userId = decoded.userId;
-                next()
-            }
-        })
-    }
-}
-
-app.get('/getUser', verifyUser, (req, res) => {
-    return res.json({username: req.username, email: req.email, userId: req.userId})
-})
-
-app.get('/getBoard', verifyUser, (req, res) => {
-    BoardModel.findOne({userId: req.userId})
-    .then(result => res.json(result))
-    .catch(err => res.json(err))
-})
-
-app.post('/createSubject', verifyUser, (req, res) => {
-    const {title} = req.body;
-    const {userId} = req;
-
-    BoardModel.findOne({userId: userId})
-    .then(defaultBoard => {
-        const boardId = defaultBoard._id
-        const list = [];
-
-        SubjectModel.create({title, list, boardId: boardId})
-        .then(newSubject => {
-            BoardModel.findOneAndUpdate(
-                {userId: userId},
-                {$push: {subjects: newSubject}},
-                {new: true})
-                .then(updatedBoard => {
-                    res.json(updatedBoard)
-                })
-                .catch(err => console.log(err))
-        })
-        .catch(err => console.log(err))
-    })
     .catch(err => console.log(err))
 })
-//Get subjects, which is just getting the array in the board
-app.get('/getSubject',verifyUser, (req, res) => {
-    BoardModel.findOne({userId: req.userId})
-    .then(board => {
-        const subjects = board.subjects;
-        res.json(subjects);
-    })
-    .catch(err => res.json(err))
-})
-
-
 
 app.listen(8000, () => {
-    console.log("Server started on port 8000");
+  console.log("Server started on port 8000");
 });
