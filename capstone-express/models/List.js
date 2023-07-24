@@ -1,8 +1,9 @@
 const mongoose = require('mongoose')
+const TaskModel = require('./Task')
 
 const listSchema = new mongoose.Schema({
     title: String,
-    task: [taskSchema],
+    task: [TaskModel.schema],
     subjectId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "subjects"
