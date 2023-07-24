@@ -1,6 +1,6 @@
-import * as React from "react";
-import "./ClassCard.css";
-import { useState, useEffect } from "react";
+import * as React from "react"
+import "./ClassCard.css"
+import { useState, useEffect } from "react"
 import axios from "axios";
 import CardForm from "../CardForm/CardForm";
 import { Link } from "react-router-dom";
@@ -10,44 +10,40 @@ import { Link } from "react-router-dom";
 //which will show name, some tasks, and the option to add
 //a new task
 export default function ClassCard() {
-  const [showInput, setShowInput] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-
   const [subject, setSubject] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:8000/getSubject")
-      .then((subject) => setSubject(subject.data))
-      .catch((err) => console.log(err));
-  }, []);
+    useEffect(() => {
+        axios.get("http://localhost:8000/getSubject")
+        .then(subject => 
+            setSubject(subject.data)
+        )
+        .catch(err => console.log(err))
+    }, [])
 
-  const addNewSubject = (newSubject) => {
-    setSubject([...subject, newSubject]);
-  };
+    const addNewSubject = (newSubject) => {
+        setSubject([...subject, newSubject])
+    }
 
   const [showMenu, setShowMenu] = useState(Array(subject.length).fill(false));
 
-  return (
-    <div className="class-card">
-      {subject.map((subjects, index) => (
-        <div className="subject" key={`subject_${index}`}>
-          <div className="header">
-            <Link to={`/subjects/${subjects.title}`}>
-              {/* This is defaults to Workspace*/}
-              <h3>{subjects.title}</h3>
-            </Link>
-
-            <button
-              className="material-icons"
-              onClick={() => {
-                const newShowMenu = [...showMenu];
-                newShowMenu[index] = !newShowMenu[index];
-                setShowMenu(newShowMenu);
-              }}
-            >
-              more_horiz
-            </button>
+    return(
+        <div className="class-card">
+            {
+                subject.map((subjects, index) => (
+                    <div className="subject" key={`subject_${index}`}> 
+                        <div className="header">
+                            <Link to={`/subjects/${subjects.title}`}>{/* This is defaults to Workspace*/}
+                                <h3>{subjects.title}</h3>
+                            </Link>
+                            
+                            <button className="material-icons" 
+                                    onClick={() => {
+                                        const newShowMenu = [...showMenu];
+                                        newShowMenu[index] = !newShowMenu[index];
+                                        setShowMenu(newShowMenu);
+                                    }}>
+                                more_horiz
+                            </button>
 
             {showMenu[index] && (
               <div className="mini-menu">
@@ -75,7 +71,6 @@ export default function ClassCard() {
       ))}
 
       <CardForm subjectAdded={(newSubject) => addNewSubject(newSubject)} />
-      
     </div>
   );
 }

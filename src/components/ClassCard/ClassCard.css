@@ -2,15 +2,14 @@
     color: white;
     margin-left: 12px;
     font-size: 16px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
     height: 150px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .class-card h3{
     padding: 12px;
-    margin-top: 6px;
+    margin-top: 12px;
     height: 10px;
 }
 
@@ -69,99 +68,3 @@
     color: #172B4D;
     cursor: pointer;
 }
-
-/*
-.class-card .tasks{
-    display: flex;
-    flex-direction: column-reverse;
-    padding: 8px
-}
-
-.class-card .tasks .tasksList{
-    background-color: rgb(114, 90, 139);
-    height: 30px;
-    border-radius: 8px;
-    width: 100%;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-}
-
-.class-card .tasks .tasksList2{
-    background-color: rgb(114, 90, 139);
-    height: 30px;
-    border-radius: 8px;
-    width: 100%;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
-.task-input{
-    margin-bottom: 8px;
-}
-
-.task-input input{
-    background-color: rgb(114, 90, 139);
-    border: none;
-    width: 100%;
-    border-radius: 6px;
-    height: 54px;
-    padding: px;
-    font-size: 16px;
-}
-
-.task-input input::placeholder{
-    color: white;
-    padding: 4px;
-}
-
-.taskBtn{
-    border: none;
-    background-color: transparent;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 6px;
-    width: 100%;
-    color: white;
-    padding-bottom: 6px;
-    display: flex;
-    align-items: center;
-}
-
-.taskBtn .material-icons{
-    margin-right: 6px;
-}
-
-.task-input .add-task{
-    background-color: rgb(76, 47, 205);
-    border-radius: 3px;
-    margin-top: 8px;
-}
-
-.task-form{
-    border-radius: 12px;
-    height: 100%;
-    width: 100%;
-    padding: 7px;
-}
-
-.btn button{
-    border: none;
-    color: white;
-    padding: 8px;
-    cursor: pointer;
-    height: 100%;
-    font-size: 16px;
-}
-
-.task-input .btn{
-    display: flex;
-    align-items: center;
-}
-
-.btn .exitBtn{
-    font-size: 24px;
-    display: flex;
-}*/

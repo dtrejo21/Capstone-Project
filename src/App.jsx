@@ -28,17 +28,17 @@ export default function App() {
   return (
     <div className="app">
       <UserContext.Provider value="">
-        <BrowserRouter>
-          <Routes>
-            <Route path="/welcome" element={<Welcome />} />
-            <Route path="/" element={<Home />} />
-            <Route path="/subjects/:title" element={<SubjectPage />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/study-space" element={<StudySpace />} />
-            <Route path="/profile" element={<Profile />} />
-          </Routes>
-        </BrowserRouter>
-      </UserContext.Provider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/welcome" element={<Welcome/>}/>
+              <Route path="/" element={ <Home /> } />
+              <Route path="/subjects/:title/:subjectId" element={<SubjectPage/>}/>
+              <Route path="/calendar" element={<Calendar/>}/>
+              <Route path="/study-space" element={<StudySpace/>}/>
+              <Route path="/profile" element={<Profile/>}/>
+            </Routes>
+          </BrowserRouter>
+        </UserContext.Provider>
     </div>
   );
 }

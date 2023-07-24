@@ -1,7 +1,91 @@
-.subject-page{
-    color: white;
+.subject-page .subject-board {
+  margin-top: 10px;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
 }
-.subject-page h1{
-    color: white;
-    
+
+.subject-page h1 {
+  background-color: #0000003d;
+  color: white;
+  padding: 16px;
+}
+
+.subject-page h3 {
+  color: #172b4d;
+  padding-left: 4px;
+}
+
+.list-margin {
+  margin-left: 20px;
+  margin: 10px;
+}
+
+.list-content {
+  min-width: 272px;
+  position: relative;
+  background-color: #f1f2f4;
+  border-radius: 12px;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.subject-page .header {
+  padding: 14px 8px;
+  min-height: 20px;
+  flex: 0 0 auto;
+}
+
+.subject-page .subject-board .button-container {
+  display: flex;
+  margin-left: 6px;
+}
+
+.add-task, .add-list{
+  border: none;
+  background-color: #6F00FF;
+  color: white;
+  border-radius: 3px;
+  font-size: 14px;
+  padding: 6px 12px;
+  margin-left: 4px;
+}
+
+.add-new-task{
+  border: none;
+  color: #686286;
+  padding: 4px 8px 4px 6px;
+  display: flex;
+  align-items: center;
+}
+.task-form .material-icons{
+  margin-right: 6px;
+}
+
+.close-btn, .list-input .buttons .exitBtn{
+  border: none;
+  color: #686286;
+  height: 32px;
+}
+
+.subject-page .btn, .list-input .buttons{
+  display: flex;
+  margin-top: 8px;
+}
+
+.subject-page .task-form{
+  margin-bottom: 7px;
+  margin-right: 8px;
+}
+
+.subject-page .task-input input, .list-input input{
+  background-color: white;
+  border: none;
+  color: #2e174d;
+  cursor: pointer;
+  min-height: 20px;
+  padding: 8px 8px 4px 12px;
+  border-radius: 3px;
+  font-size: 14px;
+  margin-left: 3px;
 }
