@@ -11,21 +11,22 @@ import ClassCard from "../ClassCard/ClassCard"
 
 //this is the home page, where you see all of the classes
 //displayed, and where you have to call classes
-export default function Home(){ 
+export default function Home() {
   const [board, setBoard] = useState({});
   useEffect(() => {
-    axios.get("http://localhost:8000/getBoard", { withCredentials: true })
-    .then((response) => {
-      setBoard(response.data);
-    })
-    .catch((err) => console.log(err));
+    axios
+      .get("http://localhost:8000/getBoard", { withCredentials: true })
+      .then((response) => {
+        setBoard(response.data);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
-  }
+  };
 
     return(
       <div className="home">
@@ -36,5 +37,5 @@ export default function Home(){
           <ClassCard/>
         </div>
       </div>
-    )
+  );
 }

@@ -199,6 +199,17 @@ app.post("/updateList/:subjectId", verifyUser, (req, res) => {
     })
     .catch(err => console.log(err))
 })
+//Get subjects, which is just getting the array in the board
+app.get('/getSubject', verifyUser, (req, res) => {
+    BoardModel.findOne({userId: req.userId})
+    .then(board => {
+        const subjects = board.subjects;
+        res.json(subjects);
+    })
+    .catch(err => res.json(err))
+})
+
+
 
 app.listen(8000, () => {
   console.log("Server started on port 8000");
