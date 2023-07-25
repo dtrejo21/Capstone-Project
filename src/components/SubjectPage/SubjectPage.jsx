@@ -6,7 +6,7 @@ import ListForm from "../ListForm/ListForm";
 
 //will fetch based on title
 export default function SubjectPage() {
-  const { title, subjectId } = useParams();
+  const { subjectTitle, subjectId } = useParams();
   const [list, setList] = useState([]);
   const [taskTitle, setTaskTitle] = useState("");
 
@@ -26,33 +26,34 @@ export default function SubjectPage() {
   };
 
   //Create a task
-  const handleSubmit = (e, list) => {
+  const handleSubmit = (e, currentList) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:8000/createTask/${list._id}`, { taskTitle })
+      .post(`http://localhost:8000/createTask/${currentList._id}`, { taskTitle })
       .then((result) => {
         //Update the list to add to add the new list with tasks
         setList((list) =>
           list.map((lists) =>
-            lists._id === list._id
+            lists._id === currentList._id
               ? { ...lists, task: result.data.task }
               : lists
           )
         );
+        setTaskTitle("");
       })
       .catch((err) => console.log(err));
   };
 
   return (
     <div className="subject-page">
-      <h1>{title}</h1>
+      <h1>{subjectTitle}</h1>
 
       <div className="subject-board">
         {/*All of below is just the UI for task form*/}
         {list.map((lists, index) => (
           <div className="list-margin list-content" key={`list_${index}`}>
             <div className="header">
-              <h3>{lists.title}</h3>
+              <h3>{lists.listTitle}</h3>
             </div>
 
             <div className="task-container task-margins">

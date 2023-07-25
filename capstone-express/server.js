@@ -52,9 +52,9 @@ app.post("/signup", (req, res) => {
         .then((user) => {
           //create a board when a user signs up
           const subjects = [];
-          const title = "Workspace";
+          const boardTitle = "Workspace";
 
-          createBoard(title, subjects, userId)
+          createBoard(boardTitle, subjects, userId)
             .then((board) => {
               res.json({ user, board });
             })
@@ -124,7 +124,7 @@ app.get("/getBoard", verifyUser, (req, res) => {
 });
 
 app.post("/createSubject", verifyUser, (req, res) => {
-  const { title } = req.body;
+  const { subjectTitle } = req.body;
   const { userId } = req;
 
   BoardModel.findOne({ userId: userId })
@@ -133,11 +133,11 @@ app.post("/createSubject", verifyUser, (req, res) => {
       const list = [];
 
       //Add in the predefined list when we create a subject
-      SubjectModel.create({ title, list, boardId: boardId })
+      SubjectModel.create({ subjectTitle: subjectTitle, list, boardId: boardId })
         .then((newSubject) => {
           const createList = predefinedList.map((predefinedItem) => {
             return ListModel.create({
-              title: predefinedItem.title,
+              listTitle: predefinedItem.title,
               //task: predefinedItem.tasks,
               task: [],
               subjectId: newSubject._id,
@@ -149,13 +149,8 @@ app.post("/createSubject", verifyUser, (req, res) => {
               return newSubject.save();
             })
             .then((updatedSubject) => {
-              defaultBoard.subjects.push(updatedSubject);
-              return defaultBoard.save();
+              res.json(updatedSubject);
             })
-            .then((updatedBoard) => {
-              res.json(updatedBoard);
-            })
-            .catch((err) => console.log(err));
         })
         .catch((err) => console.log(err));
     })
@@ -184,19 +179,17 @@ app.get("/getLists/:subjectId", verifyUser, (req, res) => {
 
 app.post("/updateList/:subjectId", verifyUser, (req, res) => {
   const subjectId = req.params.subjectId;
-  const { title } = req.body;
+  const { listTitle } = req.body;
   const task = [];
 
-  ListModel.create({ title, task, subjectId })
+  ListModel.create({ listTitle, task, subjectId })
     .then((newList) => {
       SubjectModel.findOne({ _id: subjectId })
         .then((subject) => {
           subject.list.push(newList);
           subject
             .save()
-            .then((updatedSubject) => {
-              res.json(updatedSubject);
-            })
+            res.json(newList)
             .catch((err) => console.log(err));
         })
         .catch((err) => console.log(err));

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const ListModel = require('./List')
 
 const subjectSchema = new mongoose.Schema({
-    title: String,
+    subjectTitle: String,
     list: [ListModel.schema],
     boardId: {
         type: mongoose.Schema.Types.ObjectId, 

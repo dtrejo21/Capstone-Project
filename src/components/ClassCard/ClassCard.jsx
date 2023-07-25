@@ -15,12 +15,15 @@ export default function ClassCard() {
   useEffect(() => {
     axios
       .get("http://localhost:8000/getSubject")
-      .then((subject) => setSubject(subject.data))
+      .then((subject) => {
+        console.log(subject.data)
+        setSubject(subject.data)})
       .catch((err) => console.log(err));
   }, []);
 
   const addNewSubject = (newSubject) => {
-    setSubject([...subject, newSubject]);
+    console.log("New subject added: ", newSubject);
+    setSubject((subject) => [...subject, newSubject]);
   };
 
   const [showMenu, setShowMenu] = useState(Array(subject.length).fill(false));
@@ -30,9 +33,9 @@ export default function ClassCard() {
       {subject.map((subjects, index) => (
         <div className="subject" key={`subject_${index}`}>
           <div className="header">
-            <Link to={`/subjects/${subjects.title}/${subjects._id}`}>
+            <Link to={`/subjects/${subjects.subjectTitle}/${subjects._id}`}>
               {/* This is defaults to Workspace*/}
-              <h3>{subjects.title}</h3>
+              <h3>{subjects.subjectTitle}</h3>
             </Link>
 
             <button

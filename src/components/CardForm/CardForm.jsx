@@ -5,14 +5,15 @@ import axios from "axios";
 
 export default function CardForm({subjectAdded}){
     const [showInput, setShowInput] = useState(false);
-    const [title, setTitle] = useState("")
+    const [subjectTitle, setSubjectTitle] = useState("")
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:8000/createSubject", {title})
+        axios.post("http://localhost:8000/createSubject", {subjectTitle})
         .then(result => {
-            console.log(result.data)
+            console.log("From create subject:", result.data);
             subjectAdded(result.data)
+            setSubjectTitle("");;
         })
         .catch(err => console.log(err))
     }
@@ -23,8 +24,8 @@ export default function CardForm({subjectAdded}){
                 <form className="card-input">
                     <input type="text"
                         placeholder="Enter class title.."
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        value={subjectTitle}
+                        onChange={(e) => setSubjectTitle(e.target.value)}
                     />
 
                     <div className="buttons">
