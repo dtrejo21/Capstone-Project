@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const TaskModel = require('./Task')
 
 const listSchema = new mongoose.Schema({
-    title: {
+    listTitle: {
         type: String, 
     },
     task: [TaskModel.schema],

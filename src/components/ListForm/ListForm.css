@@ -37,3 +37,11 @@
     display: flex;
     align-items: center;
 }
+
+.list-form .list-input{
+    width: 100%;
+}
+
+.list-input .material-icons{
+    color: white;
+}

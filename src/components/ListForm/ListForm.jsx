@@ -4,15 +4,16 @@ import axios from "axios";
 
 export default function ListForm({ subjectId, listAdded }) {
   const [showInput, setShowInput] = useState(false);
-  const [title, setTitle] = useState("");
+  const [listTitle, setListTitle] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:8000/updateList/${subjectId}`, { title })
+      .post(`http://localhost:8000/updateList/${subjectId}`, { listTitle })
       .then((result) => {
         console.log(result.data);
         listAdded(result.data);
+        setListTitle("");
       })
       .catch((err) => console.log(err));
   };
@@ -24,8 +25,8 @@ export default function ListForm({ subjectId, listAdded }) {
           <input
             type="text"
             placeholder="Enter list title.."
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={listTitle}
+            onChange={(e) => setListTitle(e.target.value)}
           />
 
           <div className="buttons" onClick={handleSubmit}>

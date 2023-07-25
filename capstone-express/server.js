@@ -10,6 +10,7 @@ const BoardModel = require("./models/Board");
 const ListModel = require("./models/List");
 const predefinedList = require("./seeders/list");
 const { verify } = require("crypto");
+const TaskModel = require("./models/Task");
 
 const app = express();
 
@@ -51,9 +52,9 @@ app.post("/signup", (req, res) => {
         .then((user) => {
           //create a board when a user signs up
           const subjects = [];
-          const title = "Workspace";
+          const boardTitle = "Workspace";
 
-          createBoard(title, subjects, userId)
+          createBoard(boardTitle, subjects, userId)
             .then((board) => {
               res.json({ user, board });
             })
@@ -123,21 +124,22 @@ app.get("/getBoard", verifyUser, (req, res) => {
 });
 
 app.post("/createSubject", verifyUser, (req, res) => {
-  const { title } = req.body;
+  const { subjectTitle } = req.body;
   const { userId } = req;
 
   BoardModel.findOne({ userId: userId })
     .then((defaultBoard) => {
       const boardId = defaultBoard._id;
-      const list = []
+      const list = [];
 
       //Add in the predefined list when we create a subject
-      SubjectModel.create({ title, list, boardId: boardId })
+      SubjectModel.create({ subjectTitle: subjectTitle, list, boardId: boardId })
         .then((newSubject) => {
           const createList = predefinedList.map((predefinedItem) => {
             return ListModel.create({
-              title: predefinedItem.title,
-              task: predefinedItem,
+              listTitle: predefinedItem.title,
+              //task: predefinedItem.tasks,
+              task: [],
               subjectId: newSubject._id,
             });
           });
@@ -147,68 +149,76 @@ app.post("/createSubject", verifyUser, (req, res) => {
               return newSubject.save();
             })
             .then((updatedSubject) => {
-              defaultBoard.subjects.push(updatedSubject);
-              return defaultBoard.save();
+              res.json(updatedSubject);
             })
-            .then((updatedBoard) => {
-              res.json(updatedBoard);
-            })
-            .catch((err) => console.log(err));
         })
         .catch((err) => console.log(err));
     })
     .catch((err) => console.log(err));
 });
+
 //Get subjects, which is just getting the array in the board
 app.get("/getSubject", verifyUser, (req, res) => {
   BoardModel.findOne({ userId: req.userId })
-    .then(board => {
+    .then((board) => {
       const subjects = board.subjects;
       res.json(subjects);
     })
     .catch((err) => res.json(err));
 });
+//Get lists
+app.get("/getLists/:subjectId", verifyUser, (req, res) => {
+  const subjectId = req.params.subjectId;
 
-app.get("/getLists/:subjectTitle", verifyUser, (req, res) => {
-    const subjectId= req.params.subjectId;
-    SubjectModel.findOne({subjectId: subjectId})
-    .then(subject => {
-        const lists = subject.list;
-        res.json(lists)
+  ListModel.find({ subjectId: subjectId })
+    .then((lists) => {
+      res.json(lists);
     })
-    .catch(err => console.log(err))
+    .catch((err) => console.log(err));
 });
 
 app.post("/updateList/:subjectId", verifyUser, (req, res) => {
-    const subjectId = req.params.subjectId;
-    const { title } = req.body;
-    const task = []
+  const subjectId = req.params.subjectId;
+  const { listTitle } = req.body;
+  const task = [];
 
-    ListModel.create({title, task, subjectId})
-    .then(newList => {
-        SubjectModel.findOne({_id: subjectId})
-        .then(subject => {
-            subject.list.push(newList);
-            subject.save()
-            .then(updatedSubject => {
-                res.json(updatedSubject)
-            })
-            .catch(err => console.log(err))
+  ListModel.create({ listTitle, task, subjectId })
+    .then((newList) => {
+      SubjectModel.findOne({ _id: subjectId })
+        .then((subject) => {
+          subject.list.push(newList);
+          subject
+            .save()
+            res.json(newList)
+        })
+        .catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
+});
+
+app.post("/createTask/:listId", verifyUser, (req, res) => {
+  const listId = req.params.listId;
+  const { taskTitle } = req.body;
+  const subtask = [];
+
+  TaskModel.create({
+    title: taskTitle,
+    subtask: subtask,
+    listId: listId,
+  }).then((newTask) => {
+    ListModel.findOne({ _id: listId })
+      .then((list) => {
+        list.task.push(newTask)
+        list.save()
+        .then(updatedList => {
+            res.json(updatedList);
         })
         .catch(err => console.log(err))
-    })
-    .catch(err => console.log(err))
-})
-//Get subjects, which is just getting the array in the board
-app.get('/getSubject', verifyUser, (req, res) => {
-    BoardModel.findOne({userId: req.userId})
-    .then(board => {
-        const subjects = board.subjects;
-        res.json(subjects);
-    })
-    .catch(err => res.json(err))
-})
-
+      })
+      .catch((err) => console.log(err));
+  })
+  .catch(err => console.log(err))
+});
 
 
 app.listen(8000, () => {
