@@ -12,18 +12,20 @@ import axios from 'axios'
 import SubjectPage from './components/SubjectPage/SubjectPage'
 import TaskForm from './components/TaskForm/TaskForm'
 
+
 export default function App() {
   const [user, setUser] = useState({});
-  
+
   axios.defaults.withCredentials = true;
   useEffect(() => {
-    axios.get("http://localhost:8000/getUser")
-      .then(response => { 
+    axios
+      .get("http://localhost:8000/getUser")
+      .then((response) => {
         //console.log(response.data);
         setUser(response.data);
       })
-      .catch(err => console.log(err))
-  }, [])
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div className="app">
@@ -41,5 +43,5 @@ export default function App() {
           </BrowserRouter>
         </UserContext.Provider>
     </div>
-  )
+  );
 }
