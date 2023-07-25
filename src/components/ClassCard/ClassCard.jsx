@@ -33,7 +33,6 @@ export default function ClassCard() {
             <Link to={`/subjects/${subjects.title}/${subjects._id}`}>
               {/* This is defaults to Workspace*/}
               <h3>{subjects.title}</h3>
-              <h3>{subjects._id}</h3>
             </Link>
 
             <button

@@ -8,8 +8,7 @@ import ListForm from "../ListForm/ListForm";
 export default function SubjectPage() {
   const { title, subjectId } = useParams();
   const [list, setList] = useState([]);
-
-  const [inputValue, setInputValue] = useState("");
+  const [taskTitle, setTaskTitle] = useState("");
 
   useEffect(() => {
     axios
@@ -26,6 +25,24 @@ export default function SubjectPage() {
     setList([...list, newList]);
   };
 
+  //Create a task
+  const handleSubmit = (e, list) => {
+    e.preventDefault();
+    axios
+      .post(`http://localhost:8000/createTask/${list._id}`, { taskTitle })
+      .then((result) => {
+        //Update the list to add to add the new list with tasks
+        setList((list) =>
+          list.map((lists) =>
+            lists._id === list._id
+              ? { ...lists, task: result.data.task }
+              : lists
+          )
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div className="subject-page">
       <h1>{title}</h1>
@@ -37,6 +54,15 @@ export default function SubjectPage() {
             <div className="header">
               <h3>{lists.title}</h3>
             </div>
+
+            <div className="task-container task-margins">
+                {lists.task.map((task, taskIndex) => (
+                  <div className="task-content" key={`task_${taskIndex}`}>
+                    <p>{task.title}</p>
+                  </div>
+                ))}
+            </div>
+
             <div className="button-container">
               <div className="task-form">
                 <div
@@ -52,13 +78,17 @@ export default function SubjectPage() {
                       <input
                         type="text"
                         placeholder="Enter a title for this task.."
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
+                        value={taskTitle}
+                        onChange={(e) => setTaskTitle(e.target.value)}
                         onClick={(e) => e.stopPropagation()}
                       />
 
                       <div className="btn">
-                        <button className="add-task" type="submit">
+                        <button
+                          className="add-task"
+                          type="submit"
+                          onClick={(e) => handleSubmit(e, lists)}
+                        >
                           Add Task
                         </button>
 

@@ -10,6 +10,7 @@ import { UserContext } from './UserContext'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import SubjectPage from './components/SubjectPage/SubjectPage'
+import TaskForm from './components/TaskForm/TaskForm'
 
 export default function App() {
   const [user, setUser] = useState({});
@@ -35,6 +36,7 @@ export default function App() {
               <Route path="/calendar" element={<Calendar/>}/>
               <Route path="/study-space" element={<StudySpace/>}/>
               <Route path="/profile" element={<Profile/>}/>
+              <Route path="/:taskTitle/:taskId" element={TaskForm}/>
             </Routes>
           </BrowserRouter>
         </UserContext.Provider>
