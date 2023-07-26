@@ -1,6 +1,6 @@
-import * as React from "react"
-import "./CardForm.css"
-import { useState } from "react"
+import * as React from "react";
+import "./CardForm.css";
+import { useState } from "react";
 import axios from "axios";
 
 export default function CardForm({subjectAdded}){
@@ -28,22 +28,22 @@ export default function CardForm({subjectAdded}){
                         onChange={(e) => setSubjectTitle(e.target.value)}
                     />
 
-                    <div className="buttons">
-                        <button className ="submitBtn" type="submit" onClick={handleSubmit}>
-                            Add Class
-                        </button>
+          <div className="buttons">
+            <button className="submitBtn" type="submit" onClick={handleSubmit}>
+              Add Class
+            </button>
 
-                        <button className="exitBtn" onClick={() => setShowInput(false)}>
-                            <i className="material-icons">close</i>
-                        </button>
-                    </div>
-                </form>
-            ) : (
-                <button className="addBtn" onClick={() => setShowInput(true)}>
-                    <i className="material-icons">add</i>
-                    Add another class
-                </button>
-            )}
-        </div>
-    )
+            <button className="exitBtn" onClick={() => setShowInput(false)}>
+              <i className="material-icons">close</i>
+            </button>
+          </div>
+        </form>
+      ) : (
+        <button className="addBtn" onClick={() => setShowInput(true)}>
+          <i className="material-icons">add</i>
+          Add another class
+        </button>
+      )}
+    </div>
+  );
 }

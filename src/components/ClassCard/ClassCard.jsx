@@ -1,6 +1,6 @@
-import * as React from "react";
-import "./ClassCard.css";
-import { useState, useEffect } from "react";
+import * as React from "react"
+import "./ClassCard.css"
+import { useState, useEffect } from "react"
 import axios from "axios";
 import CardForm from "../CardForm/CardForm";
 import { Link } from "react-router-dom";

@@ -146,20 +146,11 @@ app.post("/createSubject", verifyUser, (req, res) => {
           Promise.all(createList)
             .then((newList) => {
               newSubject.list = newList;
-              newSubject
-                .save()
-                .then((updatedSubject) => {
-                  defaultBoard.subjects.push(updatedSubject);
-                  defaultBoard
-                    .save()
-                    .then(() => {
-                      res.json(updatedSubject);
-                    })
-                    .catch((err) => console.log(err));
-                })
-                .catch((err) => console.log(err));
+              return newSubject.save();
             })
-            .catch((err) => console.log(err));
+            .then((updatedSubject) => {
+              res.json(updatedSubject);
+            })
         })
         .catch((err) => console.log(err));
     })
@@ -228,6 +219,7 @@ app.post("/createTask/:listId", verifyUser, (req, res) => {
     })
     .catch((err) => console.log(err));
 });
+
 
 app.listen(8000, () => {
   console.log("Server started on port 8000");
