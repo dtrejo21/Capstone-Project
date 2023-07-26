@@ -133,7 +133,7 @@ app.post("/createSubject", verifyUser, (req, res) => {
       const list = [];
 
       //Add in the predefined list when we create a subject
-      SubjectModel.create({ subjectTitle: subjectTitle, list, boardId: boardId })
+      SubjectModel.create({subjectTitle, list, boardId})
         .then((newSubject) => {
           const createList = predefinedList.map((predefinedItem) => {
             return ListModel.create({
@@ -187,9 +187,8 @@ app.post("/updateList/:subjectId", verifyUser, (req, res) => {
       SubjectModel.findOne({ _id: subjectId })
         .then((subject) => {
           subject.list.push(newList);
-          subject
-            .save()
-            res.json(newList)
+          subject.save();
+          res.json(newList)
         })
         .catch((err) => console.log(err));
     })
@@ -205,19 +204,20 @@ app.post("/createTask/:listId", verifyUser, (req, res) => {
     title: taskTitle,
     subtask: subtask,
     listId: listId,
-  }).then((newTask) => {
-    ListModel.findOne({ _id: listId })
-      .then((list) => {
-        list.task.push(newTask)
-        list.save()
-        .then(updatedList => {
-            res.json(updatedList);
-        })
-        .catch(err => console.log(err))
-      })
-      .catch((err) => console.log(err));
   })
-  .catch(err => console.log(err))
+    .then((newTask) => {
+      ListModel.findOne({ _id: listId })
+        .then((list) => {
+          list.task.push(newTask);
+          list.save()
+            .then((updatedList) => {
+              res.json(updatedList);
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
 });
 
 
