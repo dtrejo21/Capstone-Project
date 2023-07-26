@@ -1,0 +1,93 @@
+.task-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #172b4d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.task-page .task-popup-column {
+  width: auto;
+  border-radius: 8px;
+  background-color: white;
+  height: 600px;
+  margin: 0 16px 8px 32px;
+}
+
+.task-popup-container {
+  height: 100%;
+  width: 100%;
+  padding: 16px 0px 0px 8px;
+  background-color: #1d09420f;
+}
+
+.task-page .header {
+  display: flex;
+}
+.task-page .header .material-icons {
+  border: none;
+}
+
+.task-page .title-textarea{
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    resize: none;
+    border-radius: 3px;
+    background-color: transparent;
+    padding: 4px 8px;
+    height: 32px;
+    margin: -4px 8px;
+}
+textarea{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.popup-description, .popup-subtasks, .popup-duedate{
+    margin-top: 20px;
+}
+.textarea-description{
+    border: none;
+    color: #37174d;
+    resize: none;
+    border-radius: 3px;
+    height: 40px;
+    padding: 4px 12px;
+    background-color: #2709520f;
+    width: 300px;
+}
+
+.description-header{
+    display: flex;
+    height: 32px;
+    align-items: center;
+    display: flex;
+    margin: 0px 0px 4px 10px;
+    padding: 8px 0px;
+}
+
+.create-subtask{
+    border: none;
+    color: #37174D;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+}
+
+.create-subtask:hover{
+    background-color: #37174d4d;
+}
+
+.subtask-header{
+    display: flex;
+    margin: 0px 0px 4px 10px;
+    padding: 8px 0px;
+}
+
+.popup-main-content .material-icons{
+    margin-right: 6px;
+}

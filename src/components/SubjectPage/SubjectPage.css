@@ -114,3 +114,8 @@
   min-height: 32px;
   border-radius: 8px;
 }
+
+.task-link{
+  text-decoration: none;
+  color: #39174d;
+}

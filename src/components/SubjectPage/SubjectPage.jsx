@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./SubjectPage.css";
-import { useParams } from "react-router-dom";
+import { useParams, Link, useLocation} from "react-router-dom";
 import axios from "axios";
 import ListForm from "../ListForm/ListForm";
 
@@ -9,6 +9,7 @@ export default function SubjectPage() {
   const { subjectTitle, subjectId } = useParams();
   const [list, setList] = useState([]);
   const [taskTitle, setTaskTitle] = useState("");
+  const location = useLocation();
 
   useEffect(() => {
     axios
@@ -59,7 +60,12 @@ export default function SubjectPage() {
             <div className="task-container task-margins">
                 {lists.task.map((task, taskIndex) => (
                   <div className="task-content" key={`task_${taskIndex}`}>
-                    <p>{task.title}</p>
+                    <Link to={`/${task.title}/${task._id}`}
+                          state={{background: location}}
+                          className="task-link">
+                      <p>{task.title}</p>
+                    </Link>
+                    
                   </div>
                 ))}
             </div>

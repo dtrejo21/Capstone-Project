@@ -133,11 +133,7 @@ app.post("/createSubject", verifyUser, (req, res) => {
       const list = [];
 
       //Add in the predefined list when we create a subject
-      SubjectModel.create({
-        subjectTitle: subjectTitle,
-        list,
-        boardId: boardId,
-      })
+      SubjectModel.create({subjectTitle, list, boardId})
         .then((newSubject) => {
           const createList = predefinedList.map((predefinedItem) => {
             return ListModel.create({
@@ -222,8 +218,7 @@ app.post("/createTask/:listId", verifyUser, (req, res) => {
       ListModel.findOne({ _id: listId })
         .then((list) => {
           list.task.push(newTask);
-          list
-            .save()
+          list.save()
             .then((updatedList) => {
               res.json(updatedList);
             })
