@@ -7,7 +7,7 @@ import axios from "axios";
 export default function TaskForm() {
   const [showInput, setShowInput] = useState(false);
   const [showDescription, setShowDescription] = useState(false);
-  const [subtaskTitlÍe, setSubtaskTitle] = useState("");
+  const [subtaskTitle, setSubtaskTitle] = useState("");
   const [description, setDescription] = useState("");
 
   const navigate = useNavigate();
