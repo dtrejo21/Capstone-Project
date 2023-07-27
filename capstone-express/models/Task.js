@@ -3,9 +3,14 @@ const SubtaskModel = require('./Subtask')
 
 const taskSchema = new mongoose.Schema({
     title: String,
-    description: String,
-    label: String,
-    dueDate: Date,
+    description: {
+        type: String,
+        default: ""
+    },
+    dueDate: {
+        type: Date,
+        default: Date.now,
+    },
     subtask: [SubtaskModel.schema],
     listId: {
         type: mongoose.Schema.Types.ObjectId,

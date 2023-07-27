@@ -11,6 +11,7 @@ const ListModel = require("./models/List");
 const predefinedList = require("./seeders/list");
 const { verify } = require("crypto");
 const TaskModel = require("./models/Task");
+const SubtaskModel = require("./models/Subtask");
 
 const app = express();
 
@@ -133,7 +134,7 @@ app.post("/createSubject", verifyUser, (req, res) => {
       const list = [];
 
       //Add in the predefined list when we create a subject
-      SubjectModel.create({subjectTitle, list, boardId})
+      SubjectModel.create({ subjectTitle, list, boardId })
         .then((newSubject) => {
           const createList = predefinedList.map((predefinedItem) => {
             return ListModel.create({
@@ -150,7 +151,7 @@ app.post("/createSubject", verifyUser, (req, res) => {
             })
             .then((updatedSubject) => {
               res.json(updatedSubject);
-            })
+            });
         })
         .catch((err) => console.log(err));
     })
@@ -161,11 +162,14 @@ app.post("/createSubject", verifyUser, (req, res) => {
 app.get("/getSubject", verifyUser, (req, res) => {
   BoardModel.findOne({ userId: req.userId })
     .then((board) => {
-      const subjects = board.subjects;
-      res.json(subjects);
+        SubjectModel.find({boardId: board._id})
+        .then(subjects => {
+            res.json(subjects);
+        })
     })
     .catch((err) => res.json(err));
 });
+
 //Get lists
 app.get("/getLists/:subjectId", verifyUser, (req, res) => {
   const subjectId = req.params.subjectId;
@@ -188,7 +192,7 @@ app.post("/updateList/:subjectId", verifyUser, (req, res) => {
         .then((subject) => {
           subject.list.push(newList);
           subject.save();
-          res.json(newList)
+          res.json(newList);
         })
         .catch((err) => console.log(err));
     })
@@ -209,7 +213,8 @@ app.post("/createTask/:listId", verifyUser, (req, res) => {
       ListModel.findOne({ _id: listId })
         .then((list) => {
           list.task.push(newTask);
-          list.save()
+          list
+            .save()
             .then((updatedList) => {
               res.json(updatedList);
             })
@@ -219,7 +224,55 @@ app.post("/createTask/:listId", verifyUser, (req, res) => {
     })
     .catch((err) => console.log(err));
 });
+//Update the task description and update the list with the new task
+app.post("/task/updateDescription/:taskId", verifyUser, (req, res) => {
+  const taskId = req.params.taskId;
+  const { description } = req.body;
 
+  TaskModel.findByIdAndUpdate(taskId, { description }, { new: true })
+    .then((updatedTask) => {
+      const listTaskId = taskId;
+      ListModel.findOneAndUpdate(
+        { "task._id": listTaskId },
+        { $set: { "task.$.description": description } },
+        { new: true }
+      )
+        res.json(updatedTask)
+    })
+    .catch((err) => console.log(err));
+});
+
+app.post("/createSubtask/:taskId", verifyUser, (req, res) => {
+    const taskId = req.params.taskId;
+    const {subtaskTitle} = req.body;
+    const subtask = []
+
+    SubtaskModel.create({subtaskTitle, taskId, subtask})
+    .then(newSubtask => {
+        TaskModel.findOne({_id: taskId})
+        .then(task => {
+            task.subtask.push(newSubtask);
+            task.save()
+            .then(task => {
+                res.json(newSubtask)
+            })
+            .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
+    })
+    .catch(err => console.log(err))
+})
+
+//Get task information
+app.get("/task/getTask/:taskId", verifyUser, (req, res) => {
+    const taskId = req.params.taskId;
+
+    TaskModel.findOne({_id: taskId})
+    .then(task => {
+        res.json(task);
+    })
+    .catch(err => console.log(err))
+})
 
 app.listen(8000, () => {
   console.log("Server started on port 8000");
