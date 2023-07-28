@@ -1,10 +1,14 @@
 const mongoose = require("mongoose");
 
 const subtaskSchema = new mongoose.Schema({
-  name: String,
+  subtaskTitle: String,
   taskId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "tasks",
+  },
+  dueDate: {
+    type: Date,
+    default: Date.now,
   },
   subtask: [
     {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./SubjectPage.css";
-import { useParams, Link, useLocation} from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import ListForm from "../ListForm/ListForm";
 
@@ -30,7 +30,9 @@ export default function SubjectPage() {
   const handleSubmit = (e, currentList) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:8000/createTask/${currentList._id}`, { taskTitle })
+      .post(`http://localhost:8000/createTask/${currentList._id}`, {
+        taskTitle,
+      })
       .then((result) => {
         //Update the list to add to add the new list with tasks
         setList((list) =>
@@ -58,16 +60,19 @@ export default function SubjectPage() {
             </div>
 
             <div className="task-container task-margins">
-                {lists.task.map((task, taskIndex) => (
-                  <div className="task-content" key={`task_${taskIndex}`}>
-                    <Link to={`/${task.title}/${task._id}`}
-                          state={{background: location}}
-                          className="task-link">
-                      <p>{task.title}</p>
-                    </Link>
-                    
-                  </div>
-                ))}
+              {lists.task.map((task, taskIndex) => (
+                <div className="task-content" key={`task_${taskIndex}`}>
+                  <Link
+                    to={`/${task.title}/${task._id}`}
+                    state={{
+                      background: location
+                    }}
+                    className="task-link"
+                  >
+                    <p>{task.title}</p>
+                  </Link>
+                </div>
+              ))}
             </div>
 
             <div className="button-container">
