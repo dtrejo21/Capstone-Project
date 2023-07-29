@@ -16,7 +16,7 @@ export default function ClassCard() {
     axios
       .get("http://localhost:8000/getSubject")
       .then((subject) => {
-        console.log(subject.data)
+        //console.log(subject.data)
         setSubject(subject.data)})
       .catch((err) => console.log(err));
   }, []);

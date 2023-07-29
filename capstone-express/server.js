@@ -162,10 +162,9 @@ app.post("/createSubject", verifyUser, (req, res) => {
 app.get("/getSubject", verifyUser, (req, res) => {
   BoardModel.findOne({ userId: req.userId })
     .then((board) => {
-        SubjectModel.find({boardId: board._id})
-        .then(subjects => {
-            res.json(subjects);
-        })
+      SubjectModel.find({ boardId: board._id }).then((subjects) => {
+        res.json(subjects);
+      });
     })
     .catch((err) => res.json(err));
 });
@@ -224,6 +223,7 @@ app.post("/createTask/:listId", verifyUser, (req, res) => {
     })
     .catch((err) => console.log(err));
 });
+
 //Update the task description and update the list with the new task
 app.post("/task/updateDescription/:taskId", verifyUser, (req, res) => {
   const taskId = req.params.taskId;
@@ -236,42 +236,68 @@ app.post("/task/updateDescription/:taskId", verifyUser, (req, res) => {
         { "task._id": listTaskId },
         { $set: { "task.$.description": description } },
         { new: true }
-      )
-        res.json(updatedTask)
+      );
+      res.json(updatedTask);
     })
     .catch((err) => console.log(err));
 });
 
 app.post("/createSubtask/:taskId", verifyUser, (req, res) => {
-    const taskId = req.params.taskId;
-    const {subtaskTitle} = req.body;
-    const subtask = []
+  const taskId = req.params.taskId;
+  const { subtaskTitle } = req.body;
+  const subtask = [];
 
-    SubtaskModel.create({subtaskTitle, taskId, subtask})
-    .then(newSubtask => {
-        TaskModel.findOne({_id: taskId})
-        .then(task => {
-            task.subtask.push(newSubtask);
-            task.save()
-            .then(task => {
-                res.json(newSubtask)
+  SubtaskModel.create({ subtaskTitle, taskId, subtask })
+    .then((newSubtask) => {
+      TaskModel.findOne({ _id: taskId })
+        .then((task) => {
+          task.subtask.push(newSubtask);
+          task
+            .save()
+            .then((task) => {
+              res.json(newSubtask);
             })
-            .catch(err => console.log(err))
+            .catch((err) => console.log(err));
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err));
     })
-    .catch(err => console.log(err))
-})
+    .catch((err) => console.log(err));
+});
 
 //Get task information
 app.get("/task/getTask/:taskId", verifyUser, (req, res) => {
-    const taskId = req.params.taskId;
+  const taskId = req.params.taskId;
 
-    TaskModel.findOne({_id: taskId})
-    .then(task => {
-        res.json(task);
+  TaskModel.findOne({ _id: taskId })
+    .then((task) => {
+      res.json(task);
     })
-    .catch(err => console.log(err))
+    .catch((err) => console.log(err));
+});
+
+//Add a subtask due date
+app.post("/task/addSubtaskDueDate/:subtaskId", verifyUser, (req, res) => {
+  const subtaskId = req.params.subtaskId;
+  const dueDate = req.body.dueDate;
+  console.log("\n\n\n");
+  console.log("This is what is read", dueDate);
+
+  SubtaskModel.findByIdAndUpdate(subtaskId, {dueDate}, {new: true})
+  .then(updatedSubtask => {
+    const taskId = subtaskId;
+      TaskModel.findOneAndUpdate(
+        { "subtask._id": taskId },
+        { $set: { "subtask.$.dueDate": dueDate } },
+        { new: true }
+      );
+    res.json(updatedSubtask);
+  })
+  .catch(err => console.log(err))
+});
+//Add a due date to a task
+app.post("/task/addTaskDueDate:taskId", verifyUser, (req, res) => {
+    const taskId = req.params.subtaskId;
+    const dueDate = req.body.dueDate;
 })
 
 app.listen(8000, () => {
