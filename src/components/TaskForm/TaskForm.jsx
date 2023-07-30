@@ -110,6 +110,11 @@ export default function TaskForm() {
       })
       .then((result) => {
         console.log(result);
+        setTaskInfo((prevTaskInfo) => ({
+          ...prevTaskInfo,
+          dueDate: result.data.dueDate,
+        }));
+        //console.log(taskInfo)
       })
       .catch((err) => console.log(err));
   };
@@ -143,10 +148,14 @@ export default function TaskForm() {
           </div>
 
           <div className="popup-main-content">
-            <div className="task-duedate">
-              <h5>Due Date:</h5>
-              <p>{formatDueDate(taskInfo.dueDate)}</p>
-            </div> 
+            {taskInfo.dueDate ? (
+              <div className="task-duedate">
+                <h5>Due Date:</h5>
+                <p>{formatDueDate(taskInfo.dueDate)}</p>
+              </div>
+            ) : (
+              <></>
+            )}
 
             <div className="popup-description">
               <div className="description-header">
