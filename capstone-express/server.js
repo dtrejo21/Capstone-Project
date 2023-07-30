@@ -282,23 +282,39 @@ app.post("/task/addSubtaskDueDate/:subtaskId", verifyUser, (req, res) => {
   console.log("\n\n\n");
   console.log("This is what is read", dueDate);
 
-  SubtaskModel.findByIdAndUpdate(subtaskId, {dueDate}, {new: true})
-  .then(updatedSubtask => {
-    const taskId = subtaskId;
+  //update the new subtask to add to the Task collection
+  SubtaskModel.findByIdAndUpdate(subtaskId, { dueDate }, { new: true })
+    .then((updatedSubtask) => {
+      const taskSubtaskId = subtaskId;
       TaskModel.findOneAndUpdate(
-        { "subtask._id": taskId },
+        { "subtask._id": taskSubtaskId },
         { $set: { "subtask.$.dueDate": dueDate } },
         { new: true }
-      );
-    res.json(updatedSubtask);
-  })
-  .catch(err => console.log(err))
+      ).then((updatedTask) => {
+        res.json(updatedSubtask);
+      });
+    })
+    .catch((err) => console.log(err));
 });
 //Add a due date to a task
-app.post("/task/addTaskDueDate:taskId", verifyUser, (req, res) => {
-    const taskId = req.params.subtaskId;
-    const dueDate = req.body.dueDate;
-})
+app.post("/task/addTaskDueDate/:taskId", verifyUser, (req, res) => {
+  const taskId = req.params.taskId;
+  const dueDate = req.body.dueDate;
+
+  TaskModel.findByIdAndUpdate(taskId, { dueDate }, { new: true })
+    .then((updatedTask) => {
+      const listTaskId = taskId;
+      ListModel.findOneAndUpdate(
+        { "task._id": listTaskId },
+        { $set: { "task.$.dueDate": dueDate } },
+        { new: true }
+      );
+      res.json(updatedTask);
+    })
+    .catch((err) => console.log(err));
+
+
+});
 
 app.listen(8000, () => {
   console.log("Server started on port 8000");
