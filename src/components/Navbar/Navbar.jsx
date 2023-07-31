@@ -3,8 +3,6 @@ import "./Navbar.css";
 import { useState } from "react";
 
 export default function Navbar() {
-  const [menuVisble, setMenuVisble] = useState(false);
-  const handleLogout = () => {};
 
   return (
     <div className="navbar">
@@ -14,6 +12,11 @@ export default function Navbar() {
 
           <button>
             <i className="material-icons">search</i>
+          </button>
+        </div>
+        <div className="sorting">
+          <button className="sort-tasks">
+            <i className="material-icons">sort</i>
           </button>
         </div>
 
