@@ -5,7 +5,7 @@
     height: 70px;
     width: 100%;
     align-items: center;
-    position: fixed;
+    position: relative;
     top: 0;
     left: 0;
 }

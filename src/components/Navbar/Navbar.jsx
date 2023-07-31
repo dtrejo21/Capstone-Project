@@ -1,9 +1,16 @@
 import * as React from "react";
 import "./Navbar.css";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 export default function Navbar() {
-
+  const navigate = useNavigate();
+  //navigate to a new page
+  const handleSortSubmit = (e) => {
+    e.preventDefault();
+    navigate("/sort");
+  };
   return (
     <div className="navbar">
       <div className="content">
@@ -15,9 +22,11 @@ export default function Navbar() {
           </button>
         </div>
         <div className="sorting">
-          <button className="sort-tasks">
+          <Link to={`/sort`}>
+          <button className="sort-tasks" onClick={handleSortSubmit}>
             <i className="material-icons">sort</i>
           </button>
+          </Link>
         </div>
 
         <button>
