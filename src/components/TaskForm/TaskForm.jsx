@@ -110,6 +110,11 @@ export default function TaskForm() {
       })
       .then((result) => {
         console.log(result);
+        setTaskInfo((prevTaskInfo) => ({
+          ...prevTaskInfo,
+          dueDate: result.data.dueDate,
+        }));
+        //console.log(taskInfo)
       })
       .catch((err) => console.log(err));
   };
@@ -143,10 +148,14 @@ export default function TaskForm() {
           </div>
 
           <div className="popup-main-content">
-            <div className="task-duedate">
-              <h5>Due Date:</h5>
-              <p>{formatDueDate(taskInfo.dueDate)}</p>
-            </div> 
+            {taskInfo.dueDate ? (
+              <div className="task-duedate">
+                <h5>Due Date:</h5>
+                <p>{formatDueDate(taskInfo.dueDate)}</p>
+              </div>
+            ) : (
+              <></>
+            )}
 
             <div className="popup-description">
               <div className="description-header">
@@ -161,16 +170,17 @@ export default function TaskForm() {
                     onChange={(e) => setDescription(e.target.value)}
                     className="textarea-description"
                   ></textarea>
-                  <div>
+                  <div className="description-options">
                     <button
                       type="submit"
                       value={description}
+                      className="save-description"
                       onClick={(e) => updateDescription(e, taskId)}
                     >
                       Save
                     </button>
 
-                    <button onClick={() => setShowDescription(false)}>
+                    <button className="cancel-description" onClick={() => setShowDescription(false)}>
                       Cancel
                     </button>
                   </div>
@@ -234,6 +244,10 @@ export default function TaskForm() {
                               close
                             </i>
                           </button>
+
+                          <button className="delete-subtask">
+                            <i className="material-icons">delete</i>
+                          </button>
                         </div>
                       )}
 
@@ -257,14 +271,15 @@ export default function TaskForm() {
                     onChange={(e) => setSubtaskTitle(e.target.value)}
                   />
 
-                  <div className="task-options">
+                  <div className="create-subtask-options">
                     <button
                       type="button"
+                      className="add-subtask"
                       onClick={(e) => createSubtask(e, taskId)}
                     >
                       Add
                     </button>
-                    <button onClick={() => setShowInput(false)}>Cancel</button>
+                    <button className="cancel-subtask" onClick={() => setShowInput(false)}>Cancel</button>
                   </div>
                 </form>
               ) : (
@@ -294,6 +309,10 @@ export default function TaskForm() {
                     id={taskId}
                   />
                 )}
+
+                <button className="delete-task">
+                  Delete
+                </button>
               </div>
             </div>
 

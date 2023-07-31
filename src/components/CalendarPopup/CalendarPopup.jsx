@@ -16,7 +16,7 @@ export default function CalendarPopup({ handleClose, onSubmit, id }) {
 
   return (
     <div className="calendar-popup">
-      <div className="calendar-popup-container">
+      <div className="calendar-popup-container calendar-wrapper">
         <div className="calendar-header">
           <h3>Date</h3>
           <button className="calendar-close" onClick={handleClose}>
