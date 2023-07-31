@@ -1,21 +1,31 @@
 import React, { useState, useEffect } from "react";
 import "./TaskForm.css";
 import { useNavigate, useParams } from "react-router";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import CalendarPopup from "../CalendarPopup/CalendarPopup";
 
 export default function TaskForm() {
   const [showInput, setShowInput] = useState(false);
   const [showDescription, setShowDescription] = useState(false);
   const [subtaskTitle, setSubtaskTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [showSubtaskDate, setShowSubtaskDate] = useState(null);
+  const [showTaskDate, setShowTaskDate] = useState(false);
+  const [selectedSubtask, setSelectedSubtask] = useState(null);
 
   const navigate = useNavigate();
 
   const { taskTitle, taskId } = useParams();
   const [title, setTitle] = useState(taskTitle);
   const [taskInfo, setTaskInfo] = useState([]);
-  const [date, setDate] = useState("");
+
+  const handleSubtaskClose = () => {
+    setShowSubtaskDate(null);
+  };
+
+  const handleTaskClose = () => {
+    setShowTaskDate(null);
+  };
 
   useEffect(() => {
     axios
@@ -38,7 +48,7 @@ export default function TaskForm() {
         description,
       })
       .then((result) => {
-        console.log(result.data.description);
+        //console.log(result.data.description);
         setTaskInfo((prevTaskInfo) => ({
           ...prevTaskInfo,
           description: result.data.description,
@@ -64,22 +74,60 @@ export default function TaskForm() {
           subtask: [...prevTaskInfo.subtask, result.data],
         }));
         setSubtaskTitle("");
-        
       })
       .catch((err) => console.log(err));
   };
-  //Array.isArray(taskInfo.subtask)
-  const [showDate, setShowDate] = useState(false);
-  //const [showDate, setShowDate] = useState(Array(taskInfo.subtask.length).fill(false));
-  /*
-  const [showDate, setShowDate] = useState(() => {
-    if (Array.isArray(taskInfo.subtask)){
-      return Array(taskInfo.subtask.length).fill(false);
+
+  const handleSubtaskDateSubmit = (startDate, subtaskId) => {
+    const dueDate = new Date(startDate);
+    axios
+      .post(`http://localhost:8000/task/addSubtaskDueDate/${subtaskId}`, {
+        dueDate: dueDate,
+      })
+      .then((result) => {
+        //console.log(result.data);
+        //update the state to include the new due date for subtask
+        setTaskInfo((prevTaskInfo) => ({
+          ...prevTaskInfo,
+          subtask: prevTaskInfo.subtask.map((subtask) =>
+            subtask._id === subtaskId
+              ? { ...subtask, dueDate: result.data.dueDate }
+              : subtask
+          ),
+        }));
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleTaskDateSubmit = (startDate, taskId) => {
+    console.log(startDate);
+
+    const dueDate = new Date(startDate);
+    console.log(dueDate);
+    axios
+      .post(`http://localhost:8000/task/addTaskDueDate/${taskId}`, {
+        dueDate: dueDate,
+      })
+      .then((result) => {
+        console.log(result);
+        setTaskInfo((prevTaskInfo) => ({
+          ...prevTaskInfo,
+          dueDate: result.data.dueDate,
+        }));
+        //console.log(taskInfo)
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const formatDueDate = (date) => {
+    if (date === null) {
+      return null;
+    } else {
+      const dueDate = new Date(date);
+      const format = { month: "long", day: "numeric" };
+      return dueDate.toLocaleString("en-US", format);
     }
-    else{
-      return "";
-}})*/
-  //console.log(taskInfo);
+  };
 
   return (
     <div className="task-page">
@@ -100,6 +148,15 @@ export default function TaskForm() {
           </div>
 
           <div className="popup-main-content">
+            {taskInfo.dueDate ? (
+              <div className="task-duedate">
+                <h5>Due Date:</h5>
+                <p>{formatDueDate(taskInfo.dueDate)}</p>
+              </div>
+            ) : (
+              <></>
+            )}
+
             <div className="popup-description">
               <div className="description-header">
                 <i className="material-icons"> edit_note</i>
@@ -116,8 +173,8 @@ export default function TaskForm() {
                   <div>
                     <button
                       type="submit"
-                      onClick={(e) => updateDescription(e, taskId)}
                       value={description}
+                      onClick={(e) => updateDescription(e, taskId)}
                     >
                       Save
                     </button>
@@ -130,7 +187,7 @@ export default function TaskForm() {
               ) : (
                 <button
                   className="text-description"
-                  onClick={(e) => setShowDescription(true)}
+                  onClick={() => setShowDescription(true)}
                 >
                   {description ? description : "Add a description"}
                 </button>
@@ -145,32 +202,59 @@ export default function TaskForm() {
               <div className="subtask-list">
                 {Array.isArray(taskInfo.subtask) &&
                   taskInfo.subtask.map((subtask, index) => (
-                    <div className="subtask-container" key={`subtask_${index}`}>
-                      <button
-                        className="subtask-button"
-                        onClick={() => setShowDate(true)}
-                      >
+                    <div className="subtask-wrapper" key={`subtask_${index}`}>
+                      <div className="subtask-container">
                         <input
                           type="checkbox"
                           id="subtaskCheckbox"
                           value="subtask-box"
                         ></input>
 
-                        <label htmlFor="subtask-box">
-                          {subtask.subtaskTitle}
-                        </label>
-                      </button>
-                    </div>
-                  ))}
+                        <button
+                          className="subtask-button"
+                          onClick={() => setSelectedSubtask(subtask)}
+                        >
+                          <div className="subtask-title">
+                            <label htmlFor="subtask-box">
+                              {subtask.subtaskTitle}
+                            </label>
+                          </div>
 
-                  {showDate && (
-                        <div>
-                          <p>calendar</p>
-                          <button onClick={() => setShowDate(false)}>
-                            <i className="material-icons">close</i>
+                          <div className="subtask-duedate">
+                            <p>{formatDueDate(subtask.dueDate)}</p>
+                          </div>
+                        </button>
+                      </div>
+
+                      {selectedSubtask === subtask && (
+                        <div className="subtask-options">
+                          <button
+                            className="subtask-date"
+                            onClick={() => setShowSubtaskDate(selectedSubtask)}
+                          >
+                            Date
+                          </button>
+
+                          <button className="subtask-close">
+                            <i
+                              className="material-icons"
+                              onClick={() => setSelectedSubtask(null)}
+                            >
+                              close
+                            </i>
                           </button>
                         </div>
                       )}
+
+                      {showSubtaskDate === subtask && (
+                        <CalendarPopup
+                          handleClose={handleSubtaskClose}
+                          onSubmit={handleSubtaskDateSubmit}
+                          id={subtask._id}
+                        />
+                      )}
+                    </div>
+                  ))}
               </div>
 
               {showInput ? (
@@ -204,11 +288,22 @@ export default function TaskForm() {
             </div>
 
             <div className="popup-duedate">
-              <h3>Due Date</h3>
-              <input type="datetime-local"></input>
+              <div className="option-buttons">
+                <button
+                  className="popup-date"
+                  onClick={() => setShowTaskDate(true)}
+                >
+                  Date
+                </button>
 
-              <button type="submit">Save</button>
-              <button>Close</button>
+                {showTaskDate && (
+                  <CalendarPopup
+                    handleClose={handleTaskClose}
+                    onSubmit={handleTaskDateSubmit}
+                    id={taskId}
+                  />
+                )}
+              </div>
             </div>
 
             <div className="popup-estimate">

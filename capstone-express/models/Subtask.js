@@ -8,7 +8,7 @@ const subtaskSchema = new mongoose.Schema({
   },
   dueDate: {
     type: Date,
-    default: Date.now,
+    default: null,
   },
   subtask: [
     {

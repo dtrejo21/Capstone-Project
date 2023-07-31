@@ -28,85 +28,138 @@
 
 .task-page .header {
   display: flex;
+  color: #37174d;
 }
 .task-page .header .material-icons {
   border: none;
 }
 
-.task-page .title-textarea{
-    font-size: 20px;
-    font-weight: 600;
-    border: none;
-    resize: none;
-    border-radius: 3px;
-    background-color: transparent;
-    padding: 4px 8px;
-    height: 32px;
-    margin: -4px 8px;
+.task-page .title-textarea {
+  font-size: 20px;
+  font-weight: 600;
+  border: none;
+  resize: none;
+  border-radius: 3px;
+  background-color: transparent;
+  padding: 4px 8px;
+  height: 32px;
+  margin: -4px 8px;
+  color: #37174d;
 }
-textarea{
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+textarea {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
-.popup-description, .popup-subtasks, .popup-duedate{
-    margin-top: 20px;
+.popup-description,
+.popup-subtasks,
+.popup-duedate {
+  margin-top: 20px;
 }
-.textarea-description, .text-description{
-    border: none;
-    color: #37174d;
-    resize: none;
-    border-radius: 3px;
-    height: 40px;
-    padding: 4px 12px;
-    background-color: #2709520f;
-    width: 300px;
-}
-
-.description-header{
-    display: flex;
-    height: 32px;
-    align-items: center;
-    display: flex;
-    margin: 0px 0px 4px 10px;
-    padding: 8px 0px;
+.textarea-description {
+  border: none;
+  color: #37174d;
+  resize: none;
+  border-radius: 3px;
+  height: 40px;
+  background-color: #2709520f;
+  width: 300px;
 }
 
-.create-subtask{
-    border: none;
-    color: #37174D;
-    display: flex;
-    align-items: center;
-    border-radius: 4px;
+.text-description {
+  border: none;
+  color: #37174d;
+  border-radius: 3px;
+  height: 40px;
+  background-color: #2709520f;
+  width: 300px;
+  display: flex;
+  padding: 8px 0px 0px 8px;
 }
 
-.create-subtask:hover{
-    background-color: #37174d4d;
+.description-header {
+  display: flex;
+  height: 32px;
+  align-items: center;
+  display: flex;
+  margin: 0px 0px 4px 10px;
+  padding: 8px 0px;
+  color: #37174d;
 }
 
-.subtask-header{
-    display: flex;
-    margin: 0px 0px 4px 10px;
-    padding: 8px 0px;
+.create-subtask {
+  border: none;
+  color: #37174d;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
 }
 
-.popup-main-content .material-icons{
-    margin-right: 6px;
+.create-subtask:hover {
+  background-color: #37174d4d;
 }
 
-.popup-subtasks .subtask-list{
-    margin: 6px;
+.subtask-header {
+  display: flex;
+  margin: 0px 0px 4px 10px;
+  padding: 8px 0px;
+  color: #37174d;
 }
 
-.popup-subtasks .subtask-container{
-    padding: 8px 8px 4px 12px;
-    box-shadow: 0px 1px 1px #17094240, 0px 1px 1px #2409424f;
-    background-color: white;
-    margin: 4px;
-    margin-bottom: 8px;
-    min-height: 32px;
-    border-radius: 8px
+.popup-main-content .material-icons {
+  margin-right: 6px;
 }
 
-.popup-subtasks .subtask-button{
-    border: none;
-    background-color: transparent;
+.popup-subtasks .subtask-list {
+  margin: 6px;
+}
+
+.popup-subtasks .subtask-container {
+  padding: 8px 8px 4px 12px;
+  box-shadow: 0px 1px 1px #17094240, 0px 1px 1px #2409424f;
+  background-color: white;
+  margin: 4px;
+  margin-bottom: 8px;
+  min-height: 32px;
+  border-radius: 8px;
+  display: flex;
+}
+
+.subtask-wrapper .subtask-container .subtask-button {
+  border: none;
+  width: 100%;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.subtask-options {
+  display: flex;
+}
+
+.subtask-options .subtask-close,
+.subtask-options .subtask-date {
+  background-color: transparent;
+  border: none;
+}
+
+.popup-date {
+  border: none;
+  background-color: #6f00ff;
+  color: white;
+  border-radius: 3px;
+  font-size: 14px;
+  padding: 6px 12px;
+  margin-left: 4px;
+}
+
+.subtask-container p{
+  color: #172b4dbd;
+}
+
+.task-duedate {
+  font-size: 14px;
+  margin: 6px;
+  margin-top: 10px;
+  color: #172b4d;
 }
