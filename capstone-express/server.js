@@ -9,11 +9,8 @@ const bcrypt = require("bcrypt");
 const BoardModel = require("./models/Board");
 const ListModel = require("./models/List");
 const predefinedList = require("./seeders/list");
-const { verify } = require("crypto");
 const TaskModel = require("./models/Task");
 const SubtaskModel = require("./models/Subtask");
-const { keyBy } = require("lodash");
-const { async } = require("regenerator-runtime");
 
 const app = express();
 
@@ -403,11 +400,14 @@ app.delete("/deleteSubtask/:taskId/:subtaskType", verifyUser, async (req, res) =
 
     if(subTaskType === "subtask"){//subtask is a parent
       await deleteSubtaskAndChildren(taskId);
+      res.json("Deleted");
     }
     else{//task is parent
         console.log("delete a subtask");
     }
 })
+
+
 
 app.listen(8000, () => {
   console.log("Server started on port 8000");

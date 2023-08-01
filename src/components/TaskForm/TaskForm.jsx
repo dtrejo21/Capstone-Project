@@ -12,6 +12,7 @@ export default function TaskForm() {
   const [showSubtaskDate, setShowSubtaskDate] = useState(null);
   const [showTaskDate, setShowTaskDate] = useState(false);
   const [selectedSubtask, setSelectedSubtask] = useState(null);
+  const [selectedCheckbox, setSelectedCheckbox] = useState(null);
 
   const navigate = useNavigate();
 
@@ -174,18 +175,27 @@ export default function TaskForm() {
 
   const handleDeleteSubtask = (subtaskId) => {
     const parentId = subtaskType === "subtask" ? subtaskId : taskId;
-    console.log("delete subtask");
+    
     axios
       .delete(`http://localhost:8000/deleteSubtask/${parentId}/${subtaskType}`)
       .then((result) => {
         if(subtaskType === "subtask") {
-          console.log(result);
-        } 
+          console.log("Type: ", subtaskType);
+        }
         else {
           console.log(result);
         }
       });
   };
+
+  //Handles the event when a checkbox is checked
+  const handleComplete = (subtask) => {
+    console.log("on change");
+    setSelectedCheckbox((prevSelectedSubtask) =>
+      prevSelectedSubtask === subtask ? null : subtask
+    );
+    
+  }
 
   return (
     <div className="task-page">
@@ -268,8 +278,10 @@ export default function TaskForm() {
                       <div className="subtask-container">
                         <input
                           type="checkbox"
-                          id="subtaskCheckbox"
+                          id={`subtask_${index}`}
                           value="subtask-box"
+                          checked={selectedCheckbox == subtask}
+                          onChange={() => handleComplete(subtask)}
                         ></input>
 
                         <button
@@ -277,7 +289,7 @@ export default function TaskForm() {
                           onClick={() => setSelectedSubtask(subtask)}
                         >
                           <div className="subtask-title">
-                            <label htmlFor="subtask-box">
+                            <label htmlFor={`subtask_${index}`}>
                               {subtask.subtaskTitle}
                             </label>
                           </div>
