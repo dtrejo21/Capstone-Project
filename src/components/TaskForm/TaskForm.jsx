@@ -170,16 +170,17 @@ export default function TaskForm() {
                     onChange={(e) => setDescription(e.target.value)}
                     className="textarea-description"
                   ></textarea>
-                  <div>
+                  <div className="description-options">
                     <button
                       type="submit"
                       value={description}
+                      className="save-description"
                       onClick={(e) => updateDescription(e, taskId)}
                     >
                       Save
                     </button>
 
-                    <button onClick={() => setShowDescription(false)}>
+                    <button className="cancel-description" onClick={() => setShowDescription(false)}>
                       Cancel
                     </button>
                   </div>
@@ -243,6 +244,10 @@ export default function TaskForm() {
                               close
                             </i>
                           </button>
+
+                          <button className="delete-subtask">
+                            <i className="material-icons">delete</i>
+                          </button>
                         </div>
                       )}
 
@@ -266,14 +271,15 @@ export default function TaskForm() {
                     onChange={(e) => setSubtaskTitle(e.target.value)}
                   />
 
-                  <div className="task-options">
+                  <div className="create-subtask-options">
                     <button
                       type="button"
+                      className="add-subtask"
                       onClick={(e) => createSubtask(e, taskId)}
                     >
                       Add
                     </button>
-                    <button onClick={() => setShowInput(false)}>Cancel</button>
+                    <button className="cancel-subtask" onClick={() => setShowInput(false)}>Cancel</button>
                   </div>
                 </form>
               ) : (
@@ -303,6 +309,10 @@ export default function TaskForm() {
                     id={taskId}
                   />
                 )}
+
+                <button className="delete-task">
+                  Delete
+                </button>
               </div>
             </div>
 

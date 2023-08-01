@@ -30,7 +30,6 @@ export default function Home() {
 
     return(
       <div className="home">
-        <Navbar/>
         <Sidebar isOpen={isOpen} handleToggle={handleToggle}/>
         <div className={`home-content ${isOpen ? "sidebar-open": ""}`}>
           <h1>{board.title}</h1>

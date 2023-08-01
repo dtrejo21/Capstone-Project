@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import SubjectPage from "./components/SubjectPage/SubjectPage";
 import TaskForm from "./components/TaskForm/TaskForm";
+import Navbar from "./components/Navbar/Navbar";
+import SortItems from "./components/SortItems/SortItems";
 
 export default function App() {
   const [user, setUser] = useState({});
@@ -31,21 +33,26 @@ export default function App() {
   return (
     <div className="app">
       <UserContext.Provider value="">
-          <Routes location={background || location}>
-            <Route path="/welcome" element={<Welcome />} />
-            <Route path="/" element={<Home />} />
-            <Route path="/subjects/:subjectTitle/:subjectId"element={<SubjectPage />}/>
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/study-space" element={<StudySpace />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/:taskTitle/:taskId" element={<TaskForm />}/>
+        <Navbar />
+        <Routes location={background || location}>
+          <Route path="/welcome" element={<Welcome />} />
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/subjects/:subjectTitle/:subjectId"
+            element={<SubjectPage />}
+          />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/study-space" element={<StudySpace />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/:taskTitle/:taskId" element={<TaskForm />} />
+          <Route path="/sort" element={<SortItems />} />
+        </Routes>
+
+        {background && (
+          <Routes>
+            <Route path="/:taskTitle/:taskId" element={<TaskForm />} />
           </Routes>
-          
-          {background && (
-            <Routes>
-              <Route path="/:taskTitle/:taskId" element={<TaskForm />}/>
-            </Routes>
-          )}
+        )}
       </UserContext.Provider>
     </div>
   );

@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow-y: auto;
   background-color: rgba(0, 0, 0, 0.5);
   color: #172b4d;
@@ -12,10 +12,9 @@
   align-items: center;
 }
 .task-page .task-popup-column {
-  width: auto;
   border-radius: 8px;
   background-color: white;
-  height: 600px;
+  width: 600px;
   margin: 0 16px 8px 32px;
 }
 
@@ -29,6 +28,7 @@
 .task-page .header {
   display: flex;
   color: #37174d;
+  margin: 0px 0px 4px 10px;
 }
 .task-page .header .material-icons {
   border: none;
@@ -45,6 +45,7 @@
   height: 32px;
   margin: -4px 8px;
   color: #37174d;
+  width: 100%;
 }
 textarea {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -55,33 +56,41 @@ textarea {
 .popup-duedate {
   margin-top: 20px;
 }
+
+.popup-description {
+  margin-left: 10px;
+  margin-right: 20px;
+}
+
 .textarea-description {
   border: none;
   color: #37174d;
-  resize: none;
   border-radius: 3px;
-  height: 40px;
+  height: 50px;
   background-color: #2709520f;
-  width: 300px;
+  width: 100%;
+  resize: none;
+  display: flex;
+  align-items: center;
+  padding: 8px 0px 0px 8px;
 }
 
 .text-description {
   border: none;
   color: #37174d;
   border-radius: 3px;
-  height: 40px;
+  height: 50px;
   background-color: #2709520f;
-  width: 300px;
+  width: 100%;
   display: flex;
   padding: 8px 0px 0px 8px;
 }
 
 .description-header {
   display: flex;
+  width: 100%;
   height: 32px;
-  align-items: center;
-  display: flex;
-  margin: 0px 0px 4px 10px;
+  margin: 0px 0px 4px 2px;
   padding: 8px 0px;
   color: #37174d;
 }
@@ -92,6 +101,7 @@ textarea {
   display: flex;
   align-items: center;
   border-radius: 4px;
+  margin-left: 8px;
 }
 
 .create-subtask:hover {
@@ -134,32 +144,88 @@ textarea {
 }
 
 .subtask-options {
+  border: none;
+  margin-left: 6px;
+  margin-bottom: 6px;
+  font-size: 14px;
   display: flex;
 }
 
-.subtask-options .subtask-close,
-.subtask-options .subtask-date {
+.subtask-date {
+  margin: 0px 4px 0px 0px;
+  background-color: rgb(76, 47, 205);
+  border: none;
+  color: white;
+  border-radius: 3px;
+  padding: 6px 12px;
+  margin-right: 8px;
+}
+
+.subtask-close,
+.delete-subtask {
   background-color: transparent;
   border: none;
+  font-size: 10px;
 }
 
 .popup-date {
   border: none;
-  background-color: #6f00ff;
-  color: white;
+  background-color: #2709520f;
+  color: black;
   border-radius: 3px;
   font-size: 14px;
   padding: 6px 12px;
   margin-left: 4px;
 }
 
-.subtask-container p{
+.subtask-container p {
   color: #172b4dbd;
 }
 
 .task-duedate {
   font-size: 14px;
-  margin: 6px;
   margin-top: 10px;
-  color: #172b4d;
+  color: #37174d;
+  margin: 0px 0px 4px 10px;
+}
+
+.popup-subtasks .subtask-input {
+  align-items: center;
+  padding: 0px 8px 4px 8px;
+}
+
+.popup-subtasks .subtask-input input {
+  border: none;
+  color: #2e174d;
+  cursor: pointer;
+  min-height: 35px;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0px 1px 1px #17094240, 0px 1px 1px #2409424f;
+}
+
+.create-subtask-options,
+.description-options {
+  display: flex;
+  margin-top: 6px;
+}
+
+.add-subtask,
+.cancel-subtask,
+.save-description,
+.cancel-description {
+  border: none;
+  background-color: #2709520f;
+  border-radius: 3px;
+  padding: 6px 12px;
+  margin-right: 8px;
+}
+
+.delete-task {
+  border: none;
+  color: white;
+  background-color: #CA3521;
+  border-radius: 3px;
+  padding: 6px 12px;
+  margin-left: 6px;
 }

@@ -312,9 +312,53 @@ app.post("/task/addTaskDueDate/:taskId", verifyUser, (req, res) => {
       res.json(updatedTask);
     })
     .catch((err) => console.log(err));
-
-
 });
+
+app.get("/sortTasks", (req, res) => {
+    const aggregateTask = [
+        {
+            $unwind: "$task"
+        },
+        {
+            $project:{
+                title: "$task.title",
+                dueDate: "$task.dueDate"
+            }
+        },
+        {$sort: {dueDate: 1}}
+    ];
+
+    ListModel.aggregate(aggregateTask)
+    .then(result => {
+        const taskList = result.filter(task => task.dueDate !== null).concat(result.filter(task => task.dueDate === null));
+        
+        res.json(taskList);
+    })
+    .catch(err => console.log(err))
+})
+
+app.get("/sortSubtasks", (req, res) => {
+    const aggregateSubtask = [
+        {
+            $unwind: "$subtask"
+        },
+        {
+            $project:{
+                subtaskTitle: "$subtask.subtaskTitle",
+                dueDate: "$subtask.dueDate"
+            }
+        },
+        {$sort: {dueDate: 1}}
+    ];
+
+    TaskModel.aggregate(aggregateSubtask)
+    .then(result => {
+        const subtaskList = result.filter(subtask => subtask.dueDate !== null).concat(result.filter(subtask => subtask.dueDate === null));
+        
+        res.json(subtaskList);
+    })
+    .catch(err => console.log(err))
+})
 
 app.listen(8000, () => {
   console.log("Server started on port 8000");
