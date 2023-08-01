@@ -19,6 +19,10 @@ export default function TaskForm() {
   const [title, setTitle] = useState(taskTitle);
   const [taskInfo, setTaskInfo] = useState([]);
 
+  const [subtaskType, setSubtaskType] = useState(null);
+  const [subtaskId, setSubtaskId] = useState("");
+  const [dueDate, setDueDate] = useState(null);
+
   const handleSubtaskClose = () => {
     setShowSubtaskDate(null);
   };
@@ -42,37 +46,51 @@ export default function TaskForm() {
 
   //will update the description & update it in the backend
   const updateDescription = (e, taskId) => {
+    const parentId = subtaskType === "subtask" ? subtaskId : taskId;
     e.preventDefault();
     axios
-      .post(`http://localhost:8000/task/updateDescription/${taskId}`, {
-        description,
-      })
+      .post(
+        `http://localhost:8000/task/updateDescription/${parentId}/${subtaskType}`,
+        {
+          description,
+        }
+      )
       .then((result) => {
-        //console.log(result.data.description);
-        setTaskInfo((prevTaskInfo) => ({
-          ...prevTaskInfo,
-          description: result.data.description,
-        }));
-        setDescription(result.data.description);
+        if (subtaskType === "subtask") {
+          console.log(result.data);
+          const { description } = result.data;
+          setTaskInfo({ description: description });
+        } else {
+          setTaskInfo((prevTaskInfo) => ({
+            ...prevTaskInfo,
+            description: result.data.description,
+          }));
+          console.log("Description: ", result.data.description);
+          setDescription(result.data.description);
+        }
         setShowDescription(false);
-        //console.log(taskInfo)
       })
       .catch((err) => console.log(err));
   };
 
   const createSubtask = (e, taskId) => {
+    const parentId = subtaskType === "subtask" ? subtaskId : taskId;
     e.preventDefault();
     axios
-      .post(`http://localhost:8000/createSubtask/${taskId}`, {
+      .post(`http://localhost:8000/createSubtask/${parentId}/${subtaskType}`, {
         subtaskTitle,
       })
       .then((result) => {
-        //console.log(result.data);
-
-        setTaskInfo((prevTaskInfo) => ({
-          ...prevTaskInfo,
-          subtask: [...prevTaskInfo.subtask, result.data],
-        }));
+        //console.log(subtaskType);
+        if (subtaskType === "subtask") {
+          console.log(result.data);
+          setTaskInfo({ dueDate: dueDate, subtask: result.data });
+        } else {
+          setTaskInfo((prevTaskInfo) => ({
+            ...prevTaskInfo,
+            subtask: [...prevTaskInfo.subtask, result.data],
+          }));
+        }
         setSubtaskTitle("");
       })
       .catch((err) => console.log(err));
@@ -100,21 +118,29 @@ export default function TaskForm() {
   };
 
   const handleTaskDateSubmit = (startDate, taskId) => {
+    const parentId = subtaskType === "subtask" ? subtaskId : taskId;
     console.log(startDate);
 
     const dueDate = new Date(startDate);
     console.log(dueDate);
     axios
-      .post(`http://localhost:8000/task/addTaskDueDate/${taskId}`, {
-        dueDate: dueDate,
-      })
+      .post(
+        `http://localhost:8000/task/addTaskDueDate/${parentId}/${subtaskType}`,
+        {
+          dueDate: dueDate,
+        }
+      )
       .then((result) => {
         console.log(result);
-        setTaskInfo((prevTaskInfo) => ({
-          ...prevTaskInfo,
-          dueDate: result.data.dueDate,
-        }));
-        //console.log(taskInfo)
+        if (subtaskType === "subtask") {
+          const { dueDate } = result.data;
+          setTaskInfo({ dueDate: dueDate });
+        } else {
+          setTaskInfo((prevTaskInfo) => ({
+            ...prevTaskInfo,
+            dueDate: result.data.dueDate,
+          }));
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -127,6 +153,38 @@ export default function TaskForm() {
       const format = { month: "long", day: "numeric" };
       return dueDate.toLocaleString("en-US", format);
     }
+  };
+
+  const handleSubtaskDetails = (subtaskId) => {
+    axios
+      .get(`http://localhost:8000/getSubtask/${subtaskId}`)
+      .then((result) => {
+        //destruct the data
+        const { subtaskTitle, description, dueDate, _id } = result.data[0];
+        //Set the new information
+        setSubtaskType(result.data.type);
+        setDueDate(dueDate);
+        setSubtaskId(_id);
+        setTitle(subtaskTitle);
+        setDescription(description);
+        setTaskInfo({ dueDate: dueDate, subtask: result.data.children });
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleDeleteSubtask = (subtaskId) => {
+    const parentId = subtaskType === "subtask" ? subtaskId : taskId;
+    console.log("delete subtask");
+    axios
+      .delete(`http://localhost:8000/deleteSubtask/${parentId}/${subtaskType}`)
+      .then((result) => {
+        if(subtaskType === "subtask") {
+          console.log(result);
+        } 
+        else {
+          console.log(result);
+        }
+      });
   };
 
   return (
@@ -180,7 +238,10 @@ export default function TaskForm() {
                       Save
                     </button>
 
-                    <button className="cancel-description" onClick={() => setShowDescription(false)}>
+                    <button
+                      className="cancel-description"
+                      onClick={() => setShowDescription(false)}
+                    >
                       Cancel
                     </button>
                   </div>
@@ -245,8 +306,17 @@ export default function TaskForm() {
                             </i>
                           </button>
 
-                          <button className="delete-subtask">
+                          <button
+                            className="delete-subtask"
+                            onClick={() => handleDeleteSubtask(subtask._id)}
+                          >
                             <i className="material-icons">delete</i>
+                          </button>
+
+                          <button
+                            onClick={() => handleSubtaskDetails(subtask._id)}
+                          >
+                            Add Details
                           </button>
                         </div>
                       )}
@@ -279,7 +349,12 @@ export default function TaskForm() {
                     >
                       Add
                     </button>
-                    <button className="cancel-subtask" onClick={() => setShowInput(false)}>Cancel</button>
+                    <button
+                      className="cancel-subtask"
+                      onClick={() => setShowInput(false)}
+                    >
+                      Cancel
+                    </button>
                   </div>
                 </form>
               ) : (
@@ -310,9 +385,7 @@ export default function TaskForm() {
                   />
                 )}
 
-                <button className="delete-task">
-                  Delete
-                </button>
+                <button className="delete-task">Delete</button>
               </div>
             </div>
 

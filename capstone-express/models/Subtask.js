@@ -6,16 +6,14 @@ const subtaskSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "tasks",
   },
+  description: {
+    type: String,
+    default: "",
+  },
   dueDate: {
     type: Date,
     default: null,
-  },
-  subtask: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "subtasks",
-    },
-  ],
+  }
 });
 
 const SubtaskModel = mongoose.model("subtasks", subtaskSchema);
