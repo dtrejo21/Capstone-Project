@@ -12,7 +12,7 @@ export default function TaskForm() {
   const [showSubtaskDate, setShowSubtaskDate] = useState(null);
   const [showTaskDate, setShowTaskDate] = useState(false);
   const [selectedSubtask, setSelectedSubtask] = useState(null);
-  const [selectedCheckbox, setSelectedCheckbox] = useState(null);
+  const [checkedBoxes, setCheckedBoxes] = useState([]);
 
   const navigate = useNavigate();
 
@@ -175,27 +175,46 @@ export default function TaskForm() {
 
   const handleDeleteSubtask = (subtaskId) => {
     const parentId = subtaskType === "subtask" ? subtaskId : taskId;
-    
+
     axios
       .delete(`http://localhost:8000/deleteSubtask/${parentId}/${subtaskType}`)
       .then((result) => {
-        if(subtaskType === "subtask") {
+        if (subtaskType === "subtask") {
           console.log("Type: ", subtaskType);
-        }
-        else {
+          console.log(result.data);
+        } else {
           console.log(result);
         }
       });
   };
 
   //Handles the event when a checkbox is checked
-  const handleComplete = (subtask) => {
-    console.log("on change");
-    setSelectedCheckbox((prevSelectedSubtask) =>
-      prevSelectedSubtask === subtask ? null : subtask
-    );
-    
-  }
+  const handleComplete = (subtaskId) => {
+    axios
+      .post(`http://localhost:8000/subtask/updateComplete/${subtaskId}`, {
+        isCompleted: true,
+      })
+      .then((result) => {
+        console.log(result.data);
+        if (subtaskType === "subtask") {
+          console.log("do nothing");
+        } 
+        else 
+        {
+          console.log("before: ", taskInfo)
+          setTaskInfo((prevTaskInfo) => ({
+            ...prevTaskInfo,
+            subtask: prevTaskInfo.subtask.map((subtask) =>
+              subtask._id === subtaskId
+                ? { ...subtask, isCompleted: result.data.isCompleted }
+                : subtask
+            ),
+          }));
+          console.log(taskInfo);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className="task-page">
@@ -278,18 +297,19 @@ export default function TaskForm() {
                       <div className="subtask-container">
                         <input
                           type="checkbox"
-                          id={`subtask_${index}`}
-                          value="subtask-box"
-                          checked={selectedCheckbox == subtask}
-                          onChange={() => handleComplete(subtask)}
+                          value={`subtask_${subtask._id}`}
+                          checked={subtask.isCompleted} //this will refer to the schema
+                          onChange={() => handleComplete(subtask._id)}
                         ></input>
+
+                        <p>{subtask.isCompleted}</p>
 
                         <button
                           className="subtask-button"
                           onClick={() => setSelectedSubtask(subtask)}
                         >
                           <div className="subtask-title">
-                            <label htmlFor={`subtask_${index}`}>
+                            <label htmlFor={`subtask_${subtask._id}`}>
                               {subtask.subtaskTitle}
                             </label>
                           </div>

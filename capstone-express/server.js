@@ -224,45 +224,46 @@ app.post("/createTask/:listId", verifyUser, (req, res) => {
 });
 
 //Update the task description and update the list with the new task
-app.post("/task/updateDescription/:taskId/:subtaskType", verifyUser, (req, res) => {
-  const taskId = req.params.taskId;
-  const subTaskType = req.params.subtaskType;
-  const { description } = req.body;
+app.post(
+  "/task/updateDescription/:taskId/:subtaskType",
+  verifyUser,
+  (req, res) => {
+    const taskId = req.params.taskId;
+    const subTaskType = req.params.subtaskType;
+    const { description } = req.body;
 
-  //Determines if we're updating the task or a subtask
-  if(subTaskType === "subtask")
-  {
-    SubtaskModel.findByIdAndUpdate(taskId, { description }, { new: true })
-      .then((updatedSubtask) => {
-          const taskSubtaskId = taskId;
-          TaskModel.findOneAndUpdate(
-            { "subtask._id": taskSubtaskId },
-            { $set: { "subtask.$.description": description } },
-            { new: true }
-          )
-          .then(updatedTask => {
-            //console.log(updatedSubtask);
-            res.json(updatedSubtask);
-          })
-        }
-      );
-  }
-  else{
-    TaskModel.findByIdAndUpdate(taskId, { description }, { new: true })
-    .then((updatedTask) => {
-      const listTaskId = taskId;
-      ListModel.findOneAndUpdate(
-        { "task._id": listTaskId },
-        { $set: { "task.$.description": description } },
+    //Determines if we're updating the task or a subtask
+    if (subTaskType === "subtask") {
+      SubtaskModel.findByIdAndUpdate(
+        taskId,
+        { description },
         { new: true }
-      );
-      res.json(updatedTask);
-    })
-    .catch((err) => console.log(err));
+      ).then((updatedSubtask) => {
+        const taskSubtaskId = taskId;
+        TaskModel.findOneAndUpdate(
+          { "subtask._id": taskSubtaskId },
+          { $set: { "subtask.$.description": description } },
+          { new: true }
+        ).then((updatedTask) => {
+          //console.log(updatedSubtask);
+          res.json(updatedSubtask);
+        });
+      });
+    } else {
+      TaskModel.findByIdAndUpdate(taskId, { description }, { new: true })
+        .then((updatedTask) => {
+          const listTaskId = taskId;
+          ListModel.findOneAndUpdate(
+            { "task._id": listTaskId },
+            { $set: { "task.$.description": description } },
+            { new: true }
+          );
+          res.json(updatedTask);
+        })
+        .catch((err) => console.log(err));
+    }
   }
-
-  
-});
+);
 
 app.post("/createSubtask/:taskId/:subtaskType", verifyUser, (req, res) => {
   const taskId = req.params.taskId;
@@ -273,8 +274,7 @@ app.post("/createSubtask/:taskId/:subtaskType", verifyUser, (req, res) => {
   SubtaskModel.create({ subtaskTitle, taskId, subtask })
     .then((newSubtask) => {
       if (subTaskType === "subtask") {
-        SubtaskModel.find({ taskId: taskId })
-        .then((subtasks) => {
+        SubtaskModel.find({ taskId: taskId }).then((subtasks) => {
           //console.log(subtasks);
           res.json(subtasks);
         });
@@ -333,17 +333,16 @@ app.post("/task/addTaskDueDate/:taskId/:subtaskType", verifyUser, (req, res) => 
     const dueDate = req.body.dueDate;
 
     if (subTaskType === "subtask") {
-      SubtaskModel.findByIdAndUpdate(taskId, { dueDate }, { new: true })
-      .then((updatedSubtask) => {
+      SubtaskModel.findByIdAndUpdate(taskId, { dueDate }, { new: true }).then(
+        (updatedSubtask) => {
           const taskSubtaskId = taskId;
           TaskModel.findOneAndUpdate(
             { "subtask._id": taskSubtaskId },
             { $set: { "subtask.$.dueDate": dueDate } },
             { new: true }
-          )
-          .then(updatedTask => {
+          ).then((updatedTask) => {
             res.json(updatedSubtask);
-          })
+          });
         }
       );
     } else {
@@ -376,38 +375,58 @@ app.get("/getSubtask/:subtaskId", verifyUser, (req, res) => {
     .catch((err) => console.log(err));
 });
 
-async function deleteSubtaskAndChildren(taskId){
-  const subtask = await SubtaskModel.findById(taskId)
+async function deleteSubtaskAndChildren(taskId) {
+  const subtask = await SubtaskModel.findById(taskId);
   console.log("Subtask:", subtask);
 
-  if(!subtask){
-    return; 
+  if (!subtask) {
+    return;
   }
   //exclude current subtask
-  const childSubtasks = await SubtaskModel.find({taskId: subtask._id});
-  for(const childSubtask of childSubtasks){
+  const childSubtasks = await SubtaskModel.find({ taskId: subtask._id });
+  for (const childSubtask of childSubtasks) {
     console.log("Child: ", childSubtask);
     await deleteSubtaskAndChildren(childSubtask._id);
   }
-  await SubtaskModel.deleteOne({_id: taskId})
-} 
+  await SubtaskModel.deleteOne({ _id: taskId });
+}
 
 //Delete subtask and any children nodes
-app.delete("/deleteSubtask/:taskId/:subtaskType", verifyUser, async (req, res) => {
+app.delete(
+  "/deleteSubtask/:taskId/:subtaskType",
+  verifyUser,
+  async (req, res) => {
     const taskId = req.params.taskId;
     const subTaskType = req.params.subtaskType;
-    console.log("TaskID:", taskId)
+    console.log("TaskID:", taskId);
 
-    if(subTaskType === "subtask"){//subtask is a parent
+    if (subTaskType === "subtask") {
+      //subtask is a parent
       await deleteSubtaskAndChildren(taskId);
       res.json("Deleted");
+    } else {
+      //task is parent
+      console.log("delete a subtask");
     }
-    else{//task is parent
-        console.log("delete a subtask");
-    }
-})
+  }
+);
 
+app.post("/subtask/updateComplete/:subtaskId", verifyUser, (req, res) => {
+  const subtaskId = req.params.subtaskId;
+  const isCompleted = req.body.isCompleted;
 
+  SubtaskModel.findByIdAndUpdate( subtaskId, { isCompleted }, { new: true })
+  .then((updatedSubtask) => {
+    const taskSubtaskId = subtaskId;
+    TaskModel.findOneAndUpdate(
+      { "subtask._id": taskSubtaskId },
+      { $set: { "subtask.$.isCompleted": isCompleted } },
+      { new: true }
+    ).then((updatedTask) => {
+      res.json(updatedSubtask);
+    });
+  });
+});
 
 app.listen(8000, () => {
   console.log("Server started on port 8000");
