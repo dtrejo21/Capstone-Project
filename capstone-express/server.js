@@ -11,6 +11,7 @@ const ListModel = require("./models/List");
 const predefinedList = require("./seeders/list");
 const TaskModel = require("./models/Task");
 const SubtaskModel = require("./models/Subtask");
+const { preview } = require("vite");
 
 const app = express();
 
@@ -327,7 +328,10 @@ app.post("/task/addSubtaskDueDate/:subtaskId", verifyUser, (req, res) => {
 });
 
 //Add a due date to a task
-app.post("/task/addTaskDueDate/:taskId/:subtaskType", verifyUser, (req, res) => {
+app.post(
+  "/task/addTaskDueDate/:taskId/:subtaskType",
+  verifyUser,
+  (req, res) => {
     const taskId = req.params.taskId;
     const subTaskType = req.params.subtaskType;
     const dueDate = req.body.dueDate;
@@ -377,7 +381,7 @@ app.get("/getSubtask/:subtaskId", verifyUser, (req, res) => {
 
 async function deleteSubtaskAndChildren(taskId) {
   const subtask = await SubtaskModel.findById(taskId);
-  console.log("Subtask:", subtask);
+  //console.log("Subtask being passed in:", subtask);
 
   if (!subtask) {
     return;
@@ -385,7 +389,7 @@ async function deleteSubtaskAndChildren(taskId) {
   //exclude current subtask
   const childSubtasks = await SubtaskModel.find({ taskId: subtask._id });
   for (const childSubtask of childSubtasks) {
-    console.log("Child: ", childSubtask);
+    //console.log("Child: ", childSubtask);
     await deleteSubtaskAndChildren(childSubtask._id);
   }
   await SubtaskModel.deleteOne({ _id: taskId });
@@ -398,15 +402,25 @@ app.delete(
   async (req, res) => {
     const taskId = req.params.taskId;
     const subTaskType = req.params.subtaskType;
-    console.log("TaskID:", taskId);
 
     if (subTaskType === "subtask") {
       //subtask is a parent
       await deleteSubtaskAndChildren(taskId);
       res.json("Deleted");
     } else {
-      //task is parent
-      console.log("delete a subtask");
+      //subtask is not a parent
+      const subtask = await SubtaskModel.findById({ _id: taskId });
+
+      //pass any subtask to check if there are any children
+      await deleteSubtaskAndChildren(taskId);
+
+      //Update the task by removing the subtask
+      await TaskModel.findOneAndUpdate(
+        { "subtask._id": taskId },
+        { $pull: { subtask: { _id: subtask._id } } },
+        { new: true }
+      );
+      res.json("delete a subtask that is not a parent");
     }
   }
 );
@@ -415,8 +429,11 @@ app.post("/subtask/updateComplete/:subtaskId", verifyUser, (req, res) => {
   const subtaskId = req.params.subtaskId;
   const isCompleted = req.body.isCompleted;
 
-  SubtaskModel.findByIdAndUpdate( subtaskId, { isCompleted }, { new: true })
-  .then((updatedSubtask) => {
+  SubtaskModel.findByIdAndUpdate(
+    subtaskId,
+    { isCompleted },
+    { new: true }
+  ).then((updatedSubtask) => {
     const taskSubtaskId = subtaskId;
     TaskModel.findOneAndUpdate(
       { "subtask._id": taskSubtaskId },
@@ -426,6 +443,105 @@ app.post("/subtask/updateComplete/:subtaskId", verifyUser, (req, res) => {
       res.json(updatedSubtask);
     });
   });
+});
+//matrix
+function editDistance(string1, string2){
+  //Filling up our array with the length of the string1, going to be rolling method
+  string1 = string1.toLowerCase();
+  string2 = string2.toLowerCase();
+  //console.log("s1: ", string1);
+  //console.log("s2: ", string2);
+
+  if(string1 === string2){
+    return 0;
+  }
+
+  let matrix = [];
+  /*for(let i = 0; i < string1.length; i++){
+    prevRow.push(i);
+  }*/
+
+  for(let i = 0; i <= string1.length; i++){
+    matrix[i] = [i];
+
+    for(let k = 1; k <= string2.length; k++){
+      if(i === 0){
+        matrix[i][k] = k;
+      }
+      else{
+        const cost = string1.charAt(i - 1) !== string2.charAt(k -1) ?  1 : 0;
+        matrix[i][k] = Math.min(matrix[i - 1][k] + 1, matrix[i][k - 1], matrix[i - 1][k -1] + cost);
+      }
+    }
+  }
+  console.log("matrix: ", matrix[string1.length][string2.length]);
+  return matrix[string1.length][string2.length];
+}
+
+function compareTitles(title, comparedTitle){
+  //determine which string is the longer string and the shorter string
+  let longerString = title.length >= comparedTitle.length ? title : comparedTitle;
+  let shorterString = title.length < comparedTitle.length ? title : comparedTitle;
+
+  longerString = longerString.replace(/\s/g, "");
+  shorterString = shorterString.replace(/\s/g, "");
+
+  //console.log("Longer String: ", longerString);
+  //console.log("Shorter String: ", shorterString);
+
+  return (longerString.length - editDistance(longerString, shorterString)) / parseFloat(longerString.length);
+}
+
+app.post("/suggestedTime", verifyUser, async (req, res) => {
+  //beginnings of an algorithm for tech challenge 1
+  try{
+    const scoredTitle = [];
+    const totalTime = [];
+    let result = 0, timeDifference = 0;
+    let days = 0, sum = 0, avg = 0;
+
+    //const allTasks = await TaskModel.find({});
+    const completedSubtasks = await SubtaskModel.find({isCompleted: true});
+    //console.log(completedSubtasks);
+    //console.log(allTasks);
+
+    //Score all of the titles 
+    for(let i = 0; i < completedSubtasks.length; i++){
+      result = compareTitles("chapter", completedSubtasks[i].subtaskTitle);
+      console.log("Result: ", result);
+      console.log(completedSubtasks[i].subtaskTitle)
+      //if good enough score, push into a new array
+      if(result >= 0.85){
+        scoredTitle.push(completedSubtasks[i]);
+      }
+    }
+
+    if(scoredTitle.length !== 0){
+      //Once we get all of the titles, time to do some math
+    for(let i = 0; i < scoredTitle.length; i++){
+      const createdDate = scoredTitle[i].createdAt;
+      const completedDate = scoredTitle[i].updatedAt;
+
+      //Calculate how long it took a subtask to be completed in days
+      timeDifference = completedDate - createdDate;
+      days = timeDifference/ (1000 * 60 * 60 * 24);
+
+      //Add the time to an array
+      totalTime.push(days);
+    }
+
+    sum = totalTime.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    avg = sum/ totalTime.length;
+    console.log("this is the average", avg);
+    res.json(avg);
+    }
+    else{
+      res.json("did not find a match");
+    }  
+  }
+  catch(error){
+    console.log(error);
+  }
 });
 
 app.listen(8000, () => {

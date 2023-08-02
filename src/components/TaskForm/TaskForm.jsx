@@ -174,34 +174,38 @@ export default function TaskForm() {
   };
 
   const handleDeleteSubtask = (subtaskId) => {
-    const parentId = subtaskType === "subtask" ? subtaskId : taskId;
-
+    const parentId = subtaskId;
     axios
       .delete(`http://localhost:8000/deleteSubtask/${parentId}/${subtaskType}`)
       .then((result) => {
         if (subtaskType === "subtask") {
-          console.log("Type: ", subtaskType);
-          console.log(result.data);
-        } else {
-          console.log(result);
+          //console.log(result);
+          setTaskInfo((prevTaskInfo) => ({
+            ...prevTaskInfo,
+            subtask: prevTaskInfo.subtask.filter((subtask) => subtask._id !== subtaskId)}));
+        } 
+        else {
+          //console.log(result);
+          setTaskInfo((prevTaskInfo) => ({
+            ...prevTaskInfo,
+            subtask: prevTaskInfo.subtask.filter((subtask) => subtask._id !== subtaskId)}));
         }
       });
   };
 
   //Handles the event when a checkbox is checked
-  const handleComplete = (subtaskId) => {
+  const handleComplete = (subtaskId, newIsCompleted) => {
     axios
       .post(`http://localhost:8000/subtask/updateComplete/${subtaskId}`, {
-        isCompleted: true,
+        isCompleted: newIsCompleted,
       })
       .then((result) => {
-        console.log(result.data);
+        //ttconsole.log(result.data);
         if (subtaskType === "subtask") {
-          console.log("do nothing");
+          console.log(result.data);
         } 
         else 
         {
-          console.log("before: ", taskInfo)
           setTaskInfo((prevTaskInfo) => ({
             ...prevTaskInfo,
             subtask: prevTaskInfo.subtask.map((subtask) =>
@@ -210,11 +214,17 @@ export default function TaskForm() {
                 : subtask
             ),
           }));
-          console.log(taskInfo);
         }
       })
       .catch((err) => console.log(err));
   };
+
+  const suggestedTime = () => {
+    axios.post("http://localhost:8000/suggestedTime")
+    .then(result => {
+      console.log(result.data);
+    })
+  }
 
   return (
     <div className="task-page">
@@ -284,6 +294,7 @@ export default function TaskForm() {
                 </button>
               )}
             </div>
+            <button onClick={suggestedTime}>tech challenge #2</button>
 
             <div className="popup-subtasks">
               <div className="subtask-header">
@@ -294,15 +305,13 @@ export default function TaskForm() {
                 {Array.isArray(taskInfo.subtask) &&
                   taskInfo.subtask.map((subtask, index) => (
                     <div className="subtask-wrapper" key={`subtask_${index}`}>
-                      <div className="subtask-container">
+                      <div className={`subtask-container ${subtask.isCompleted ? "crossed-out": ""}`}>
                         <input
                           type="checkbox"
                           value={`subtask_${subtask._id}`}
                           checked={subtask.isCompleted} //this will refer to the schema
-                          onChange={() => handleComplete(subtask._id)}
+                          onChange={() => handleComplete(subtask._id, !subtask.isCompleted)}
                         ></input>
-
-                        <p>{subtask.isCompleted}</p>
 
                         <button
                           className="subtask-button"

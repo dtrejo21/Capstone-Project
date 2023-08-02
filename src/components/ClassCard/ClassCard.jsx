@@ -22,7 +22,7 @@ export default function ClassCard() {
   }, []);
 
   const addNewSubject = (newSubject) => {
-    console.log("New subject added: ", newSubject);
+    //console.log("New subject added: ", newSubject);
     setSubject((subject) => [...subject, newSubject]);
   };
 
