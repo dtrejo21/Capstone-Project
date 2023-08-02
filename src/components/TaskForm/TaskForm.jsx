@@ -194,10 +194,10 @@ export default function TaskForm() {
   };
 
   //Handles the event when a checkbox is checked
-  const handleComplete = (subtaskId) => {
+  const handleComplete = (subtaskId, newIsCompleted) => {
     axios
       .post(`http://localhost:8000/subtask/updateComplete/${subtaskId}`, {
-        isCompleted: true,
+        isCompleted: newIsCompleted,
       })
       .then((result) => {
         //ttconsole.log(result.data);
@@ -304,15 +304,13 @@ export default function TaskForm() {
                 {Array.isArray(taskInfo.subtask) &&
                   taskInfo.subtask.map((subtask, index) => (
                     <div className="subtask-wrapper" key={`subtask_${index}`}>
-                      <div className="subtask-container">
+                      <div className={`subtask-container ${subtask.isCompleted ? "crossed-out": ""}`}>
                         <input
                           type="checkbox"
                           value={`subtask_${subtask._id}`}
                           checked={subtask.isCompleted} //this will refer to the schema
-                          onChange={() => handleComplete(subtask._id)}
+                          onChange={() => handleComplete(subtask._id, !subtask.isCompleted)}
                         ></input>
-
-                        <p>{subtask.isCompleted}</p>
 
                         <button
                           className="subtask-button"
