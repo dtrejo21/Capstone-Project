@@ -23,6 +23,7 @@ export default function TaskForm() {
   const [subtaskType, setSubtaskType] = useState(null);
   const [subtaskId, setSubtaskId] = useState("");
   const [dueDate, setDueDate] = useState(null);
+  const [isInputFocus, setIsInputFocus] = useState(false);
 
   const handleSubtaskClose = () => {
     setShowSubtaskDate(null);
@@ -182,13 +183,18 @@ export default function TaskForm() {
           //console.log(result);
           setTaskInfo((prevTaskInfo) => ({
             ...prevTaskInfo,
-            subtask: prevTaskInfo.subtask.filter((subtask) => subtask._id !== subtaskId)}));
-        } 
-        else {
+            subtask: prevTaskInfo.subtask.filter(
+              (subtask) => subtask._id !== subtaskId
+            ),
+          }));
+        } else {
           //console.log(result);
           setTaskInfo((prevTaskInfo) => ({
             ...prevTaskInfo,
-            subtask: prevTaskInfo.subtask.filter((subtask) => subtask._id !== subtaskId)}));
+            subtask: prevTaskInfo.subtask.filter(
+              (subtask) => subtask._id !== subtaskId
+            ),
+          }));
         }
       });
   };
@@ -203,9 +209,7 @@ export default function TaskForm() {
         //ttconsole.log(result.data);
         if (subtaskType === "subtask") {
           console.log(result.data);
-        } 
-        else 
-        {
+        } else {
           setTaskInfo((prevTaskInfo) => ({
             ...prevTaskInfo,
             subtask: prevTaskInfo.subtask.map((subtask) =>
@@ -219,12 +223,24 @@ export default function TaskForm() {
       .catch((err) => console.log(err));
   };
 
-  const suggestedTime = () => {
-    axios.post("http://localhost:8000/suggestedTime")
-    .then(result => {
-      console.log(result.data);
-    })
-  }
+  //Will set a timeout, which will run the algorithm after time is up, if we're on the input
+  useEffect(() => {
+    if(isInputFocus){
+      const timeoutId = setTimeout(() => suggestedTime(subtaskTitle), 3000);
+      return() => clearTimeout(timeoutId);
+    }
+    
+  }, [subtaskTitle, isInputFocus]);
+
+  const suggestedTime = (title) => {
+    //Run the comparison algorithm when time is out
+    console.log("FE title: ", title);
+    axios
+      .post("http://localhost:8000/suggestedTime", { title })
+      .then((result) => {
+        console.log(result.data);
+      });
+  };
 
   return (
     <div className="task-page">
@@ -294,6 +310,7 @@ export default function TaskForm() {
                 </button>
               )}
             </div>
+
             <button onClick={suggestedTime}>tech challenge #2</button>
 
             <div className="popup-subtasks">
@@ -305,12 +322,18 @@ export default function TaskForm() {
                 {Array.isArray(taskInfo.subtask) &&
                   taskInfo.subtask.map((subtask, index) => (
                     <div className="subtask-wrapper" key={`subtask_${index}`}>
-                      <div className={`subtask-container ${subtask.isCompleted ? "crossed-out": ""}`}>
+                      <div
+                        className={`subtask-container ${
+                          subtask.isCompleted ? "crossed-out" : ""
+                        }`}
+                      >
                         <input
                           type="checkbox"
                           value={`subtask_${subtask._id}`}
                           checked={subtask.isCompleted} //this will refer to the schema
-                          onChange={() => handleComplete(subtask._id, !subtask.isCompleted)}
+                          onChange={() =>
+                            handleComplete(subtask._id, !subtask.isCompleted)
+                          }
                         ></input>
 
                         <button
@@ -380,6 +403,8 @@ export default function TaskForm() {
                     placeholder="Enter subtask title"
                     value={subtaskTitle}
                     onChange={(e) => setSubtaskTitle(e.target.value)}
+                    onBlur={() => setIsInputFocus(false)}
+                    onFocus={() => setIsInputFocus(true)}
                   />
 
                   <div className="create-subtask-options">
