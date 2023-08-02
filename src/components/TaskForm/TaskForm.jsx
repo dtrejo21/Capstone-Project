@@ -236,7 +236,7 @@ export default function TaskForm() {
     //Run the comparison algorithm when time is out
     console.log("FE title: ", title);
     axios
-      .post("http://localhost:8000/suggestedTime", { title })
+      .get("http://localhost:8000/suggestedTime", { title })
       .then((result) => {
         console.log(result.data);
       });

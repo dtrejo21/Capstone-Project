@@ -328,7 +328,7 @@ app.post("/task/addSubtaskDueDate/:subtaskId", verifyUser, (req, res) => {
 });
 
 //Add a due date to a task
-app.post(
+app.get(
   "/task/addTaskDueDate/:taskId/:subtaskType",
   verifyUser,
   (req, res) => {
@@ -538,11 +538,11 @@ app.post("/suggestedTime", verifyUser, async (req, res) => {
         const completedDate = scoredTitle[i].updatedAt;
 
         //Calculate how long it took a subtask to be completed in days
-        timeDifference = completedDate - createdDate;
-        days = timeDifference / (1000 * 60 * 60 * 24);
+        timeDifferenceInMiliSecs = completedDate - createdDate;
+        daysDifference = timeDifferenceInMiliSecs / (1000 * 60 * 60 * 24);
 
         //Add the time to an array
-        totalTime.push(days);
+        totalTime.push(daysDifference);
       }
 
       sum = totalTime.reduce(
@@ -551,9 +551,9 @@ app.post("/suggestedTime", verifyUser, async (req, res) => {
       );
       avg = sum / totalTime.length;
       console.log("this is the average", avg);
-      res.json(avg);
+      res.status(200).json(avg);
     } else {
-      res.json("did not find a match");
+      res.status(404).json("No match found");
     }
   } catch (error) {
     console.log(error);
