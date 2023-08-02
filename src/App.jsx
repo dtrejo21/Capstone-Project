@@ -12,7 +12,6 @@ import axios from "axios";
 import SubjectPage from "./components/SubjectPage/SubjectPage";
 import TaskForm from "./components/TaskForm/TaskForm";
 import Navbar from "./components/Navbar/Navbar";
-import SortItems from "./components/SortItems/SortItems";
 
 export default function App() {
   const [user, setUser] = useState({});
@@ -45,12 +44,12 @@ export default function App() {
           <Route path="/study-space" element={<StudySpace />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/:taskTitle/:taskId" element={<TaskForm />} />
-          <Route path="/sort" element={<SortItems />} />
         </Routes>
 
         {background && (
           <Routes>
             <Route path="/:taskTitle/:taskId" element={<TaskForm />} />
+            <Route path="/:subtaskTitle/:subtaskId"/>
           </Routes>
         )}
       </UserContext.Provider>
