@@ -328,7 +328,7 @@ app.post("/task/addSubtaskDueDate/:subtaskId", verifyUser, (req, res) => {
 });
 
 //Add a due date to a task
-app.get(
+app.post(
   "/task/addTaskDueDate/:taskId/:subtaskType",
   verifyUser,
   (req, res) => {
@@ -500,7 +500,7 @@ function compareTitles(title, comparedTitle) {
   );
 }
 
-app.post("/suggestedTime", verifyUser, async (req, res) => {
+app.get("/suggestedTime", verifyUser, async (req, res) => {
   //console.log("Body: ", req.body);
   const { title } = req.body;
   //console.log("\n\ntitle", title);
