@@ -449,17 +449,12 @@ function editDistance(string1, string2) {
   //Filling up our array with the length of the string1, going to be rolling method
   string1 = string1.toLowerCase();
   string2 = string2.toLowerCase();
-  //console.log("s1: ", string1);
-  //console.log("s2: ", string2);
 
   if (string1 === string2) {
     return 0;
   }
 
   let matrix = [];
-  /*for(let i = 0; i < string1.length; i++){
-    prevRow.push(i);
-  }*/
 
   for (let i = 0; i <= string1.length; i++) {
     matrix[i] = [i];
@@ -491,9 +486,6 @@ function compareTitles(title, comparedTitle) {
   longerString = longerString.replace(/\s/g, "");
   shorterString = shorterString.replace(/\s/g, "");
 
-  //console.log("Longer String: ", longerString);
-  //console.log("Shorter String: ", shorterString);
-
   return (
     (longerString.length - editDistance(longerString, shorterString)) /
     parseFloat(longerString.length)
@@ -501,23 +493,20 @@ function compareTitles(title, comparedTitle) {
 }
 
 app.get("/suggestedTime", verifyUser, async (req, res) => {
-  //console.log("Body: ", req.body);
-  const { title } = req.body;
-  //console.log("\n\ntitle", title);
+  const { title } = req.query;
+  console.log("Body: ", req.query);
 
   try {
     const scoredTitle = [];
     const totalTime = [];
     let result = 0,
-      timeDifference = 0;
-    let days = 0,
+    timeDifferenceInMiliSecs = 0;
+    let daysDifference = 0,
       sum = 0,
       avg = 0;
 
     //const allTasks = await TaskModel.find({});
     const completedSubtasks = await SubtaskModel.find({ isCompleted: true });
-    //console.log(completedSubtasks);
-    //console.log(allTasks);
 
     //Score all of the titles
     for (let i = 0; i < completedSubtasks.length; i++) {
@@ -544,7 +533,7 @@ app.get("/suggestedTime", verifyUser, async (req, res) => {
         //Add the time to an array
         totalTime.push(daysDifference);
       }
-
+      //Get the sum of the array and find the average
       sum = totalTime.reduce(
         (accumulator, currentValue) => accumulator + currentValue,
         0
