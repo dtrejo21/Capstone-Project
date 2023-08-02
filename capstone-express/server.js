@@ -327,7 +327,10 @@ app.post("/task/addSubtaskDueDate/:subtaskId", verifyUser, (req, res) => {
 });
 
 //Add a due date to a task
-app.post("/task/addTaskDueDate/:taskId/:subtaskType", verifyUser, (req, res) => {
+app.post(
+  "/task/addTaskDueDate/:taskId/:subtaskType",
+  verifyUser,
+  (req, res) => {
     const taskId = req.params.taskId;
     const subTaskType = req.params.subtaskType;
     const dueDate = req.body.dueDate;
@@ -377,7 +380,7 @@ app.get("/getSubtask/:subtaskId", verifyUser, (req, res) => {
 
 async function deleteSubtaskAndChildren(taskId) {
   const subtask = await SubtaskModel.findById(taskId);
-  console.log("Subtask:", subtask);
+  //console.log("Subtask being passed in:", subtask);
 
   if (!subtask) {
     return;
@@ -385,7 +388,7 @@ async function deleteSubtaskAndChildren(taskId) {
   //exclude current subtask
   const childSubtasks = await SubtaskModel.find({ taskId: subtask._id });
   for (const childSubtask of childSubtasks) {
-    console.log("Child: ", childSubtask);
+    //console.log("Child: ", childSubtask);
     await deleteSubtaskAndChildren(childSubtask._id);
   }
   await SubtaskModel.deleteOne({ _id: taskId });
@@ -398,15 +401,25 @@ app.delete(
   async (req, res) => {
     const taskId = req.params.taskId;
     const subTaskType = req.params.subtaskType;
-    console.log("TaskID:", taskId);
 
     if (subTaskType === "subtask") {
       //subtask is a parent
       await deleteSubtaskAndChildren(taskId);
       res.json("Deleted");
     } else {
-      //task is parent
-      console.log("delete a subtask");
+      //subtask is not a parent
+      const subtask = await SubtaskModel.findById({ _id: taskId });
+
+      //pass any subtask to check if there are any children
+      await deleteSubtaskAndChildren(taskId);
+
+      //Update the task by removing the subtask
+      await TaskModel.findOneAndUpdate(
+        { "subtask._id": taskId },
+        { $pull: { subtask: { _id: subtask._id } } },
+        { new: true }
+      );
+      res.json("delete a subtask that is not a parent");
     }
   }
 );
@@ -415,8 +428,11 @@ app.post("/subtask/updateComplete/:subtaskId", verifyUser, (req, res) => {
   const subtaskId = req.params.subtaskId;
   const isCompleted = req.body.isCompleted;
 
-  SubtaskModel.findByIdAndUpdate( subtaskId, { isCompleted }, { new: true })
-  .then((updatedSubtask) => {
+  SubtaskModel.findByIdAndUpdate(
+    subtaskId,
+    { isCompleted },
+    { new: true }
+  ).then((updatedSubtask) => {
     const taskSubtaskId = subtaskId;
     TaskModel.findOneAndUpdate(
       { "subtask._id": taskSubtaskId },
@@ -426,6 +442,10 @@ app.post("/subtask/updateComplete/:subtaskId", verifyUser, (req, res) => {
       res.json(updatedSubtask);
     });
   });
+});
+
+app.post("/suggestedTime", verifyUser, async (req, res) => {
+  //beginnings of an algorithm for tech challenge 1
 });
 
 app.listen(8000, () => {

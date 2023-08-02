@@ -174,16 +174,21 @@ export default function TaskForm() {
   };
 
   const handleDeleteSubtask = (subtaskId) => {
-    const parentId = subtaskType === "subtask" ? subtaskId : taskId;
-
+    const parentId = subtaskId;
     axios
       .delete(`http://localhost:8000/deleteSubtask/${parentId}/${subtaskType}`)
       .then((result) => {
         if (subtaskType === "subtask") {
-          console.log("Type: ", subtaskType);
-          console.log(result.data);
-        } else {
-          console.log(result);
+          //console.log(result);
+          setTaskInfo((prevTaskInfo) => ({
+            ...prevTaskInfo,
+            subtask: prevTaskInfo.subtask.filter((subtask) => subtask._id !== subtaskId)}));
+        } 
+        else {
+          //console.log(result);
+          setTaskInfo((prevTaskInfo) => ({
+            ...prevTaskInfo,
+            subtask: prevTaskInfo.subtask.filter((subtask) => subtask._id !== subtaskId)}));
         }
       });
   };
@@ -195,13 +200,12 @@ export default function TaskForm() {
         isCompleted: true,
       })
       .then((result) => {
-        console.log(result.data);
+        //ttconsole.log(result.data);
         if (subtaskType === "subtask") {
-          console.log("do nothing");
+          console.log(result.data);
         } 
         else 
         {
-          console.log("before: ", taskInfo)
           setTaskInfo((prevTaskInfo) => ({
             ...prevTaskInfo,
             subtask: prevTaskInfo.subtask.map((subtask) =>
@@ -210,11 +214,17 @@ export default function TaskForm() {
                 : subtask
             ),
           }));
-          console.log(taskInfo);
         }
       })
       .catch((err) => console.log(err));
   };
+
+  const suggestedTime = () => {
+    axios.post("http://localhost:8000/suggestedTime")
+    .then(result => {
+      console.log(result.data);
+    })
+  }
 
   return (
     <div className="task-page">
