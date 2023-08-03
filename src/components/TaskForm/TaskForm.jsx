@@ -12,7 +12,6 @@ export default function TaskForm() {
   const [showSubtaskDate, setShowSubtaskDate] = useState(null);
   const [showTaskDate, setShowTaskDate] = useState(false);
   const [selectedSubtask, setSelectedSubtask] = useState(null);
-  const [checkedBoxes, setCheckedBoxes] = useState([]);
 
   const navigate = useNavigate();
 
@@ -23,6 +22,9 @@ export default function TaskForm() {
   const [subtaskType, setSubtaskType] = useState(null);
   const [subtaskId, setSubtaskId] = useState("");
   const [dueDate, setDueDate] = useState(null);
+  const [isInputFocus, setIsInputFocus] = useState(false);
+  const [showSuggestedDate, setShowSuggestedDate] = useState(false);
+  const [estimatedDate, setEstimatedDate] = useState("");
 
   const handleSubtaskClose = () => {
     setShowSubtaskDate(null);
@@ -182,13 +184,18 @@ export default function TaskForm() {
           //console.log(result);
           setTaskInfo((prevTaskInfo) => ({
             ...prevTaskInfo,
-            subtask: prevTaskInfo.subtask.filter((subtask) => subtask._id !== subtaskId)}));
-        } 
-        else {
+            subtask: prevTaskInfo.subtask.filter(
+              (subtask) => subtask._id !== subtaskId
+            ),
+          }));
+        } else {
           //console.log(result);
           setTaskInfo((prevTaskInfo) => ({
             ...prevTaskInfo,
-            subtask: prevTaskInfo.subtask.filter((subtask) => subtask._id !== subtaskId)}));
+            subtask: prevTaskInfo.subtask.filter(
+              (subtask) => subtask._id !== subtaskId
+            ),
+          }));
         }
       });
   };
@@ -203,9 +210,7 @@ export default function TaskForm() {
         //ttconsole.log(result.data);
         if (subtaskType === "subtask") {
           console.log(result.data);
-        } 
-        else 
-        {
+        } else {
           setTaskInfo((prevTaskInfo) => ({
             ...prevTaskInfo,
             subtask: prevTaskInfo.subtask.map((subtask) =>
@@ -219,12 +224,39 @@ export default function TaskForm() {
       .catch((err) => console.log(err));
   };
 
-  const suggestedTime = () => {
-    axios.post("http://localhost:8000/suggestedTime")
-    .then(result => {
-      console.log(result.data);
-    })
-  }
+  //Will set a timeout, which will run the algorithm after time is up, if we're on the input
+  useEffect(() => {
+    if (isInputFocus) {
+      const timeoutId = setTimeout(() => suggestedTime(subtaskTitle), 3000);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [subtaskTitle, isInputFocus]);
+
+  const suggestedTime = (title) => {
+    //Run the comparison algorithm when time is out
+    console.log("FE title: ", title);
+    axios
+      .get("http://localhost:8000/suggestedTime", { params: { title } })
+      .then((result) => {
+        console.log(result.status);
+        //If we get a successful result
+        if (result.status === 200) {
+          console.log(result.data);
+          setShowSuggestedDate(true);
+
+          /*//will display the estimte based off the amount of days
+          setEstimatedDate(Math.round(result.data));*/
+
+          //give a date based of the estimate 
+          const newDate = new Date(Date.now() + result.data * 24 * 60 * 60 * 1000);
+          setEstimatedDate(formatDueDate(newDate));
+
+        } else {
+          setShowSuggestedDate(false);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className="task-page">
@@ -294,7 +326,6 @@ export default function TaskForm() {
                 </button>
               )}
             </div>
-            <button onClick={suggestedTime}>tech challenge #2</button>
 
             <div className="popup-subtasks">
               <div className="subtask-header">
@@ -305,12 +336,18 @@ export default function TaskForm() {
                 {Array.isArray(taskInfo.subtask) &&
                   taskInfo.subtask.map((subtask, index) => (
                     <div className="subtask-wrapper" key={`subtask_${index}`}>
-                      <div className={`subtask-container ${subtask.isCompleted ? "crossed-out": ""}`}>
+                      <div
+                        className={`subtask-container ${
+                          subtask.isCompleted ? "crossed-out" : ""
+                        }`}
+                      >
                         <input
                           type="checkbox"
                           value={`subtask_${subtask._id}`}
                           checked={subtask.isCompleted} //this will refer to the schema
-                          onChange={() => handleComplete(subtask._id, !subtask.isCompleted)}
+                          onChange={() =>
+                            handleComplete(subtask._id, !subtask.isCompleted)
+                          }
                         ></input>
 
                         <button
@@ -380,6 +417,8 @@ export default function TaskForm() {
                     placeholder="Enter subtask title"
                     value={subtaskTitle}
                     onChange={(e) => setSubtaskTitle(e.target.value)}
+                    onBlur={() => setIsInputFocus(false)}
+                    onFocus={() => setIsInputFocus(true)}
                   />
 
                   <div className="create-subtask-options">
@@ -397,6 +436,11 @@ export default function TaskForm() {
                       Cancel
                     </button>
                   </div>
+                  {showSuggestedDate && (
+                    <div className="estimated-dueDate">
+                      <p>Estimated time of completion: {estimatedDate}</p>
+                    </div>
+                  )}
                 </form>
               ) : (
                 <button
@@ -428,10 +472,6 @@ export default function TaskForm() {
 
                 <button className="delete-task">Delete</button>
               </div>
-            </div>
-
-            <div className="popup-estimate">
-              <h3>Estimate</h3>
             </div>
           </div>
         </div>
