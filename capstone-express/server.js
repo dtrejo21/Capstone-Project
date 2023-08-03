@@ -494,13 +494,12 @@ function compareTitles(title, comparedTitle) {
 
 app.get("/suggestedTime", verifyUser, async (req, res) => {
   const { title } = req.query;
-  console.log("Body: ", req.query);
 
   try {
     const scoredTitle = [];
     const totalTime = [];
     let result = 0,
-    timeDifferenceInMiliSecs = 0;
+      timeDifferenceInMiliSecs = 0;
     let daysDifference = 0,
       sum = 0,
       avg = 0;
@@ -539,11 +538,40 @@ app.get("/suggestedTime", verifyUser, async (req, res) => {
         0
       );
       avg = sum / totalTime.length;
-      console.log("this is the average", avg);
-      
+      //If the average is less than a day, give it a day
+      if (avg < 1) {
+        avg = 1;
+      }
+      //console.log("this is the average", avg);
+
       res.status(200).json(avg);
     } else {
       res.status(404).json("No match found");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+//Will query the previous subtask by using taskId
+app.get("/returnToPrevious/:taskId", verifyUser, async (req, res) => {
+  const { taskId } = req.params;
+  //console.log(taskId);
+
+  try {
+    //Find the current subtask taskId
+    const currentSubtask = await SubtaskModel.findById({_id: taskId})
+    //Find the previous subtask using the taskId
+    const prevSubtask = await SubtaskModel.findById({_id: currentSubtask.taskId});
+
+    //If null, then we need to go to find the task parent
+    if (prevSubtask === null) {
+      const prevTask = await TaskModel.findById({ _id: currentSubtask.taskId });
+      //console.log(prevTask);
+      res.status(200).json(prevTask);
+    } else {
+      //If not null, find any children it may have
+      const prevSubtaskChildren = await SubtaskModel.find({taskId: prevSubtask._id});
+      res.status(200).json({prevSubtask, type: "subtask", children: prevSubtaskChildren});
     }
   } catch (error) {
     console.log(error);

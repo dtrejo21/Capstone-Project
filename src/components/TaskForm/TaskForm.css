@@ -241,8 +241,25 @@ textarea {
 
 .estimated-dueDate{
   font-size: 14px;
-  padding: 4px 8px 6px 6px;
+  padding: 6px 8px 6px 6px;
   margin-top: 10px;
   border-radius: 3px;
   background-color: #965df241;
+  display: flex;
+  position: relative;
+
+}
+
+.return-button{
+  border: none;
+  font-size: 12px;
+  margin-left: -8px;
+}
+
+.close-suggested-date{
+  border: none;
+  font-size: 2px;
+  background-color: transparent;
+  position: absolute;
+  right: 0;
 }

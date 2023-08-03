@@ -227,14 +227,13 @@ export default function TaskForm() {
   //Will set a timeout, which will run the algorithm after time is up, if we're on the input
   useEffect(() => {
     if (isInputFocus) {
-      const timeoutId = setTimeout(() => suggestedTime(subtaskTitle), 3000);
+      const timeoutId = setTimeout(() => suggestedTime(subtaskTitle), 5000);
       return () => clearTimeout(timeoutId);
     }
   }, [subtaskTitle, isInputFocus]);
 
   const suggestedTime = (title) => {
     //Run the comparison algorithm when time is out
-    console.log("FE title: ", title);
     axios
       .get("http://localhost:8000/suggestedTime", { params: { title } })
       .then((result) => {
@@ -243,9 +242,6 @@ export default function TaskForm() {
         if (result.status === 200) {
           console.log(result.data);
           setShowSuggestedDate(true);
-
-          /*//will display the estimte based off the amount of days
-          setEstimatedDate(Math.round(result.data));*/
 
           //give a date based of the estimate 
           const newDate = new Date(Date.now() + result.data * 24 * 60 * 60 * 1000);
@@ -258,11 +254,43 @@ export default function TaskForm() {
       .catch((err) => console.log(err));
   };
 
+  //Handle the return button, will return to the previous subtask
+  const handleReturn = () => {
+    const parentId = subtaskId;
+
+    axios.get(`http://localhost:8000/returnToPrevious/${parentId}`)
+    .then(result => {
+      console.log(result.data);
+      if(result.data.type === "subtask"){
+        const { subtaskTitle, description, dueDate, _id } = result.data.prevSubtask;
+        //Set the new information
+        setSubtaskType(result.data.type);
+        setDueDate(dueDate);
+        setSubtaskId(_id);
+        setTitle(subtaskTitle);
+        setDescription(description);
+        setTaskInfo({ dueDate: dueDate, subtask: result.data.children });
+      }
+      else{//Return UI to parent task
+        setSubtaskType(null);
+        setTitle(result.data.title);
+        setDescription(result.data.description);
+        setTaskInfo(result.data);
+      }
+    })
+  }
+
   return (
     <div className="task-page">
       <div className="task-popup-column">
         <div className="task-popup-container">
           <div className="header">
+            {subtaskType === "subtask" && (
+              <button onClick={handleReturn} className="return-button"> 
+              <i className="material-icons">arrow_back</i>
+            </button>
+            )}
+            
             <i className="material-icons">book</i>
 
             <textarea
@@ -438,6 +466,11 @@ export default function TaskForm() {
                   </div>
                   {showSuggestedDate && (
                     <div className="estimated-dueDate">
+                      <div className="suggestion-header">
+                        <button className="close-suggested-date" onClick={() => setShowSuggestedDate(false)}>
+                        <i className="material-icons">close</i>
+                      </button>
+                      </div>
                       <p>Estimated time of completion: {estimatedDate}</p>
                     </div>
                   )}
