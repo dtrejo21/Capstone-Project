@@ -12,7 +12,6 @@ export default function TaskForm() {
   const [showSubtaskDate, setShowSubtaskDate] = useState(null);
   const [showTaskDate, setShowTaskDate] = useState(false);
   const [selectedSubtask, setSelectedSubtask] = useState(null);
-  const [checkedBoxes, setCheckedBoxes] = useState([]);
 
   const navigate = useNavigate();
 
@@ -24,6 +23,8 @@ export default function TaskForm() {
   const [subtaskId, setSubtaskId] = useState("");
   const [dueDate, setDueDate] = useState(null);
   const [isInputFocus, setIsInputFocus] = useState(false);
+  const [showSuggestedDate, setShowSuggestedDate] = useState(false);
+  const [estimatedDate, setEstimatedDate] = useState("");
 
   const handleSubtaskClose = () => {
     setShowSubtaskDate(null);
@@ -225,21 +226,36 @@ export default function TaskForm() {
 
   //Will set a timeout, which will run the algorithm after time is up, if we're on the input
   useEffect(() => {
-    if(isInputFocus){
+    if (isInputFocus) {
       const timeoutId = setTimeout(() => suggestedTime(subtaskTitle), 3000);
-      return() => clearTimeout(timeoutId);
+      return () => clearTimeout(timeoutId);
     }
-    
   }, [subtaskTitle, isInputFocus]);
 
   const suggestedTime = (title) => {
     //Run the comparison algorithm when time is out
     console.log("FE title: ", title);
     axios
-      .get("http://localhost:8000/suggestedTime", {params: {title}})
+      .get("http://localhost:8000/suggestedTime", { params: { title } })
       .then((result) => {
-        console.log(result.data);
-      });
+        console.log(result.status);
+        //If we get a successful result
+        if (result.status === 200) {
+          console.log(result.data);
+          setShowSuggestedDate(true);
+
+          /*//will display the estimte based off the amount of days
+          setEstimatedDate(Math.round(result.data));*/
+
+          //give a date based of the estimate 
+          const newDate = new Date(Date.now() + result.data * 24 * 60 * 60 * 1000);
+          setEstimatedDate(formatDueDate(newDate));
+
+        } else {
+          setShowSuggestedDate(false);
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -310,8 +326,6 @@ export default function TaskForm() {
                 </button>
               )}
             </div>
-
-            <button onClick={suggestedTime}>tech challenge #2</button>
 
             <div className="popup-subtasks">
               <div className="subtask-header">
@@ -422,6 +436,11 @@ export default function TaskForm() {
                       Cancel
                     </button>
                   </div>
+                  {showSuggestedDate && (
+                    <div className="estimated-dueDate">
+                      <p>Estimated time of completion: {estimatedDate}</p>
+                    </div>
+                  )}
                 </form>
               ) : (
                 <button
@@ -453,10 +472,6 @@ export default function TaskForm() {
 
                 <button className="delete-task">Delete</button>
               </div>
-            </div>
-
-            <div className="popup-estimate">
-              <h3>Estimate</h3>
             </div>
           </div>
         </div>

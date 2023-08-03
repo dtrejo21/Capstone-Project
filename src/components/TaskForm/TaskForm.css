@@ -54,7 +54,7 @@ textarea {
 .popup-description,
 .popup-subtasks,
 .popup-duedate {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .popup-description {
@@ -233,4 +233,16 @@ textarea {
 .crossed-out{
   text-decoration: line-through;
   color: gray;
+}
+
+.option-buttons{
+  padding-bottom: 12px;
+}
+
+.estimated-dueDate{
+  font-size: 14px;
+  padding: 4px 8px 6px 6px;
+  margin-top: 10px;
+  border-radius: 3px;
+  background-color: #965df241;
 }

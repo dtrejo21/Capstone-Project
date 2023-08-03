@@ -540,6 +540,7 @@ app.get("/suggestedTime", verifyUser, async (req, res) => {
       );
       avg = sum / totalTime.length;
       console.log("this is the average", avg);
+      
       res.status(200).json(avg);
     } else {
       res.status(404).json("No match found");
