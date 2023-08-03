@@ -273,6 +273,7 @@ export default function TaskForm() {
         setTaskInfo({ dueDate: dueDate, subtask: result.data.children });
       }
       else{//Return UI to parent task
+        setSubtaskType(null);
         setTitle(result.data.title);
         setDescription(result.data.description);
         setTaskInfo(result.data);

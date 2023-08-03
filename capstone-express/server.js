@@ -560,9 +560,8 @@ app.get("/returnToPrevious/:taskId", verifyUser, async (req, res) => {
   try {
     //Find the current subtask taskId
     const currentSubtask = await SubtaskModel.findById({_id: taskId})
-    //Find the previous subtask using the taskId and it's children
+    //Find the previous subtask using the taskId
     const prevSubtask = await SubtaskModel.findById({_id: currentSubtask.taskId});
-    const prevSubtaskChildren = await SubtaskModel.find({taskId: prevSubtask._id});
 
     //If null, then we need to go to find the task parent
     if (prevSubtask === null) {
@@ -570,6 +569,8 @@ app.get("/returnToPrevious/:taskId", verifyUser, async (req, res) => {
       //console.log(prevTask);
       res.status(200).json(prevTask);
     } else {
+      //If not null, find any children it may have
+      const prevSubtaskChildren = await SubtaskModel.find({taskId: prevSubtask._id});
       res.status(200).json({prevSubtask, type: "subtask", children: prevSubtaskChildren});
     }
   } catch (error) {
