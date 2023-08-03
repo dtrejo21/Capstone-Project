@@ -227,14 +227,13 @@ export default function TaskForm() {
   //Will set a timeout, which will run the algorithm after time is up, if we're on the input
   useEffect(() => {
     if (isInputFocus) {
-      const timeoutId = setTimeout(() => suggestedTime(subtaskTitle), 3000);
+      const timeoutId = setTimeout(() => suggestedTime(subtaskTitle), 5000);
       return () => clearTimeout(timeoutId);
     }
   }, [subtaskTitle, isInputFocus]);
 
   const suggestedTime = (title) => {
     //Run the comparison algorithm when time is out
-    console.log("FE title: ", title);
     axios
       .get("http://localhost:8000/suggestedTime", { params: { title } })
       .then((result) => {
@@ -467,6 +466,11 @@ export default function TaskForm() {
                   </div>
                   {showSuggestedDate && (
                     <div className="estimated-dueDate">
+                      <div className="suggestion-header">
+                        <button className="close-suggested-date" onClick={() => setShowSuggestedDate(false)}>
+                        <i className="material-icons">close</i>
+                      </button>
+                      </div>
                       <p>Estimated time of completion: {estimatedDate}</p>
                     </div>
                   )}
