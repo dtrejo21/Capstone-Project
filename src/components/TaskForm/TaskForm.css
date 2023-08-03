@@ -262,4 +262,5 @@ textarea {
   background-color: transparent;
   position: absolute;
   right: 0;
+  margin-right: 12px;
 }
