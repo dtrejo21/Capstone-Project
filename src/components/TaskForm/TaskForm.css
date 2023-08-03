@@ -246,7 +246,8 @@ textarea {
   border-radius: 3px;
   background-color: #965df241;
   display: flex;
-  width: 100%;
+  position: relative;
+
 }
 
 .return-button{
@@ -261,5 +262,4 @@ textarea {
   background-color: transparent;
   position: absolute;
   right: 0;
-  margin-right: 18px;
 }
