@@ -187,6 +187,7 @@ textarea {
   margin-top: 10px;
   color: #37174d;
   margin: 0px 0px 4px 10px;
+  height: 60px;
 }
 
 .popup-subtasks .subtask-input {
@@ -247,7 +248,6 @@ textarea {
   background-color: #965df241;
   display: flex;
   position: relative;
-
 }
 
 .return-button{
@@ -263,4 +263,24 @@ textarea {
   position: absolute;
   right: 0;
   margin-right: 12px;
+}
+
+.invisible{
+  display: none;
+  position: relative;
+  left: 0px;
+  top: 10px;
+  border-radius: 5px;
+  border: 2px solid black;
+  width: 125px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.invisible:hover{
+  display: block;
+}
+
+.task-duedate:hover > .invisible{
+  display: block;
 }
