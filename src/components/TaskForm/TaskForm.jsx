@@ -158,6 +158,24 @@ export default function TaskForm() {
     }
   };
 
+  const formatDueDateHover = (date) => {
+    if(date === null){
+      return null;
+    }
+    const dueDate = new Date(date).getTime();
+    console.log(dueDate);
+    const currentDate = new Date();
+    const remainingTime = dueDate - currentDate.getTime();
+    const numOfHours = remainingTime / (1000 * 60 * 60);
+    if(numOfHours > 24){
+      const numOfDays = (numOfHours/ 24);
+      return `${Math.floor(numOfDays)} days remaining`;
+    }
+    else{
+      return `${Math.floor(numOfHours)} hours remaining`;
+    }
+  }
+
   const handleSubtaskDetails = (subtaskId) => {
     axios
       .get(`http://localhost:8000/getSubtask/${subtaskId}`, {withCredentials: true})
@@ -306,8 +324,9 @@ export default function TaskForm() {
           <div className="popup-main-content">
             {taskInfo.dueDate ? (
               <div className="task-duedate">
-                <h5>Due Date:</h5>
+                <h5>Due Date:</h5> 
                 <p>{formatDueDate(taskInfo.dueDate)}</p>
+                <div className="invisible"><p>{formatDueDateHover(taskInfo.dueDate)}</p> </div>
               </div>
             ) : (
               <></>
