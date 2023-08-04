@@ -56,7 +56,7 @@ export default function TaskForm() {
         `http://localhost:8000/task/updateDescription/${parentId}/${subtaskType}`,
         {
           description,
-        }
+        }, {withCredentials: true}
       )
       .then((result) => {
         if (subtaskType === "subtask") {
@@ -82,7 +82,7 @@ export default function TaskForm() {
     axios
       .post(`http://localhost:8000/createSubtask/${parentId}/${subtaskType}`, {
         subtaskTitle,
-      })
+      }, {withCredentials: true})
       .then((result) => {
         //console.log(subtaskType);
         if (subtaskType === "subtask") {
@@ -104,7 +104,7 @@ export default function TaskForm() {
     axios
       .post(`http://localhost:8000/task/addSubtaskDueDate/${subtaskId}`, {
         dueDate: dueDate,
-      })
+      }, {withCredentials: true})
       .then((result) => {
         //console.log(result.data);
         //update the state to include the new due date for subtask
@@ -131,7 +131,7 @@ export default function TaskForm() {
         `http://localhost:8000/task/addTaskDueDate/${parentId}/${subtaskType}`,
         {
           dueDate: dueDate,
-        }
+        }, {withCredentials: true}
       )
       .then((result) => {
         console.log(result);
@@ -160,7 +160,7 @@ export default function TaskForm() {
 
   const handleSubtaskDetails = (subtaskId) => {
     axios
-      .get(`http://localhost:8000/getSubtask/${subtaskId}`)
+      .get(`http://localhost:8000/getSubtask/${subtaskId}`, {withCredentials: true})
       .then((result) => {
         //destruct the data
         const { subtaskTitle, description, dueDate, _id } = result.data[0];
@@ -178,7 +178,7 @@ export default function TaskForm() {
   const handleDeleteSubtask = (subtaskId) => {
     const parentId = subtaskId;
     axios
-      .delete(`http://localhost:8000/deleteSubtask/${parentId}/${subtaskType}`)
+      .delete(`http://localhost:8000/deleteSubtask/${parentId}/${subtaskType}`, {withCredentials: true})
       .then((result) => {
         if (subtaskType === "subtask") {
           //console.log(result);
@@ -205,7 +205,7 @@ export default function TaskForm() {
     axios
       .post(`http://localhost:8000/subtask/updateComplete/${subtaskId}`, {
         isCompleted: newIsCompleted,
-      })
+      }, {withCredentials: true})
       .then((result) => {
         if (subtaskType === "subtask") {
           console.log(result.data);
@@ -234,7 +234,7 @@ export default function TaskForm() {
   const suggestedTime = (title) => {
     //Run the comparison algorithm when time is out
     axios
-      .get("http://localhost:8000/suggestedTime", { params: { title } })
+      .get("http://localhost:8000/suggestedTime", { params: { title } }, {withCredentials: true})
       .then((result) => {
         console.log(result.status);
         //If we get a successful result
@@ -257,7 +257,7 @@ export default function TaskForm() {
   const handleReturn = () => {
     const parentId = subtaskId;
 
-    axios.get(`http://localhost:8000/returnToPrevious/${parentId}`)
+    axios.get(`http://localhost:8000/returnToPrevious/${parentId}`, {withCredentials: true})
     .then(result => {
       console.log(result.data);
       if(result.data.type === "subtask"){

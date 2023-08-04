@@ -9,11 +9,11 @@ export default function CardForm({subjectAdded}){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:8000/createSubject", {subjectTitle})
+        axios.post("http://localhost:8000/createSubject", {subjectTitle}, {withCredentials: true})
         .then(result => {
             console.log("From create subject:", result.data);
-            subjectAdded(result.data)
-            setSubjectTitle("");;
+            subjectAdded(result.data);
+            setSubjectTitle("");
         })
         .catch(err => console.log(err))
     }

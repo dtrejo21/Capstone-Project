@@ -9,7 +9,7 @@ export default function ListForm({ subjectId, listAdded }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:8000/updateList/${subjectId}`, { listTitle })
+      .post(`http://localhost:8000/updateList/${subjectId}`, { listTitle }, {withCredentials: true})
       .then((result) => {
         console.log(result.data);
         listAdded(result.data);

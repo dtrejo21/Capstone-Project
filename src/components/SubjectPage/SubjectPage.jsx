@@ -20,6 +20,7 @@ export default function SubjectPage() {
         withCredentials: true,
       })
       .then((list) => {
+        console.log(list.data);
         setList(list.data);
         setLoading(false);
       })
@@ -39,7 +40,7 @@ export default function SubjectPage() {
     axios
       .post(`http://localhost:8000/createTask/${currentList._id}`, {
         taskTitle,
-      })
+      }, {withCredentials: true})
       .then((result) => {
         //Update the list to add to add the new list with tasks
         setList((list) =>
@@ -72,7 +73,7 @@ export default function SubjectPage() {
                 </div>
 
                 <div className="task-container task-margins">
-                  {lists.task.map((task, taskIndex) => (
+                  {Array.isArray(lists.task) && lists.task.map((task, taskIndex) => (
                     <div className="task-content" key={`task_${taskIndex}`}>
                       <Link
                         to={`/${task.title}/${task._id}`}

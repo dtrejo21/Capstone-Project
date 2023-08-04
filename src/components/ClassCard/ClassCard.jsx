@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import CardForm from "../CardForm/CardForm";
 import { Link } from "react-router-dom";
-import ClockLoader from "react-spinners/ClockLoader";
 //HTML Drag and Drop API
 
 //this is the component that will show the indvidual card
@@ -13,8 +12,9 @@ export default function ClassCard() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/getSubject")
+      .get("http://localhost:8000/getSubject", {withCredentials: true})
       .then((subject) => {
+        console.log(document.cookie);
         //console.log(subject.data)
         setSubject(subject.data);
       })
@@ -30,7 +30,7 @@ export default function ClassCard() {
 
   return (
     <div className="class-card card-details">
-      {subject.map((subjects, index) => (
+      {Array.isArray(subject) && subject.map((subjects, index) => (
         <div className="subject" key={`subject_${index}`}>
           <div className="header">
             <Link to={`/subjects/${subjects.subjectTitle}/${subjects._id}`}>

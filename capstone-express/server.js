@@ -91,6 +91,7 @@ app.post("/login", (req, res) => {
 
 //used to ensure user's request has a valid token
 const verifyUser = (req, res, next) => {
+  console.log("req", req.cookies);
   const token = req.cookies.token;
   if (!token) {
     return res.json("Token is missing");
