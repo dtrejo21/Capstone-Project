@@ -1,36 +1,59 @@
-.logoutBtn{
-    border: none;
-    font-size: 16px;
-    background-color: rgb(76, 47, 205);
-    color: white;
-    padding: 8px;
-    border-radius: 3px;
+.logoutBtn {
+  border: none;
+  font-size: 16px;
+  background-color: rgb(76, 47, 205);
+  color: white;
+  padding: 8px;
+  border-radius: 3px;
 }
 
-.profile{
-    background-color: #EBE8FC;
-    border-radius: 4px;
-    height: 800px;
-    padding: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-self: auto;
+.profile {
+  background-color: #EBE8FC;
+  border-radius: 4px;
+  height: 100vh;
+  padding: 10px;
+  display: flex;
 }
 
-.profile .profile-info{
-    display: flex;
-    flex-direction: column;
-    margin-right: auto;
-    padding-left: 16px;
+.profile .profile-info {
+  flex-direction: column;
+  margin-right: auto;
+  padding-left: 16px;
 }
 
-.profile .menu .options{
-    border-right: 2px solid lightsteelblue;
-    margin-left: 4px;
-    height: 100%;
+.profile .menu .options {
+  border-right: 2px solid lightsteelblue;
+  margin-left: 4px;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
-.profile .delete-account{
-    color: red;
+.delete-account-button {
+  margin-top: 6px;
+  border: none;
+  font-size: 14px;
+  background-color: transparent;
+  color: red;
+}
+
+.user-information {
+  display: flex;
+  flex-direction: column;
+  margin: 16px 4px 4px 6px;
+  padding-bottom: 10px;
+}
+
+.profile-header {
+  color: #190f53;
+}
+
+.user-info-display {
+  resize: none;
+  border-radius: 3px;
+  border: none;
+  height: 1.5em;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-size: 14px;
 }

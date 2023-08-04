@@ -22,12 +22,6 @@
     color: whitesmoke;
 }
 
-.menu button{
-    background-color: white;
-    color: black;
-    display: flex;
-}
-
 .navbar input{
     padding: 4px 4px 4px 4px;
 }

@@ -508,8 +508,11 @@ app.get("/suggestedTime", verifyUser, async (req, res) => {
 
     //Score all of the titles
     for (let i = 0; i < completedSubtasks.length; i++) {
-      similarityResult = compareTitles(title, completedSubtasks[i].subtaskTitle);
-      
+      similarityResult = compareTitles(
+        title,
+        completedSubtasks[i].subtaskTitle
+      );
+
       //if good enough score, push into a new array
       if (similarityResult >= 0.85) {
         scoredTitle.push(completedSubtasks[i]);
@@ -556,9 +559,11 @@ app.get("/returnToPrevious/:taskId", verifyUser, async (req, res) => {
 
   try {
     //Find the current subtask taskId
-    const currentSubtask = await SubtaskModel.findById({_id: taskId})
+    const currentSubtask = await SubtaskModel.findById({ _id: taskId });
     //Find the previous subtask using the taskId
-    const prevSubtask = await SubtaskModel.findById({_id: currentSubtask.taskId});
+    const prevSubtask = await SubtaskModel.findById({
+      _id: currentSubtask.taskId,
+    });
 
     //If null, then we need to go to find the task parent
     if (prevSubtask === null) {
@@ -567,8 +572,12 @@ app.get("/returnToPrevious/:taskId", verifyUser, async (req, res) => {
       res.json(prevTask);
     } else {
       //If not null, find any children it may have
-      const prevSubtaskChildren = await SubtaskModel.find({taskId: prevSubtask._id});
-      res.status(200).json({prevSubtask, type: "subtask", children: prevSubtaskChildren});
+      const prevSubtaskChildren = await SubtaskModel.find({
+        taskId: prevSubtask._id,
+      });
+      res
+        .status(200)
+        .json({ prevSubtask, type: "subtask", children: prevSubtaskChildren });
     }
   } catch (error) {
     console.log(error);

@@ -207,7 +207,6 @@ export default function TaskForm() {
         isCompleted: newIsCompleted,
       })
       .then((result) => {
-        //ttconsole.log(result.data);
         if (subtaskType === "subtask") {
           console.log(result.data);
         } else {
