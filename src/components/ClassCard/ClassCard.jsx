@@ -1,14 +1,13 @@
-import * as React from "react"
-import "./ClassCard.css"
-import { useState, useEffect } from "react"
+import * as React from "react";
+import "./ClassCard.css";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import CardForm from "../CardForm/CardForm";
 import { Link } from "react-router-dom";
+import ClockLoader from "react-spinners/ClockLoader";
 //HTML Drag and Drop API
 
 //this is the component that will show the indvidual card
-//which will show name, some tasks, and the option to add
-//a new task
 export default function ClassCard() {
   const [subject, setSubject] = useState([]);
 
@@ -17,7 +16,8 @@ export default function ClassCard() {
       .get("http://localhost:8000/getSubject")
       .then((subject) => {
         //console.log(subject.data)
-        setSubject(subject.data)})
+        setSubject(subject.data);
+      })
       .catch((err) => console.log(err));
   }, []);
 
@@ -29,7 +29,7 @@ export default function ClassCard() {
   const [showMenu, setShowMenu] = useState(Array(subject.length).fill(false));
 
   return (
-    <div className="class-card">
+    <div className="class-card card-details">
       {subject.map((subjects, index) => (
         <div className="subject" key={`subject_${index}`}>
           <div className="header">

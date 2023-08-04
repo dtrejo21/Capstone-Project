@@ -1,44 +1,78 @@
 import * as React from "react";
 import "./Profile.css";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useContext } from "react";
 import axios from "axios";
-import { UserContext } from "../../UserContext";
 
 export default function Profile() {
   const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [user, setUser] = useState({});
+
   const handleLogout = () => {
     localStorage.clear();
     navigate("/welcome");
   };
-  //const user = useContext(UserContext);
 
-  /*useEffect(() => {
-        axios.get("http://localhost:8000/getUser")
-            .then(response => setUser(response.data))
-            .catch(err => console.log(err))
-    }, [])
-    
-*/
+  const handleDeleteAccount = async () => {
+    try{
+      const result = await axios.delete(`http://localhost:8000/user/deleteAccount/${user.userId}`)
+      if(result.data === "Deleted"){
+        navigate("/welcome");
+      }
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  //fetch user information
+  axios.defaults.withCredentials = true;
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/getUser")
+      .then((response) => {
+        const { username, email } = response.data;
+        //console.log(response.data);
+        setUser(response.data);
+        setUsername(username);
+        setEmail(email);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div className="profile">
       <div className="menu">
         <div className="options">
-          <p>Profile: </p>
-          <p>Account Settings</p>
-          <p>Notifications</p>
-          <div className="delete-account">
-            <p>Delete Account</p>
-          </div>
+          <p>Profile </p>
+          <button className="delete-account-button" onClick={handleDeleteAccount}>
+            Delete Account
+          </button>
         </div>
       </div>
 
       <div className="profile-info">
-        <h2>Profile</h2>
-        <p>Username: </p>
-        <p>Email: </p>
+        <div className="profile-header">
+          <h2>Welcome to your Profile Page!</h2>
+        </div>
+
+        <div className="user-information">
+          <p>Username:</p>
+          <form>
+            <textarea
+              className="user-info-display"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <p>Email:</p>
+            <textarea
+              className="user-info-display"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </form>
+        </div>
 
         <button className="logoutBtn" onClick={handleLogout}>
           Logout
