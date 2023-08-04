@@ -10,16 +10,13 @@ import ClockLoader from "react-spinners/ClockLoader";
 //this is the component that will show the indvidual card
 export default function ClassCard() {
   const [subject, setSubject] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
     axios
       .get("http://localhost:8000/getSubject")
       .then((subject) => {
         //console.log(subject.data)
         setSubject(subject.data);
-        setLoading(false);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -32,60 +29,52 @@ export default function ClassCard() {
   const [showMenu, setShowMenu] = useState(Array(subject.length).fill(false));
 
   return (
-    <div className="class-card">
-      {loading && 
-        <div className="loading-screen">
-          <ClockLoader color="#B09CFF" size={150} />
-        </div>
-       }
-        <div className="class-card-page">
-          {subject.map((subjects, index) => (
-            <div className="subject" key={`subject_${index}`}>
-              <div className="header">
-                <Link to={`/subjects/${subjects.subjectTitle}/${subjects._id}`}>
-                  {/* This is defaults to Workspace*/}
-                  <h3>{subjects.subjectTitle}</h3>
-                </Link>
+    <div className="class-card card-details">
+      {subject.map((subjects, index) => (
+        <div className="subject" key={`subject_${index}`}>
+          <div className="header">
+            <Link to={`/subjects/${subjects.subjectTitle}/${subjects._id}`}>
+              {/* This is defaults to Workspace*/}
+              <h3>{subjects.subjectTitle}</h3>
+            </Link>
 
-                <button
-                  className="material-icons"
-                  onClick={() => {
-                    const newShowMenu = [...showMenu];
-                    newShowMenu[index] = !newShowMenu[index];
-                    setShowMenu(newShowMenu);
-                  }}
-                >
-                  more_horiz
-                </button>
+            <button
+              className="material-icons"
+              onClick={() => {
+                const newShowMenu = [...showMenu];
+                newShowMenu[index] = !newShowMenu[index];
+                setShowMenu(newShowMenu);
+              }}
+            >
+              more_horiz
+            </button>
 
-                {showMenu[index] && (
-                  <div className="mini-menu">
-                    <div className="header">
-                      <h5>List actions</h5>
-                      <button
-                        className="material-icons"
-                        onClick={() =>
-                          setShowMenu((prevShowMenu) => [
-                            ...prevShowMenu.slice(0, index),
-                            false,
-                            ...prevShowMenu.slice(index + 1),
-                          ])
-                        }
-                      >
-                        close
-                      </button>
-                    </div>
+            {showMenu[index] && (
+              <div className="mini-menu">
+                <div className="header">
+                  <h5>List actions</h5>
+                  <button
+                    className="material-icons"
+                    onClick={() =>
+                      setShowMenu((prevShowMenu) => [
+                        ...prevShowMenu.slice(0, index),
+                        false,
+                        ...prevShowMenu.slice(index + 1),
+                      ])
+                    }
+                  >
+                    close
+                  </button>
+                </div>
 
-                    <button>Delete list</button>
-                  </div>
-                )}
+                <button>Delete list</button>
               </div>
-            </div>
-          ))}
-
-          <CardForm subjectAdded={(newSubject) => addNewSubject(newSubject)} />
+            )}
+          </div>
         </div>
-      
+      ))}
+
+      <CardForm subjectAdded={(newSubject) => addNewSubject(newSubject)} />
     </div>
   );
 }
