@@ -13,7 +13,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:8000/login", { username, password })
+      .post("http://localhost:8000/login", { username, password }, {withCredentials: true})
       .then((result) => {
         if (result.data === "Success") {
           navigate("/");
