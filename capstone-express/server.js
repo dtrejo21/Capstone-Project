@@ -584,6 +584,17 @@ app.get("/returnToPrevious/:taskId", verifyUser, async (req, res) => {
   }
 });
 
+app.delete("/user/deleteAccount/:userId", verifyUser, async(req,res) => {
+  const userId = req.params.userId;
+  
+  try{
+    await UserModel.deleteOne({userId: userId})
+    res.status(200).json("Deleted");
+  }catch(error){
+    console.log(error);
+  }
+})
+
 app.listen(8000, () => {
   console.log("Server started on port 8000");
 });

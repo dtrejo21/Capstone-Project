@@ -15,6 +15,17 @@ export default function Profile() {
     navigate("/welcome");
   };
 
+  const handleDeleteAccount = async () => {
+    try{
+      const result = await axios.delete(`http://localhost:8000/user/deleteAccount/${user.userId}`)
+      if(result.data === "Deleted"){
+        navigate("/welcome");
+      }
+    }catch(error){
+      console.log(error);
+    }
+  }
+
   //fetch user information
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -35,8 +46,8 @@ export default function Profile() {
       <div className="menu">
         <div className="options">
           <p>Profile </p>
-          <button className="delete-account-button">
-            <p>Delete Account</p>
+          <button className="delete-account-button" onClick={handleDeleteAccount}>
+            Delete Account
           </button>
         </div>
       </div>
