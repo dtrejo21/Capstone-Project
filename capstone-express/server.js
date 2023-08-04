@@ -11,7 +11,6 @@ const ListModel = require("./models/List");
 const predefinedList = require("./seeders/list");
 const TaskModel = require("./models/Task");
 const SubtaskModel = require("./models/Subtask");
-const { preview } = require("vite");
 
 const app = express();
 

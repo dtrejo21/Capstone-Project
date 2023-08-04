@@ -1,6 +1,6 @@
 .navbar{
     display: flex;
-    background-color: rgb(58, 20, 93);
+    background-color: rgb(18, 6, 47);
     color: whitesmoke;
     height: 70px;
     width: 100%;
@@ -26,5 +26,9 @@
     background-color: white;
     color: black;
     display: flex;
+}
+
+.navbar input{
+    padding: 4px 4px 4px 4px;
 }
 

@@ -3,10 +3,10 @@
   position: relative;
   display: flex;
   flex-wrap: wrap;
+  height: 100%;
 }
 
 .subject-page h1 {
-  background-color: #0000003d;
   color: white;
   padding: 16px;
 }
