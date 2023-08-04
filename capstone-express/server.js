@@ -498,7 +498,7 @@ app.get("/suggestedTime", verifyUser, async (req, res) => {
   try {
     const scoredTitle = [];
     const totalTime = [];
-    let result = 0,
+    let similarityResult = 0,
       timeDifferenceInMiliSecs = 0;
     let daysDifference = 0,
       sum = 0,
@@ -509,15 +509,13 @@ app.get("/suggestedTime", verifyUser, async (req, res) => {
 
     //Score all of the titles
     for (let i = 0; i < completedSubtasks.length; i++) {
-      result = compareTitles(title, completedSubtasks[i].subtaskTitle);
-      //console.log("Result: ", result);
-      console.log(completedSubtasks[i].subtaskTitle, "Result: ", result);
+      similarityResult = compareTitles(title, completedSubtasks[i].subtaskTitle);
+      
       //if good enough score, push into a new array
-      if (result >= 0.85) {
+      if (similarityResult >= 0.85) {
         scoredTitle.push(completedSubtasks[i]);
       }
     }
-    console.log("Good results: ", scoredTitle);
 
     if (scoredTitle.length !== 0) {
       //Once we get all of the titles, time to do some math
@@ -567,7 +565,7 @@ app.get("/returnToPrevious/:taskId", verifyUser, async (req, res) => {
     if (prevSubtask === null) {
       const prevTask = await TaskModel.findById({ _id: currentSubtask.taskId });
       //console.log(prevTask);
-      res.status(200).json(prevTask);
+      res.json(prevTask);
     } else {
       //If not null, find any children it may have
       const prevSubtaskChildren = await SubtaskModel.find({taskId: prevSubtask._id});
