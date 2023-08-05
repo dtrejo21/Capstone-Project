@@ -2,6 +2,7 @@
   display: flex;
   margin-top: 16px;
   margin-left: 20px;
+  display: flex;
   height: 100%;
 }
 
@@ -9,42 +10,125 @@
   color: white;
 }
 
-.quote-content {
-  margin-top: 16px;
-  margin-left: 100%;
+.timer-content {
+  margin-top: 10px;
 }
 
-.quote-wrapper {
-  background-color: rgb(255, 255, 255);
-  width: 150px;
+.timer {
+  background-color: rgba(0, 0, 0, 0.566);
+  color: white;
+  width: 300px;
+  padding: 30px;
   border-radius: 4px;
-  padding: 4px 4px 4px 8px;
+  font-size: 30px;
+  border-radius: 8px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timer-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.timer button {
+  border: none;
+  color: white;
+  background-color: blueviolet;
+  padding: 8px 8px 8px 12px;
+  border-radius: 3px;
+  margin-top: 6px;
+}
+
+.timer-header {
+  display: flex;
+}
+
+.timer-stopwatch {
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.study-menu-options {
+  background-color: rgba(0, 0, 0, 0.566);
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 8px 8px 8px 8px;
+  right: 0;
+  position: fixed;
+  top: 12%;
+}
+
+.quote-button {
+  background-color: rgba(0, 0, 0, 0.566);
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 8px 8px 8px 8px;
+  position: fixed;
+  right: 0;
+  top: 18%;
 }
 
 .quote-text {
   color: white;
-  background-color: rgba(130, 72, 224, 0.522);
   padding: 8px 4px 8px 12px;
   border-radius: 4px;
   margin-top: 12px;
   width: 250px;
-  font-size: 20px;
-
+  font-size: 26px;
 }
 
-.quote-buttons {
-  border: none;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  margin-top: 10px;
-  border-radius: 4px;
-}
-
-.quote-btn {
-  border: none;
+.quote-text {
   color: white;
-  background-color: blueviolet;
-  padding: 4px 6px 6px 8px;
-  border-radius: 3px;
+  padding: 8px 4px 8px 12px;
+  border-radius: 4px;
+  margin-top: 12px;
+  width: 250px;
+  font-size: 26px;
+}
+
+.quote-options {
+  color: white;
+  width: 100%;
+}
+
+.quote-menu {
+  background-color: rgba(0, 0, 0, 0.566);
+  padding: 8px 8px 4px 12px;
+  border-radius: 8px;
+  height: 70px;
+  width: 160px;
+  right: 0;
+  position: fixed;
+  top: 22%;
+}
+
+.quote-menu button {
+  border: none;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.quote-wrapper {
+  position: fixed;
+  right: 0;
+  margin-top: -40px;
+  margin-right: 40px;
+}
+
+.quote-text {
+  color: white;
+  padding: 8px 4px 8px 12px;
+  border-radius: 4px;
+  width: 300px;
+  font-size: 26px;
+  text-align: center;
+  position: relative;
 }
