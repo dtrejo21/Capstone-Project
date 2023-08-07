@@ -19,9 +19,8 @@
   color: white;
   width: 300px;
   padding: 30px;
-  border-radius: 4px;
+  border-radius: 1rem;
   font-size: 30px;
-  border-radius: 8px;
   margin-top: 20px;
   display: flex;
   flex-direction: column;
@@ -57,10 +56,11 @@
   color: white;
   border: none;
   border-radius: 3px;
-  padding: 8px 8px 8px 8px;
-  right: 0;
+  height: 3rem;
+  width: 3rem;
   position: fixed;
-  top: 12%;
+  right: 1.25rem;
+  top: 80px;
 }
 
 .quote-button {
@@ -69,9 +69,11 @@
   border: none;
   border-radius: 3px;
   padding: 8px 8px 8px 8px;
+  height: 3rem;
+  width: 3rem;
   position: fixed;
-  right: 0;
-  top: 18%;
+  right: 1.25rem;
+  top: 140px;
 }
 
 .quote-text {
@@ -99,13 +101,13 @@
 
 .quote-menu {
   background-color: rgba(0, 0, 0, 0.566);
-  padding: 8px 8px 4px 12px;
-  border-radius: 8px;
-  height: 70px;
-  width: 160px;
-  right: 0;
+  border-radius: 1rem;
+  width: 268px;
   position: fixed;
-  top: 22%;
+  top: 80px;
+  padding: 1.5rem;
+  right: 1.5rem;
+  top: 160px;
 }
 
 .quote-menu button {
@@ -125,10 +127,22 @@
 
 .quote-text {
   color: white;
-  padding: 8px 4px 8px 12px;
-  border-radius: 4px;
-  width: 300px;
-  font-size: 26px;
-  text-align: center;
+  text-align: right;
   position: relative;
+  text-shadow: rgba(12, 4, 3, 0.5) -6px -6px 6px;
+  bottom: 4rem;
+}
+
+.quote-content h3 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.quote-content p {
+  font-size: 14px;
+  font-weight: 400px;
+}
+
+.menu-transition {
+  transition-duration: 0.2s;
 }

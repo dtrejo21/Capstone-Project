@@ -26,7 +26,7 @@ export default function StudySpace() {
         setQuote(data[0].content);
         setQuoteAuthor(data[0].author);
       })
-      .catch((err) => console.log(error));
+      .catch((err) => console.log(err));
   };
 
   const studyTimer = () => {
@@ -92,7 +92,7 @@ export default function StudySpace() {
 
         <div className="study-menu">
           <button
-            className="study-menu-options"
+            className="study-menu-options menu-transition"
             onClick={() => setShowMenu(!showMenu)}
           >
             <i className="material-icons">more_vert</i>
@@ -122,7 +122,10 @@ export default function StudySpace() {
 
         <div className="quote-wrapper">
           <div className="quote-content">
-            <div className="quote-text">{quote}</div>
+            <div className="quote-text">
+            <h3>"{quote}"</h3>
+            <p>{quoteAuthor}</p>
+            </div>
           </div>
         </div>
       </div>

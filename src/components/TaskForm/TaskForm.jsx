@@ -56,11 +56,12 @@ export default function TaskForm() {
         `http://localhost:8000/task/updateDescription/${parentId}/${subtaskType}`,
         {
           description,
-        }, {withCredentials: true}
+        },
+        { withCredentials: true }
       )
       .then((result) => {
         if (subtaskType === "subtask") {
-          console.log(result.data);
+          //console.log(result.data);
           const { description } = result.data;
           setTaskInfo({ description: description });
         } else {
@@ -80,9 +81,13 @@ export default function TaskForm() {
     const parentId = subtaskType === "subtask" ? subtaskId : taskId;
     e.preventDefault();
     axios
-      .post(`http://localhost:8000/createSubtask/${parentId}/${subtaskType}`, {
-        subtaskTitle,
-      }, {withCredentials: true})
+      .post(
+        `http://localhost:8000/createSubtask/${parentId}/${subtaskType}`,
+        {
+          subtaskTitle,
+        },
+        { withCredentials: true }
+      )
       .then((result) => {
         //console.log(subtaskType);
         if (subtaskType === "subtask") {
@@ -102,9 +107,13 @@ export default function TaskForm() {
   const handleSubtaskDateSubmit = (startDate, subtaskId) => {
     const dueDate = new Date(startDate);
     axios
-      .post(`http://localhost:8000/task/addSubtaskDueDate/${subtaskId}`, {
-        dueDate: dueDate,
-      }, {withCredentials: true})
+      .post(
+        `http://localhost:8000/task/addSubtaskDueDate/${subtaskId}`,
+        {
+          dueDate: dueDate,
+        },
+        { withCredentials: true }
+      )
       .then((result) => {
         //console.log(result.data);
         //update the state to include the new due date for subtask
@@ -122,28 +131,23 @@ export default function TaskForm() {
 
   const handleTaskDateSubmit = (startDate, taskId) => {
     const parentId = subtaskType === "subtask" ? subtaskId : taskId;
-    console.log(startDate);
 
     const dueDate = new Date(startDate);
-    console.log(dueDate);
+    //console.log(dueDate);
     axios
       .post(
         `http://localhost:8000/task/addTaskDueDate/${parentId}/${subtaskType}`,
         {
           dueDate: dueDate,
-        }, {withCredentials: true}
+        },
+        { withCredentials: true }
       )
       .then((result) => {
-        console.log(result);
-        if (subtaskType === "subtask") {
-          const { dueDate } = result.data;
-          setTaskInfo({ dueDate: dueDate });
-        } else {
-          setTaskInfo((prevTaskInfo) => ({
-            ...prevTaskInfo,
-            dueDate: result.data.dueDate,
-          }));
-        }
+        //console.log(result.data);
+        setTaskInfo((prevTaskInfo) => ({
+          ...prevTaskInfo,
+          dueDate: result.data.dueDate,
+        }));
       })
       .catch((err) => console.log(err));
   };
@@ -159,26 +163,27 @@ export default function TaskForm() {
   };
 
   const formatDueDateHover = (date) => {
-    if(date === null){
+    if (date === null) {
       return null;
     }
     const dueDate = new Date(date).getTime();
-    console.log(dueDate);
+    //console.log(dueDate);
     const currentDate = new Date();
     const remainingTime = dueDate - currentDate.getTime();
     const numOfHours = remainingTime / (1000 * 60 * 60);
-    if(numOfHours > 24){
-      const numOfDays = (numOfHours/ 24);
+    if (numOfHours > 24) {
+      const numOfDays = numOfHours / 24;
       return `${Math.floor(numOfDays)} days remaining`;
-    }
-    else{
+    } else {
       return `${Math.floor(numOfHours)} hours remaining`;
     }
-  }
+  };
 
   const handleSubtaskDetails = (subtaskId) => {
     axios
-      .get(`http://localhost:8000/getSubtask/${subtaskId}`, {withCredentials: true})
+      .get(`http://localhost:8000/getSubtask/${subtaskId}`, {
+        withCredentials: true,
+      })
       .then((result) => {
         //destruct the data
         const { subtaskTitle, description, dueDate, _id } = result.data[0];
@@ -196,7 +201,10 @@ export default function TaskForm() {
   const handleDeleteSubtask = (subtaskId) => {
     const parentId = subtaskId;
     axios
-      .delete(`http://localhost:8000/deleteSubtask/${parentId}/${subtaskType}`, {withCredentials: true})
+      .delete(
+        `http://localhost:8000/deleteSubtask/${parentId}/${subtaskType}`,
+        { withCredentials: true }
+      )
       .then((result) => {
         if (subtaskType === "subtask") {
           //console.log(result);
@@ -218,25 +226,29 @@ export default function TaskForm() {
       });
   };
 
+  const handleDeleteTask = (taskId) => {
+    
+  }
+
   //Handles the event when a checkbox is checked
   const handleComplete = (subtaskId, newIsCompleted) => {
     axios
-      .post(`http://localhost:8000/subtask/updateComplete/${subtaskId}`, {
-        isCompleted: newIsCompleted,
-      }, {withCredentials: true})
+      .post(
+        `http://localhost:8000/subtask/updateComplete/${subtaskId}`,
+        {
+          isCompleted: newIsCompleted,
+        },
+        { withCredentials: true }
+      )
       .then((result) => {
-        if (subtaskType === "subtask") {
-          console.log(result.data);
-        } else {
-          setTaskInfo((prevTaskInfo) => ({
-            ...prevTaskInfo,
-            subtask: prevTaskInfo.subtask.map((subtask) =>
-              subtask._id === subtaskId
-                ? { ...subtask, isCompleted: result.data.isCompleted }
-                : subtask
-            ),
-          }));
-        }
+        setTaskInfo((prevTaskInfo) => ({
+          ...prevTaskInfo,
+          subtask: prevTaskInfo.subtask.map((subtask) =>
+            subtask._id === subtaskId
+              ? { ...subtask, isCompleted: result.data.isCompleted }
+              : subtask
+          ),
+        }));
       })
       .catch((err) => console.log(err));
   };
@@ -251,9 +263,13 @@ export default function TaskForm() {
 
   const suggestedTime = (title) => {
     //Run the comparison algorithm when time is out
-    
+
     axios
-      .get("http://localhost:8000/suggestedTime", { params: { title } }, {withCredentials: true})
+      .get(
+        "http://localhost:8000/suggestedTime",
+        { params: { title } },
+        { withCredentials: true }
+      )
       .then((result) => {
         console.log(result.status);
         //If we get a successful result
@@ -261,11 +277,12 @@ export default function TaskForm() {
           console.log(result.data);
           setShowSuggestedDate(true);
 
-          //give a date based of the estimate 
-          const newDate = new Date(Date.now() + result.data * 24 * 60 * 60 * 1000);
+          //give a date based of the estimate
+          const newDate = new Date(
+            Date.now() + result.data * 24 * 60 * 60 * 1000
+          );
           console.log(newDate);
           setEstimatedDate(formatDueDate(newDate));
-
         } else {
           setShowSuggestedDate(false);
         }
@@ -277,27 +294,31 @@ export default function TaskForm() {
   const handleReturn = () => {
     const parentId = subtaskId;
 
-    axios.get(`http://localhost:8000/returnToPrevious/${parentId}`, {withCredentials: true})
-    .then(result => {
-      console.log(result.data);
-      if(result.data.type === "subtask"){
-        const { subtaskTitle, description, dueDate, _id } = result.data.prevSubtask;
-        //Set the new information
-        setSubtaskType(result.data.type);
-        setDueDate(dueDate);
-        setSubtaskId(_id);
-        setTitle(subtaskTitle);
-        setDescription(description);
-        setTaskInfo({ dueDate: dueDate, subtask: result.data.children });
-      }
-      else{//Return UI to parent task
-        setSubtaskType(null);
-        setTitle(result.data.title);
-        setDescription(result.data.description);
-        setTaskInfo(result.data);
-      }
-    })
-  }
+    axios
+      .get(`http://localhost:8000/returnToPrevious/${parentId}`, {
+        withCredentials: true,
+      })
+      .then((result) => {
+        console.log(result.data);
+        if (result.data.type === "subtask") {
+          const { subtaskTitle, description, dueDate, _id } =
+            result.data.prevSubtask;
+          //Set the new information
+          setSubtaskType(result.data.type);
+          setDueDate(dueDate);
+          setSubtaskId(_id);
+          setTitle(subtaskTitle);
+          setDescription(description);
+          setTaskInfo({ dueDate: dueDate, subtask: result.data.children });
+        } else {
+          //Return UI to parent task
+          setSubtaskType(null);
+          setTitle(result.data.title);
+          setDescription(result.data.description);
+          setTaskInfo(result.data);
+        }
+      });
+  };
 
   return (
     <div className="task-page">
@@ -305,11 +326,11 @@ export default function TaskForm() {
         <div className="task-popup-container">
           <div className="header">
             {subtaskType === "subtask" && (
-              <button onClick={handleReturn} className="return-button"> 
-              <i className="material-icons">arrow_back</i>
-            </button>
+              <button onClick={handleReturn} className="return-button">
+                <i className="material-icons">arrow_back</i>
+              </button>
             )}
-            
+
             <i className="material-icons">book</i>
 
             <textarea
@@ -326,9 +347,11 @@ export default function TaskForm() {
           <div className="popup-main-content">
             {taskInfo.dueDate ? (
               <div className="task-duedate">
-                <h5>Due Date:</h5> 
+                <h5>Due Date:</h5>
                 <p>{formatDueDate(taskInfo.dueDate)}</p>
-                <div className="invisible"><p>{formatDueDateHover(taskInfo.dueDate)}</p> </div>
+                <div className="invisible">
+                  <p>{formatDueDateHover(taskInfo.dueDate)}</p>{" "}
+                </div>
               </div>
             ) : (
               <></>
@@ -487,9 +510,12 @@ export default function TaskForm() {
                   {showSuggestedDate && (
                     <div className="estimated-dueDate">
                       <div className="suggestion-header">
-                        <button className="close-suggested-date" onClick={() => setShowSuggestedDate(false)}>
-                        <i className="material-icons">close</i>
-                      </button>
+                        <button
+                          className="close-suggested-date"
+                          onClick={() => setShowSuggestedDate(false)}
+                        >
+                          <i className="material-icons">close</i>
+                        </button>
                       </div>
                       <p>Estimated time of completion: {estimatedDate}</p>
                     </div>
