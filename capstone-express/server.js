@@ -91,7 +91,7 @@ app.post("/login", (req, res) => {
 
 //used to ensure user's request has a valid token
 const verifyUser = (req, res, next) => {
-  console.log("req", req.cookies);
+  //console.log("req", req.cookies);
   const token = req.cookies.token;
   if (!token) {
     return res.json("Token is missing");
@@ -276,7 +276,6 @@ app.post("/createSubtask/:taskId/:subtaskType", verifyUser, (req, res) => {
     .then((newSubtask) => {
       if (subTaskType === "subtask") {
         SubtaskModel.find({ taskId: taskId }).then((subtasks) => {
-          //console.log(subtasks);
           res.json(subtasks);
         });
       } else {

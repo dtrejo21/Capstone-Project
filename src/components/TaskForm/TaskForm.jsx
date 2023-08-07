@@ -226,6 +226,10 @@ export default function TaskForm() {
       });
   };
 
+  const handleDeleteTask = (taskId) => {
+    
+  }
+
   //Handles the event when a checkbox is checked
   const handleComplete = (subtaskId, newIsCompleted) => {
     axios
