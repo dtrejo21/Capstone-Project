@@ -251,6 +251,7 @@ export default function TaskForm() {
 
   const suggestedTime = (title) => {
     //Run the comparison algorithm when time is out
+    
     axios
       .get("http://localhost:8000/suggestedTime", { params: { title } }, {withCredentials: true})
       .then((result) => {
@@ -262,6 +263,7 @@ export default function TaskForm() {
 
           //give a date based of the estimate 
           const newDate = new Date(Date.now() + result.data * 24 * 60 * 60 * 1000);
+          console.log(newDate);
           setEstimatedDate(formatDueDate(newDate));
 
         } else {
