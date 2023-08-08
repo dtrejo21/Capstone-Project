@@ -1,70 +1,69 @@
-.class-card{
-    color: white;
-    margin-left: 12px;
-    font-size: 16px;
-    height: 150px;
-    display: flex;
-    flex-wrap: wrap;
+.class-card {
+  color: white;
+  margin-left: 12px;
+  font-size: 16px;
+  height: 150px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.class-card h3{
-    padding: 12px;
-    margin-top: 12px;
-    height: 10px;
+.class-card h3 {
+  padding: 12px;
+  margin-top: 12px;
+  height: 10px;
 }
 
-.class-card a{
-    text-decoration: none;
-    color: #172B4D;
+.class-card a {
+  text-decoration: none;
+  color: #172b4d;
 }
 
-.class-card .subject{
-    background-color: #F3F1F4;
-    border-radius: 12px;
-    height: 100%;
-    width: 250px;
-    margin: 10px;
+.class-card .subject {
+  background-color: #f3f1f4;
+  border-radius: 12px;
+  height: 100%;
+  width: 250px;
+  margin: 10px;
 }
 
-.class-card .header{
-    display: flex;
-    flex-direction: row;
-    align-items:baseline;
-    position: relative;
+.class-card .header {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  position: relative;
 }
 
-.class-card .subject .header .material-icons{
-    background-color: transparent;
-    border: none;
-    color: #172B4D;
-    cursor: pointer;
-    margin-left: auto;
-    margin-right: 4px;
-    font-size: 24px;
+.class-card .subject .header .material-icons {
+  background-color: transparent;
+  border: none;
+  color: #172b4d;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 4px;
+  font-size: 24px;
 }
 
-.class-card .mini-menu{
-    color: #172B4D;
-    position: absolute;
-    background-color: #F3F1F4;
-    border: 2px solid #DEDCE0;
-    padding: 8px;
-    border-radius: 8px;
-    width: 200px;
-    z-index: 999;
-    align-items: center;
-    position: absolute;
-    top: 100%;
-    right: -60%;
+.class-card .mini-menu {
+  color: #172b4d;
+  position: absolute;
+  background-color: #f3f1f4;
+  border: 2px solid #dedce0;
+  padding: 8px;
+  border-radius: 8px;
+  width: 200px;
+  z-index: 999;
+  align-items: center;
+  position: absolute;
+  top: 100%;
+  right: -60%;
 }
 
-.mini-menu .header{
-    align-items: center;
+.mini-menu .header {
+  display: flex;
 }
 
-.mini-menu button{
-    background-color: transparent;
-    border: none;
-    color: #CA3521;
-    cursor: pointer;
+.mini-menu .delete-subject-button{
+  background-color: transparent;
+  border: none;
+  color: #ca3521;
 }

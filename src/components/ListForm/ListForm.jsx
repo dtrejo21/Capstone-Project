@@ -11,8 +11,7 @@ export default function ListForm({ subjectId, listAdded }) {
     axios
       .post(`http://localhost:8000/updateList/${subjectId}`, { listTitle }, {withCredentials: true})
       .then((result) => {
-        console.log(result.data);
-        listAdded(result.data);
+        listAdded();
         setListTitle("");
       })
       .catch((err) => console.log(err));
@@ -29,8 +28,8 @@ export default function ListForm({ subjectId, listAdded }) {
             onChange={(e) => setListTitle(e.target.value)}
           />
 
-          <div className="buttons" onClick={handleSubmit}>
-            <button className="add-list" type="submit">
+          <div className="buttons">
+            <button className="add-list" type="submit" onClick={handleSubmit}>
               Add List
             </button>
 
