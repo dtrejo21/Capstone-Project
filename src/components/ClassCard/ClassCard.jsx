@@ -14,7 +14,6 @@ export default function ClassCard() {
     axios
       .get("http://localhost:8000/getSubject", {withCredentials: true})
       .then((subject) => {
-        console.log(document.cookie);
         //console.log(subject.data)
         setSubject(subject.data);
       })
