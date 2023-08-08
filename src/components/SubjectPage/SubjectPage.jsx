@@ -12,21 +12,19 @@ export default function SubjectPage() {
   const [taskTitle, setTaskTitle] = useState("");
   const location = useLocation();
   const [loading, setLoading] = useState(false);
+  const [showMenu, setShowMenu] = useState(Array(list.length).fill(false));
 
   const fetchList = () => {
-    setLoading(true);
     axios
       .get(`http://localhost:8000/getLists/${subjectId}`, {
         withCredentials: true,
       })
       .then((list) => {
-        //console.log(list.data);
         setList(list.data);
-        setLoading(false);
       })
       .catch((err) => console.log(err));
   };
-  
+
   useEffect(() => {
     fetchList();
   }, [location]);
@@ -34,8 +32,8 @@ export default function SubjectPage() {
   const [showInput, setShowInput] = useState(Array(list.length).fill(false));
 
   //Update UI when we add a new list
-  const addNewList = (newList) => {
-    setList([...list, newList]);
+  const addNewList = () => {
+    fetchList();
   };
 
   //Create a task
@@ -64,6 +62,24 @@ export default function SubjectPage() {
   };
 
 
+  const handleDeleteList = (listId, index) => {
+    axios
+      .delete(`http://localhost:8000/list/deleteList/${listId}`, {
+        withCredentials: true,
+      })
+      .then((result) => {
+        if (result.status === 200) {
+          setShowMenu((prevShowMenu) => [
+            ...prevShowMenu.slice(0, index),
+            false,
+            ...prevShowMenu.slice(index + 1),
+          ]);
+          fetchList();
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div className="subject-page">
       {loading ? (
@@ -77,9 +93,49 @@ export default function SubjectPage() {
             {/*All of below is just the UI for task form*/}
             {list.map((lists, index) => (
               <div className="list-margin list-content" key={`list_${index}`}>
-                <div className="header">
+                <div className="list-header">
                   <h3>{lists.listTitle}</h3>
+
+                  <button
+                    className="more-info-list"
+                    onClick={() => {
+                      const newShowMenu = [...showMenu];
+                      newShowMenu[index] = !newShowMenu[index];
+                      setShowMenu(newShowMenu);
+                    }}
+                  >
+                    <i className="material-icons">more_horiz</i>
+                  </button>
+
+                  {showMenu[index] && (
+                    <div className="mini-menu">
+                      <div className="menu-header">
+                        <h5>List actions</h5>
+
+                        <button
+                          className="close-mini-menu"
+                          onClick={() =>
+                            setShowMenu((prevShowMenu) => [
+                              ...prevShowMenu.slice(0, index),
+                              false,
+                              ...prevShowMenu.slice(index + 1),
+                            ])
+                          }
+                        >
+                          <i className="material-icons">close</i>
+                        </button>
+                      </div>
+
+                      <button
+                        className="delete-list-button"
+                        onClick={() => handleDeleteList(lists._id, index)}
+                      >
+                        Delete list
+                      </button>
+                    </div>
+                  )}
                 </div>
+
 
                 <div className="task-container task-margins">
                   {Array.isArray(lists.task) &&
@@ -165,7 +221,7 @@ export default function SubjectPage() {
             ))}
             <ListForm
               subjectId={subjectId}
-              listAdded={(newList) => addNewList(newList)}
+              listAdded={addNewList}
             />
           </div>
         </div>

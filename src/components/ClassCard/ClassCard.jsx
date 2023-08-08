@@ -21,7 +21,6 @@ export default function ClassCard() {
   }, []);
 
   const addNewSubject = (newSubject) => {
-    //console.log("New subject added: ", newSubject);
     setSubject((subject) => [...subject, newSubject]);
   };
 
@@ -33,7 +32,6 @@ export default function ClassCard() {
         <div className="subject" key={`subject_${index}`}>
           <div className="header">
             <Link to={`/subjects/${subjects.subjectTitle}/${subjects._id}`}>
-              {/* This is defaults to Workspace*/}
               <h3>{subjects.subjectTitle}</h3>
             </Link>
 
@@ -66,7 +64,7 @@ export default function ClassCard() {
                   </button>
                 </div>
 
-                <button>Delete list</button>
+                <button className="delete-subject-button">Delete list</button>
               </div>
             )}
           </div>

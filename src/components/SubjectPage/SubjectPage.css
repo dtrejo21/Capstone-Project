@@ -28,12 +28,53 @@
   border-radius: 12px;
   display: inline-block;
   box-sizing: border-box;
+  position: relative;
 }
 
-.subject-page .header {
+.subject-page .list-header {
   padding: 14px 8px;
   min-height: 20px;
-  flex: 0 0 auto;
+  display: flex;
+}
+
+.subject-page .list-header .more-info-list{
+  border: none;
+  right: 0;
+  position: absolute;
+  color: #172B4D;
+}
+
+.list-header .mini-menu{
+  background-color: #F3f1F4;
+  height: 60px;
+  width: 200px;
+  position: absolute;
+  right: 0;
+  border: 2px solid #dedce0;
+  z-index: 999;
+  border-radius: 8px;
+  color: #172B4D;
+  padding: 8px;
+}
+
+.list-header .menu-header{
+  align-items: center;
+  display: flex;
+}
+
+.delete-list-button{
+  color: red;
+  border: none;
+}
+
+.subject-page .close-mini-menu{
+  display: flex;
+  font-size: 12px;
+  color: #172B4D;
+  border: none;
+  right: 0;
+  position: absolute;
+  cursor: pointer;
 }
 
 .subject-page .subject-board .button-container {
