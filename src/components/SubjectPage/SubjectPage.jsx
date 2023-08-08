@@ -61,6 +61,7 @@ export default function SubjectPage() {
       .catch((err) => console.log(err));
   };
 
+
   const handleDeleteList = (listId, index) => {
     axios
       .delete(`http://localhost:8000/list/deleteList/${listId}`, {
@@ -134,6 +135,7 @@ export default function SubjectPage() {
                     </div>
                   )}
                 </div>
+
 
                 <div className="task-container task-margins">
                   {Array.isArray(lists.task) &&
