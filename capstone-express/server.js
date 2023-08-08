@@ -492,7 +492,6 @@ function compareTitles(title, comparedTitle) {
 }
 
 app.get("/suggestedTime", verifyUser, async (req, res) => {
-  
   const { title } = req.query;
   try {
     const scoredTitle = [];
@@ -584,16 +583,47 @@ app.get("/returnToPrevious/:taskId", verifyUser, async (req, res) => {
   }
 });
 
-app.delete("/user/deleteAccount/:userId", verifyUser, async(req,res) => {
+app.delete("/user/deleteAccount/:userId", verifyUser, async (req, res) => {
   const userId = req.params.userId;
-  
-  try{
-    await UserModel.deleteOne({userId: userId})
+
+  try {
+    await UserModel.deleteOne({ userId: userId });
     res.status(200).json("Deleted");
-  }catch(error){
+  } catch (error) {
     console.log(error);
   }
-})
+});
+//Delete task, will delete any subtask and children
+async function deleteTask(taskId) {
+  const taskParent = await TaskModel.findById({ _id: taskId });
+
+  //Iterate through subtasks and delete any children
+  if(taskParent.subtask !== null){
+    for (let i = 0; i < taskParent.subtask.length; i++) {
+      await deleteSubtaskAndChildren(taskParent.subtask[i]._id);
+    }
+  }
+
+  await TaskModel.deleteOne({ _id: taskId });
+}
+
+app.delete("/deleteTask/:taskId", verifyUser, async (req, res) => {
+  const taskId = req.params.taskId;
+
+  try {
+    await deleteTask(taskId);//delete the task
+    //Update the list model to reflect the deleted task
+    await ListModel.findOneAndUpdate(
+      { "task._id": taskId },
+      { $pull: { task: { _id: taskId } } },
+      { new: true }
+    );
+    
+    res.status(200).json("Deleted task");
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 app.listen(8000, () => {
   console.log("Server started on port 8000");

@@ -91,7 +91,7 @@ export default function TaskForm() {
       .then((result) => {
         //console.log(subtaskType);
         if (subtaskType === "subtask") {
-          console.log(result.data);
+          //console.log(result.data);
           setTaskInfo({ dueDate: dueDate, subtask: result.data });
         } else {
           setTaskInfo((prevTaskInfo) => ({
@@ -226,8 +226,15 @@ export default function TaskForm() {
       });
   };
 
+  //Will handle deleting a task, whether a subtask or a task parent
   const handleDeleteTask = (taskId) => {
-    
+    axios.delete(`http://localhost:8000/deleteTask/${taskId}`, {withCredentials: true})
+    .then(result => {
+      if(result.status === 200){
+        navigate(-1, {state: {taskDeleted: true}});
+      }
+    })
+    .catch(err => console.log(err))
   }
 
   //Handles the event when a checkbox is checked
@@ -299,7 +306,7 @@ export default function TaskForm() {
         withCredentials: true,
       })
       .then((result) => {
-        console.log(result.data);
+        //console.log(result.data);
         if (result.data.type === "subtask") {
           const { subtaskTitle, description, dueDate, _id } =
             result.data.prevSubtask;
@@ -549,7 +556,10 @@ export default function TaskForm() {
                   />
                 )}
 
-                <button className="delete-task">Delete</button>
+                {subtaskType === null && (
+                  <button className="delete-task" onClick={() => handleDeleteTask(taskInfo._id)}>Delete</button>
+                )}
+                
               </div>
             </div>
           </div>

@@ -13,19 +13,23 @@ export default function SubjectPage() {
   const location = useLocation();
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  const fetchList = () => {
     setLoading(true);
     axios
       .get(`http://localhost:8000/getLists/${subjectId}`, {
         withCredentials: true,
       })
       .then((list) => {
-        console.log(list.data);
+        //console.log(list.data);
         setList(list.data);
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  }, []);
+  };
+  
+  useEffect(() => {
+    fetchList();
+  }, [location]);
 
   const [showInput, setShowInput] = useState(Array(list.length).fill(false));
 
@@ -38,9 +42,13 @@ export default function SubjectPage() {
   const handleSubmit = (e, currentList) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:8000/createTask/${currentList._id}`, {
-        taskTitle,
-      }, {withCredentials: true})
+      .post(
+        `http://localhost:8000/createTask/${currentList._id}`,
+        {
+          taskTitle,
+        },
+        { withCredentials: true }
+      )
       .then((result) => {
         //Update the list to add to add the new list with tasks
         setList((list) =>
@@ -54,6 +62,7 @@ export default function SubjectPage() {
       })
       .catch((err) => console.log(err));
   };
+
 
   return (
     <div className="subject-page">
@@ -73,19 +82,20 @@ export default function SubjectPage() {
                 </div>
 
                 <div className="task-container task-margins">
-                  {Array.isArray(lists.task) && lists.task.map((task, taskIndex) => (
-                    <div className="task-content" key={`task_${taskIndex}`}>
-                      <Link
-                        to={`/${task.title}/${task._id}`}
-                        state={{
-                          background: location,
-                        }}
-                        className="task-link"
-                      >
-                        <p>{task.title}</p>
-                      </Link>
-                    </div>
-                  ))}
+                  {Array.isArray(lists.task) &&
+                    lists.task.map((task, taskIndex) => (
+                      <div className="task-content" key={`task_${taskIndex}`}>
+                        <Link
+                          to={`/${task.title}/${task._id}`}
+                          state={{
+                            background: location,
+                          }}
+                          className="task-link"
+                        >
+                          <p>{task.title}</p>
+                        </Link>
+                      </div>
+                    ))}
                 </div>
 
                 <div className="button-container">
