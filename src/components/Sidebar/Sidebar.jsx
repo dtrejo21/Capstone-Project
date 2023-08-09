@@ -12,6 +12,12 @@ export default function Sidebar({ isOpen, handleToggle }) {
       {isOpen && (
         <ul className="options">
           <li>
+            <li>
+              <Link to="/">
+                Home
+                <i className="material-icons">home</i>
+              </Link>
+            </li>
             <Link to="/profile">
               Profile
               <i className="material-icons">account_circle</i>
@@ -27,11 +33,6 @@ export default function Sidebar({ isOpen, handleToggle }) {
             <Link to="/study-space">
               Study Space
               <i className="material-icons">auto_stories</i>
-            </Link>
-          </li>
-          <li>
-            <Link to="/">
-              Home
             </Link>
           </li>
         </ul>
