@@ -3,11 +3,11 @@
   color: black;
   display: flex;
   right: 0;
-  top: 50%;
+  top: 20%;
 }
 
 .calendar-wrapper {
-  height: 425px;
+  height: 400px;
   width: 300px;
 }
 
