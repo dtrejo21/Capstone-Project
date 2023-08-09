@@ -583,16 +583,6 @@ app.get("/returnToPrevious/:taskId", verifyUser, async (req, res) => {
   }
 });
 
-app.delete("/user/deleteAccount/:userId", verifyUser, async (req, res) => {
-  const userId = req.params.userId;
-
-  try {
-    await UserModel.deleteOne({ userId: userId });
-    res.status(200).json("Deleted");
-  } catch (error) {
-    console.log(error);
-  }
-});
 //Delete task, will delete any subtask and children
 async function deleteTask(taskId) {
   const taskParent = await TaskModel.findById({ _id: taskId });
@@ -657,6 +647,7 @@ app.delete("/list/deleteList/:listId", verifyUser, async (req, res) => {
     console.log(error);
   }
 });
+
 //Delete subject and any children
 async function deleteSubject(subjectId) {
   const subjectParent = SubjectModel.findById({ _id: subjectId });
@@ -683,6 +674,33 @@ app.delete(
     }
   }
 );
+//Delete all user data
+async function deleteAll(userId){
+  const board = await BoardModel.findOne({userId: userId});
+  const subject = await SubjectModel.find({boardId: board._id});
+
+  //Delete all subjects in the board
+  if(subject){
+    for(let i = 0; i < subject.length; i++){
+      await deleteSubject(subject[i]._id);
+    }
+  }
+  //Delete the board
+  await BoardModel.deleteOne({userId: userId})
+}
+
+app.delete("/user/deleteAccount/:userId", verifyUser, async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    await deleteAll(userId);
+    //Delete the user
+    await UserModel.deleteOne({ userId: userId });
+    res.status(200).json("Deleted");
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 app.listen(8000, () => {
   console.log("Server started on port 8000");
