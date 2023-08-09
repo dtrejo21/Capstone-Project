@@ -657,6 +657,32 @@ app.delete("/list/deleteList/:listId", verifyUser, async (req, res) => {
     console.log(error);
   }
 });
+//Delete subject and any children
+async function deleteSubject(subjectId) {
+  const subjectParent = SubjectModel.findById({ _id: subjectId });
+
+  if (subjectParent.list) {
+    for (let i = 0; i < subjectParent.list.length; i++) {
+      await deleteList(subjectParent.list[i]._id);
+    }
+  }
+  await SubjectModel.deleteOne({ _id: subjectId });
+}
+
+app.delete(
+  "/subject/deleteSubject/:subjectId",
+  verifyUser,
+  async (req, res) => {
+    const subjectId = req.params.subjectId;
+
+    try {
+      await deleteSubject(subjectId);
+      res.status(200).json("Subject Deleted");
+    } catch (error) {
+      res.status(404).json(error);
+    }
+  }
+);
 
 app.listen(8000, () => {
   console.log("Server started on port 8000");
