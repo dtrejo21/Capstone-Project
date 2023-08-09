@@ -662,7 +662,7 @@ app.delete("/list/deleteList/:listId", verifyUser, async (req, res) => {
 app.get("/task/completedTask", verifyUser, async(req, res) => {
   try{
     const completedTasks = await TaskModel.find({dueDate: {$ne: null}});
-    console.log(completedTasks);
+    //console.log(completedTasks);
 
     res.status(200).json(completedTasks)
   }

@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import CardForm from "../CardForm/CardForm";
 import { Link } from "react-router-dom";
-//HTML Drag and Drop API
 
 //this is the component that will show the indvidual card
 export default function ClassCard() {

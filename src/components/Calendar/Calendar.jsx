@@ -4,7 +4,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import axios from "axios";
 
-export default function Calendar() {
+export default function Calendar({isOpen}) {
   const [taskEvents, setTaskEvents] = useState({});
   useEffect(() => {
     axios
@@ -20,10 +20,13 @@ export default function Calendar() {
       })
       .catch(err => console.log(err))
   }, []);
+  
   return (
     <div className="calendar">
+        <div className={`calendar-page-content ${isOpen ? "sidebar-open" : ""}`}>
       <div className="calendar-page-wrapper">
         <FullCalendar plugins={[dayGridPlugin]} initialView="dayGridMonth" events={taskEvents}/>
+      </div>
       </div>
     </div>
   );

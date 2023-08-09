@@ -29,6 +29,11 @@ export default function Sidebar({ isOpen, handleToggle }) {
               <i className="material-icons">auto_stories</i>
             </Link>
           </li>
+          <li>
+            <Link to="/">
+              Home
+            </Link>
+          </li>
         </ul>
       )}
     </section>

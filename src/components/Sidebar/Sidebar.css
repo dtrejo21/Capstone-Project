@@ -1,52 +1,53 @@
-.open{
-    width: 200px;
+.open {
+  width: 200px;
 }
 
-.close{
-    width: 20px;
+.close {
+  width: 20px;
 }
 
-.close .material-icons{
-    margin-left: -4px;
+.close .material-icons {
+  margin-left: -4px;
 }
 
 .sidebar {
-    background-color: rgb(18, 6, 47);
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    height: 100vh;
-    align-items: flex-start;
-    top: 0;
-    left: 0; 
-    font-size: 16px;
-    color: white;
+  background-color: rgb(18, 6, 47);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  align-items: flex-start;
+  top: 0;
+  left: 0;
+  font-size: 16px;
+  color: white;
+  z-index: 999;
 }
 
-.sidebar .toggle-button{
-    background-color: transparent;
-    border: none;
-    color: white;
+.sidebar .toggle-button {
+  background-color: transparent;
+  border: none;
+  color: white;
 }
 
-.options{
-    display: flex;
-    flex-direction: column;
-    list-style: none;
-    font-size: 16px;
-    margin-left: -20px;
-    width: 100%;
+.options {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  font-size: 16px;
+  margin-left: -20px;
+  width: 100%;
 }
 
-.options li{
-    margin-bottom: 8px;
+.options li {
+  margin-bottom: 8px;
 }
 
-.options a{
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+.options a {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
