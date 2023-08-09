@@ -9,8 +9,7 @@
 
 .class-card h3 {
   padding: 12px;
-  margin-top: 12px;
-  height: 10px;
+  padding: 14px 8px;
 }
 
 .class-card a {
@@ -27,43 +26,46 @@
 }
 
 .class-card .header {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
   position: relative;
-}
-
-.class-card .subject .header .material-icons {
-  background-color: transparent;
-  border: none;
-  color: #172b4d;
-  cursor: pointer;
-  margin-left: auto;
-  margin-right: 4px;
-  font-size: 24px;
+  display: flex;
+  align-items: center;
 }
 
 .class-card .mini-menu {
   color: #172b4d;
   position: absolute;
-  background-color: #f3f1f4;
-  border: 2px solid #dedce0;
+  background-color: #F3F1F4;
+  border: 2px solid #DEDCE0;
   padding: 8px;
   border-radius: 8px;
   width: 200px;
   z-index: 999;
   align-items: center;
   position: absolute;
-  top: 100%;
-  right: -60%;
+  top: 25%;
+  right: 0;
 }
 
-.mini-menu .header {
+.subject-menu-header{
   display: flex;
+  align-items: center;
 }
 
 .mini-menu .delete-subject-button{
   background-color: transparent;
   border: none;
   color: #ca3521;
+}
+
+.subject-more-info{
+  border: none;
+  position: absolute;
+  right: 0;
+  border-radius: 12px;
+}
+
+.close-subject-mini-menu{
+  border: none;
+  position: absolute;
+  right: 0;
 }

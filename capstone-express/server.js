@@ -583,16 +583,6 @@ app.get("/returnToPrevious/:taskId", verifyUser, async (req, res) => {
   }
 });
 
-app.delete("/user/deleteAccount/:userId", verifyUser, async (req, res) => {
-  const userId = req.params.userId;
-
-  try {
-    await UserModel.deleteOne({ userId: userId });
-    res.status(200).json("Deleted");
-  } catch (error) {
-    console.log(error);
-  }
-});
 //Delete task, will delete any subtask and children
 async function deleteTask(taskId) {
   const taskParent = await TaskModel.findById({ _id: taskId });
@@ -653,6 +643,60 @@ app.delete("/list/deleteList/:listId", verifyUser, async (req, res) => {
     );
 
     res.status(200).json("Deleted a list");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//Delete subject and any children
+async function deleteSubject(subjectId) {
+  const subjectParent = SubjectModel.findById({ _id: subjectId });
+
+  if (subjectParent.list) {
+    for (let i = 0; i < subjectParent.list.length; i++) {
+      await deleteList(subjectParent.list[i]._id);
+    }
+  }
+  await SubjectModel.deleteOne({ _id: subjectId });
+}
+
+app.delete(
+  "/subject/deleteSubject/:subjectId",
+  verifyUser,
+  async (req, res) => {
+    const subjectId = req.params.subjectId;
+
+    try {
+      await deleteSubject(subjectId);
+      res.status(200).json("Subject Deleted");
+    } catch (error) {
+      res.status(404).json(error);
+    }
+  }
+);
+//Delete all user data
+async function deleteAll(userId){
+  const board = await BoardModel.findOne({userId: userId});
+  const subject = await SubjectModel.find({boardId: board._id});
+
+  //Delete all subjects in the board
+  if(subject){
+    for(let i = 0; i < subject.length; i++){
+      await deleteSubject(subject[i]._id);
+    }
+  }
+  //Delete the board
+  await BoardModel.deleteOne({userId: userId})
+}
+
+app.delete("/user/deleteAccount/:userId", verifyUser, async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    await deleteAll(userId);
+    //Delete the user
+    await UserModel.deleteOne({ userId: userId });
+    res.status(200).json("Deleted");
   } catch (error) {
     console.log(error);
   }

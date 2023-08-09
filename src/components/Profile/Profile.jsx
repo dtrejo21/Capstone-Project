@@ -18,7 +18,7 @@ export default function Profile() {
   const handleDeleteAccount = async () => {
     try{
       const result = await axios.delete(`http://localhost:8000/user/deleteAccount/${user.userId}`, {withCredentials: true})
-      if(result.data === "Deleted"){
+      if(result.status === 200){
         navigate("/welcome");
       }
     }catch(error){

@@ -11,7 +11,6 @@ export default function CardForm({subjectAdded}){
         e.preventDefault();
         axios.post("http://localhost:8000/createSubject", {subjectTitle}, {withCredentials: true})
         .then(result => {
-            console.log("From create subject:", result.data);
             subjectAdded(result.data);
             setSubjectTitle("");
         })
