@@ -702,6 +702,19 @@ app.delete("/user/deleteAccount/:userId", verifyUser, async (req, res) => {
   }
 });
 
+//Get all tasks that have due dates
+app.get("/task/completedTask", verifyUser, async(req, res) => {
+  try{
+    const completedTasks = await TaskModel.find({dueDate: {$ne: null}});
+    //console.log(completedTasks);
+
+    res.status(200).json(completedTasks)
+  }
+  catch(error){
+
+  }
+})
+
 app.listen(8000, () => {
   console.log("Server started on port 8000");
 });

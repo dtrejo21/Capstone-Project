@@ -11,12 +11,16 @@
   color: white;
 }
 
-.home .home-content {
+.home .home-content,
+.calendar-page-content,
+.profile-content,
+.study-space-page-content,
+.subject-page-content {
   flex: 1;
-  transition: margin-left 0.35s;
+  transition: margin-left 0.35s ease-in-out;
 }
 
-.home .sidebar-open {
+.sidebar-open {
   margin-left: 240px;
 }
 

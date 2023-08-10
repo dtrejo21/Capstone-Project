@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function Profile() {
+export default function Profile({ isOpen }) {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -16,15 +16,18 @@ export default function Profile() {
   };
 
   const handleDeleteAccount = async () => {
-    try{
-      const result = await axios.delete(`http://localhost:8000/user/deleteAccount/${user.userId}`, {withCredentials: true})
-      if(result.status === 200){
+    try {
+      const result = await axios.delete(
+        `http://localhost:8000/user/deleteAccount/${user.userId}`,
+        { withCredentials: true }
+      );
+      if (result.data === "Deleted") {
         navigate("/welcome");
       }
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   //fetch user information
   axios.defaults.withCredentials = true;
@@ -43,40 +46,47 @@ export default function Profile() {
 
   return (
     <div className="profile">
-      <div className="menu">
-        <div className="options">
-          <p>Profile </p>
-          <button className="delete-account-button" onClick={handleDeleteAccount}>
-            Delete Account
-          </button>
-        </div>
-      </div>
+      <div className={`profile-content ${isOpen ? "sidebar-open" : ""}`}>
+        <div className="profile-page">
+          <div className="menu">
+            <div className="options">
+              <p>Profile </p>
+              <button
+                className="delete-account-button"
+                onClick={handleDeleteAccount}
+              >
+                Delete Account
+              </button>
+            </div>
+          </div>
 
-      <div className="profile-info">
-        <div className="profile-header">
-          <h2>Welcome to your Profile Page!</h2>
-        </div>
+          <div className="profile-info">
+            <div className="profile-header">
+              <h2>Welcome to your Profile Page!</h2>
+            </div>
 
-        <div className="user-information">
-          <p>Username:</p>
-          <form>
-            <textarea
-              className="user-info-display"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <p>Email:</p>
-            <textarea
-              className="user-info-display"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </form>
-        </div>
+            <div className="user-information">
+              <p>Username:</p>
+              <form>
+                <textarea
+                  className="user-info-display"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                <p>Email:</p>
+                <textarea
+                  className="user-info-display"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </form>
+            </div>
 
-        <button className="logoutBtn" onClick={handleLogout}>
-          Logout
-        </button>
+            <button className="logoutBtn" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
