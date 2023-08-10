@@ -1,7 +1,7 @@
 .study-space {
   display: flex;
-  margin-top: 16px;
-  margin-left: 20px;
+  margin-top: 30px;
+  margin-left: 30px;
   display: flex;
   height: 100%;
 }
@@ -56,11 +56,10 @@
   color: white;
   border: none;
   border-radius: 3px;
-  height: 3rem;
   width: 3rem;
   position: fixed;
   right: 1.25rem;
-  top: 80px;
+  top: 40px;
 }
 
 .quote-button {
@@ -69,27 +68,17 @@
   border: none;
   border-radius: 3px;
   padding: 8px 8px 8px 8px;
-  height: 3rem;
   width: 3rem;
   position: fixed;
   right: 1.25rem;
-  top: 140px;
+  top: 90px;
 }
 
 .quote-text {
   color: white;
   padding: 8px 4px 8px 12px;
   border-radius: 4px;
-  margin-top: 12px;
-  width: 250px;
-  font-size: 26px;
-}
-
-.quote-text {
-  color: white;
-  padding: 8px 4px 8px 12px;
-  border-radius: 4px;
-  margin-top: 12px;
+  margin-top: 24px;
   width: 250px;
   font-size: 26px;
 }
@@ -104,10 +93,9 @@
   border-radius: 1rem;
   width: 268px;
   position: fixed;
-  top: 80px;
   padding: 1.5rem;
-  right: 1.5rem;
-  top: 160px;
+  right: 4.25rem;
+  top: 100px;
 }
 
 .quote-menu button {
@@ -121,7 +109,7 @@
 .quote-wrapper {
   position: fixed;
   right: 0;
-  margin-top: -40px;
+  margin-top: -10px;
   margin-right: 40px;
 }
 

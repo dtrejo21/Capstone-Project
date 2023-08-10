@@ -8,7 +8,7 @@ export default function Calendar({isOpen}) {
   const [taskEvents, setTaskEvents] = useState({});
   useEffect(() => {
     axios
-      .get("http://localhost:8000/task/completedTask", {
+      .get("http://localhost:8000/task/taskWithDueDates", {
         withCredentials: true,
       })
       .then((result) => {
