@@ -491,7 +491,7 @@ function compareTitles(title, comparedTitle) {
   );
 }
 
-app.get("/suggestedTime", verifyUser, async (req, res) => {
+app.get("/suggestedTime", async (req, res) => {
   const { title } = req.query;
   try {
     const scoredTitle = [];

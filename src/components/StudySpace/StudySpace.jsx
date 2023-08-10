@@ -17,7 +17,7 @@ export default function StudySpace({ isOpen }) {
 
   //get a quote
   const fetchQuote = () => {
-    fetch("https://api.quotable.io/quotes/random?tags=Inspirational")
+    fetch("https://api.quotable.io/quotes/random?tags=Inspirational&maxLength=100")
       .then((result) => {
         return result.json();
       })
