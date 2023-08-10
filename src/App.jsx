@@ -22,7 +22,9 @@ export default function App() {
 
   return (
     <div className="app">
-      <Sidebar isOpen={isOpen} handleToggle={handleToggle} />
+      {!location.pathname.startsWith("/welcome") && (
+        <Sidebar isOpen={isOpen} handleToggle={handleToggle} />
+      )}
       <Routes location={background || location}>
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/" element={<Home isOpen={isOpen} />} />
