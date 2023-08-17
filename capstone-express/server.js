@@ -491,7 +491,7 @@ function compareTitles(title, comparedTitle) {
   );
 }
 
-app.get("/suggestedTime", verifyUser, async (req, res) => {
+app.get("/suggestedTime", async (req, res) => {
   const { title } = req.query;
   try {
     const scoredTitle = [];
@@ -675,18 +675,18 @@ app.delete(
   }
 );
 //Delete all user data
-async function deleteAll(userId){
-  const board = await BoardModel.findOne({userId: userId});
-  const subject = await SubjectModel.find({boardId: board._id});
+async function deleteAll(userId) {
+  const board = await BoardModel.findOne({ userId: userId });
+  const subject = await SubjectModel.find({ boardId: board._id });
 
   //Delete all subjects in the board
-  if(subject){
-    for(let i = 0; i < subject.length; i++){
+  if (subject) {
+    for (let i = 0; i < subject.length; i++) {
       await deleteSubject(subject[i]._id);
     }
   }
   //Delete the board
-  await BoardModel.deleteOne({userId: userId})
+  await BoardModel.deleteOne({ userId: userId });
 }
 
 app.delete("/user/deleteAccount/:userId", verifyUser, async (req, res) => {
@@ -703,17 +703,28 @@ app.delete("/user/deleteAccount/:userId", verifyUser, async (req, res) => {
 });
 
 //Get all tasks that have due dates
-app.get("/task/completedTask", verifyUser, async(req, res) => {
-  try{
-    const completedTasks = await TaskModel.find({dueDate: {$ne: null}});
-    //console.log(completedTasks);
+app.get("/task/taskWithDueDates", verifyUser, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const tasksWithDates = [];
+    const board = await BoardModel.findOne({ userId: userId });
 
-    res.status(200).json(completedTasks)
-  }
-  catch(error){
-
-  }
-})
+    //Get all subjects in the board
+    const subjects = await SubjectModel.find({ boardId: board._id });
+    //Find all tasks that have due dates
+    for (const subject of subjects) {
+      const lists = await ListModel.find({ subjectId: subject._id });
+      for (const list of lists) {
+        const tasks = await TaskModel.find({
+          listId: list._id,
+          dueDate: { $ne: null },
+        });
+        tasksWithDates.push(...tasks)
+      }
+    }
+    res.status(200).json(tasksWithDates);
+  } catch (error) {}
+});
 
 app.listen(8000, () => {
   console.log("Server started on port 8000");

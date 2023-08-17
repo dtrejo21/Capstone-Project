@@ -19,10 +19,10 @@ export default function Welcome() {
   return (
     <div className="welcome-page">
       <div className="info">
-        <h2>Welcome to Capstone!</h2>
+        <h2>Welcome to StudyFlow!</h2>
         <p>
-          Capstone is the best way to bring your classes, assignments and due
-          dates together.
+        StudyFlow is your personalized study companion designed to 
+        empower your learning journey.
         </p>
 
         <div className="buttons">

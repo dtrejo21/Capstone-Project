@@ -278,17 +278,17 @@ export default function TaskForm() {
         { withCredentials: true }
       )
       .then((result) => {
-        console.log(result.status);
+        //console.log(result);
         //If we get a successful result
         if (result.status === 200) {
-          console.log(result.data);
+          //console.log(result.data);
           setShowSuggestedDate(true);
 
           //give a date based of the estimate
           const newDate = new Date(
             Date.now() + result.data * 24 * 60 * 60 * 1000
           );
-          console.log(newDate);
+          //console.log(newDate);
           setEstimatedDate(formatDueDate(newDate));
         } else {
           setShowSuggestedDate(false);
